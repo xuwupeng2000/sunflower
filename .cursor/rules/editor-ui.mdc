@@ -1,0 +1,12 @@
+---
+description: Keep editable Godot scenes visible in the editor
+alwaysApply: true
+---
+
+# 能看到、能手调
+
+用户要在 Godot 编辑器里看到并亲手调整。灯光、相机、环境、花盆节点、界面控件都放在 `.tscn` 里，不要用代码 `new()` 再拼进树里。
+
+- 脚本只读取 `.vox`、按贪睡次数加茎节、接信号、改文字、切换 `visible`。
+- 界面：`scenes/main.tscn`、`scenes/alarm_page.tscn`、`scenes/pot_page.tscn`、`scenes/time_picker.tscn`，颜色在 `theme/ui.tres`。
+- 花的场景：`scenes/sunflower.tscn`（环境、主光、补光、相机、转台、花盆、植株）。

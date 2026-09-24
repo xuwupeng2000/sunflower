@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <polygon points="8,28 44,28 56,12 20,12" fill="#8a52c4"/>
+  <polygon points="44,28 56,12 56,38 44,54" fill="#2a103f"/>
+  <polygon points="8,28 44,28 44,54 8,54" fill="#4a1d6e"/>
+  <polygon points="12,33 42,33 42,50 12,50" fill="#140818"/>
+  <g fill="#e4c8ff">
+    <rect x="15" y="35" width="2" height="6"/>
+    <rect x="19" y="35" width="2" height="12"/>
+    <rect x="15" y="39" width="6" height="2"/>
+    <rect x="23" y="37" width="2" height="2"/>
+    <rect x="23" y="43" width="2" height="2"/>
+    <rect x="27" y="35" width="6" height="2"/>
+    <rect x="31" y="35" width="2" height="6"/>
+    <rect x="27" y="39" width="6" height="2"/>
+    <rect x="27" y="41" width="2" height="6"/>
+    <rect x="27" y="45" width="6" height="2"/>
+    <rect x="35" y="35" width="6" height="2"/>
+    <rect x="35" y="35" width="2" height="12"/>
+    <rect x="39" y="35" width="2" height="12"/>
+    <rect x="35" y="45" width="6" height="2"/>
+  </g>
+</svg>

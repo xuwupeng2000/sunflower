@@ -1,0 +1,148 @@
+[gd_scene format=3 uid="uid://k62s0xol024v"]
+
+[ext_resource type="FontFile" uid="uid://bblo2i0chg8oi" path="res://fonts/DSEG7Classic-Regular.ttf" id="2_digit"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_border"]
+content_margin_left = 36.0
+content_margin_top = 36.0
+content_margin_right = 36.0
+content_margin_bottom = 36.0
+bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+draw_center = false
+border_color = Color(0.372549, 0.576471, 0.721569, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_time"]
+
+[node name="定时" type="Control" unique_id=943383272]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="边框" type="PanelContainer" parent="." unique_id=1254547385]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -17.0
+offset_right = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_border")
+
+[node name="内容" type="VBoxContainer" parent="边框" unique_id=72209495]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_constants/separation = 40
+
+[node name="行列" type="HBoxContainer" parent="边框/内容" unique_id=968760820]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 36
+
+[node name="星期" type="VBoxContainer" parent="边框/内容/行列" unique_id=838523199]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 18
+
+[node name="周一" type="Button" parent="边框/内容/行列/星期" unique_id=1657271076]
+custom_minimum_size = Vector2(108, 52)
+layout_mode = 2
+text = "周一"
+
+[node name="周二" type="Button" parent="边框/内容/行列/星期" unique_id=1945075868]
+custom_minimum_size = Vector2(108, 52)
+layout_mode = 2
+text = "周二"
+
+[node name="周三" type="Button" parent="边框/内容/行列/星期" unique_id=558481070]
+custom_minimum_size = Vector2(108, 52)
+layout_mode = 2
+text = "周三"
+
+[node name="周四" type="Button" parent="边框/内容/行列/星期" unique_id=189999311]
+custom_minimum_size = Vector2(108, 52)
+layout_mode = 2
+text = "周四"
+
+[node name="周五" type="Button" parent="边框/内容/行列/星期" unique_id=1499202470]
+custom_minimum_size = Vector2(108, 52)
+layout_mode = 2
+text = "周五"
+
+[node name="周六" type="Button" parent="边框/内容/行列/星期" unique_id=1935499810]
+custom_minimum_size = Vector2(108, 52)
+layout_mode = 2
+text = "周六"
+
+[node name="周日" type="Button" parent="边框/内容/行列/星期" unique_id=1657953572]
+custom_minimum_size = Vector2(108, 52)
+layout_mode = 2
+text = "周日"
+
+[node name="时间" type="VBoxContainer" parent="边框/内容/行列" unique_id=1721922261]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 36
+
+[node name="起床" type="HBoxContainer" parent="边框/内容/行列/时间" unique_id=1047628854]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="标题" type="Label" parent="边框/内容/行列/时间/起床" unique_id=629635002]
+custom_minimum_size = Vector2(56, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "起床"
+vertical_alignment = 1
+
+[node name="钟点" type="Button" parent="边框/内容/行列/时间/起床" unique_id=1462486111]
+custom_minimum_size = Vector2(132, 52)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_digit")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_time")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_time")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_time")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_time")
+text = "07:00"
+alignment = 0
+
+[node name="睡觉" type="HBoxContainer" parent="边框/内容/行列/时间" unique_id=1908001044]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="标题" type="Label" parent="边框/内容/行列/时间/睡觉" unique_id=1167408268]
+custom_minimum_size = Vector2(56, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "睡觉"
+vertical_alignment = 1
+
+[node name="钟点" type="Button" parent="边框/内容/行列/时间/睡觉" unique_id=670011296]
+custom_minimum_size = Vector2(132, 52)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_digit")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_time")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_time")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_time")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_time")
+text = "23:00"
+alignment = 0
+
+[node name="记一次贪睡" type="Button" parent="边框/内容" unique_id=1051232717]
+layout_mode = 2
+text = "记一次贪睡"

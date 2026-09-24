@@ -1,0 +1,17 @@
+[config]
+
+name="AlarmKit"
+binary="alarm_kit.xcframework"
+use_swift_runtime=true
+initialization="alarm_kit_init"
+deinitialization="alarm_kit_deinit"
+
+[dependencies]
+
+linked=[]
+embedded=[]
+system=["AlarmKit.framework", "ActivityKit.framework", "AppIntents.framework", "SwiftUI.framework"]
+
+[plist]
+
+NSAlarmKitUsageDescription="用向日葵闹钟在你设定的时间叫醒你。"

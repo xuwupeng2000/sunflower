@@ -1,0 +1,40 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Sunflower Alarm"
+config/description="向日葵闹钟"
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+AlarmStore="*res://scripts/alarm_store.gd"
+AlarmService="*res://scripts/alarm_service.gd"
+
+[display]
+
+window/size/viewport_width=390
+window/size/viewport_height=844
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
+
+[ios]
+
+plugins/AlarmKit="res://ios/plugins/alarm_kit/alarm_kit.gdip"
+plugins_plist/NSAlarmKitUsageDescription="用向日葵闹钟在你设定的时间叫醒你。"
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://kyk1no8cvgmi"]
+
+[ext_resource type="Script" uid="uid://dfph04vvl7ktd" path="res://scripts/alarm_list.gd" id="1_list"]
+
+[node name="AlarmList" type="PanelContainer" unique_id=1086551456]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_list")

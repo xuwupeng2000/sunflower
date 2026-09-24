@@ -1,0 +1,10 @@
+res://scripts/main.gd
+res://scripts/sunflower.gd
+res://scripts/alarm_store.gd
+res://scripts/snap_row.gd
+res://scripts/time_wheel.gd
+res://scripts/cloud_frame.gd
+res://scenes/alarm_page.tscn
+res://scenes/alarm_list.tscn
+res://scenes/pot_page.tscn
+res://theme/ui.tres

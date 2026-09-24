@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://c13b886ajh32e"]
+
+[ext_resource type="Script" uid="uid://djyuw1hjxhymc" path="res://scripts/snap_row.gd" id="2_snap"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_border"]
+content_margin_left = 5.0
+content_margin_top = 36.0
+content_margin_right = 5.0
+content_margin_bottom = 36.0
+bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+border_color = Color(0.372549, 0.576471, 0.721569, 1)
+
+[node name="花盆" type="Control" unique_id=806505304]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="边框" type="PanelContainer" parent="." unique_id=1460021294]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_border")
+
+[node name="列表" type="VBoxContainer" parent="边框" unique_id=1931973220]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="花" type="Control" parent="边框/列表" unique_id=1803096732]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_snap")
+
+[node name="盆" type="Control" parent="边框/列表" unique_id=1685553027]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_snap")
