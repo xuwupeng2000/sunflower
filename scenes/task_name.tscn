@@ -1,0 +1,85 @@
+[gd_scene format=3]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_field"]
+bg_color = Color(1, 1, 1, 1)
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="任务命名" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0, 0, 0, 0.45)
+
+[node name="居中" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="面板" type="PanelContainer" parent="居中"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="内容" type="VBoxContainer" parent="居中/面板"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="提示" type="Label" parent="居中/面板/内容"]
+layout_mode = 2
+text = "输入提醒名称"
+horizontal_alignment = 1
+
+[node name="名字" type="LineEdit" parent="居中/面板/内容"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.15, 0.16, 0.18, 1)
+theme_override_colors/font_placeholder_color = Color(0.15, 0.16, 0.18, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_field")
+theme_override_styles/focus = SubResource("StyleBoxFlat_field")
+text = "新的提醒"
+alignment = 1
+
+[node name="健身" type="Button" parent="居中/面板/内容"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "💪 健身"
+
+[node name="接娃" type="Button" parent="居中/面板/内容"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "👶 接娃"
+
+[node name="吃药" type="Button" parent="居中/面板/内容"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "💊 吃药"
+
+[node name="完成" type="Button" parent="居中/面板/内容"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "完成"

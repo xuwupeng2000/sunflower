@@ -1,5 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://bpwxm3suo7ea4"]
 
+[ext_resource type="FontVariation" uid="uid://bvat2utpj3x7w" path="res://theme/font_ios.tres" id="1_ios"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
 bg_color = Color(0.741176, 0.847059, 0.929412, 1)
 border_width_left = 1
@@ -27,11 +29,8 @@ corner_radius_bottom_left = 10
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 bg_color = Color(0.741176, 0.847059, 0.929412, 1)
 
-[sub_resource type="SystemFont" id="SystemFont_ui"]
-font_names = PackedStringArray("Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "sans-serif")
-
 [resource]
-default_font = SubResource("SystemFont_ui")
+default_font = ExtResource("1_ios")
 default_font_size = 18
 Button/colors/font_color = Color(0.15, 0.16, 0.18, 1)
 Button/colors/font_focus_color = Color(0.15, 0.16, 0.18, 1)

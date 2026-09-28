@@ -1,0 +1,17 @@
+# Godot 4 editor cache. Regenerated on open.
+.godot/
+
+# Local editor / export leftovers
+.vscode/
+addons/
+.DS_Store
+export.cfg
+export_presets.cfg
+*.translation
+.mono/
+mono_crash.*.json
+android/
+ios/
+*.apk
+*.aab
+*.ipa

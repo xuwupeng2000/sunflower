@@ -1,0 +1,10 @@
+[gd_resource type="FontVariation" format=3 uid="uid://bvat2utpj3x7w"]
+
+[ext_resource type="FontFile" uid="uid://03hta0n0gava" path="res://fonts/NotoSansSC-Regular.woff2" id="1_noto"]
+
+[sub_resource type="SystemFont" id="SystemFont_emoji"]
+font_names = PackedStringArray("Apple Color Emoji", "Noto Color Emoji", "emoji")
+
+[resource]
+fallbacks = Array[Font]([SubResource("SystemFont_emoji")])
+base_font = ExtResource("1_noto")

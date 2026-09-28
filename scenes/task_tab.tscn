@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[node name="任务" type="Button"]
+custom_minimum_size = Vector2(88, 44)
+size_flags_horizontal = 0
+clip_text = false
+toggle_mode = true
+text = "新的提醒"
+alignment = 1

@@ -29,6 +29,19 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
 
+[gui]
+
+theme/custom="res://theme/ui.tres"
+theme/custom_font="res://theme/font_ios.tres"
+
+[gui.android]
+
+theme/custom_font="res://theme/font_android.tres"
+
+[gui.ios]
+
+theme/custom_font="res://theme/font_ios.tres"
+
 [ios]
 
 plugins/AlarmKit="res://ios/plugins/alarm_kit/alarm_kit.gdip"

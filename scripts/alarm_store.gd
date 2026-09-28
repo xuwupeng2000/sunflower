@@ -39,6 +39,7 @@ func load_data() -> void:
 				"alarm_id": str(item.get("alarm_id", "")),
 				"at": int(item.get("at", 0)),
 			})
+	_load_tasks(data.get("tasks", []))
 	_load_days(data.get("days", []))
 	changed.emit()
 
@@ -52,10 +53,12 @@ func save_data() -> void:
 		"alarms": alarms,
 		"snoozes": snoozes,
 		"days": days,
+		"tasks": tasks,
 	}, "  "))
 
 
 var days: Array[Dictionary] = []
+var tasks: Array[Dictionary] = []
 
 
 func day_count() -> int:
@@ -73,6 +76,16 @@ func set_day_time(index: int, kind: String, hour: int, minute: int) -> void:
 	var slot := days[index]
 	slot[kind + "_hour"] = clampi(hour, 0, 23)
 	slot[kind + "_minute"] = clampi(minute, 0, 59)
+	slot["enabled"] = true
+	_sync_day_alarms()
+	save_data()
+
+
+func set_day_enabled(index: int, enabled: bool) -> void:
+	_ensure_days()
+	if index < 0 or index >= days.size():
+		return
+	days[index]["enabled"] = enabled
 	_sync_day_alarms()
 	save_data()
 
@@ -84,6 +97,7 @@ func _ensure_days() -> void:
 			"wake_minute": 0,
 			"sleep_hour": 23,
 			"sleep_minute": 0,
+			"enabled": true,
 		})
 	if days.size() > 7:
 		days.resize(7)
@@ -100,9 +114,153 @@ func _load_days(raw: Variant) -> void:
 				"wake_minute": clampi(int(item.get("wake_minute", 0)), 0, 59),
 				"sleep_hour": clampi(int(item.get("sleep_hour", 23)), 0, 23),
 				"sleep_minute": clampi(int(item.get("sleep_minute", 0)), 0, 59),
+				"enabled": bool(item.get("enabled", true)),
 			})
 	_ensure_days()
 	_sync_day_alarms()
+
+
+func _load_tasks(raw: Variant) -> void:
+	tasks.clear()
+	if typeof(raw) != TYPE_ARRAY:
+		return
+	for item in raw:
+		if typeof(item) == TYPE_DICTIONARY:
+			tasks.append(_normalize_task(item))
+
+
+func _normalize_task(raw: Dictionary) -> Dictionary:
+	var times: Array = []
+	var stored: Variant = raw.get("times", [])
+	if typeof(stored) == TYPE_ARRAY:
+		for item in stored:
+			if typeof(item) != TYPE_DICTIONARY:
+				continue
+			times.append({
+				"hour": clampi(int(item.get("hour", 9)), 0, 23),
+				"minute": clampi(int(item.get("minute", 0)), 0, 59),
+				"enabled": bool(item.get("enabled", true)),
+			})
+	while times.size() < 7:
+		times.append({"hour": 9, "minute": 0, "enabled": true})
+	if times.size() > 7:
+		times.resize(7)
+	var task_id := str(raw.get("id", ""))
+	if task_id.is_empty():
+		task_id = _new_task_id()
+	return {
+		"id": task_id,
+		"name": str(raw.get("name", "")),
+		"times": times,
+	}
+
+
+func _new_task_id() -> String:
+	return "%d-%d" % [Time.get_unix_time_from_system(), randi()]
+
+
+func task_count() -> int:
+	return tasks.size()
+
+
+func task_at(index: int) -> Dictionary:
+	if index < 0 or index >= tasks.size():
+		return {}
+	return tasks[index]
+
+
+func task_label(task: Dictionary) -> String:
+	var name := str(task.get("name", "")).strip_edges()
+	return name if not name.is_empty() else "新的提醒"
+
+
+func task_alarm_id(task_id: String, weekday: int) -> String:
+	return "task-%s-%d" % [task_id, weekday]
+
+
+func add_task(task_name: String = "新的提醒") -> Dictionary:
+	var task := _normalize_task({"id": _new_task_id(), "name": task_name})
+	tasks.append(task)
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
+	return task
+
+
+func rename_task(task_id: String, name: String) -> void:
+	for task in tasks:
+		if str(task.get("id", "")) != task_id:
+			continue
+		task["name"] = name
+		_sync_day_alarms()
+		save_data()
+		changed.emit()
+		return
+
+
+func set_task_time(index: int, day_index: int, hour: int, minute: int) -> void:
+	if index < 0 or index >= tasks.size():
+		return
+	if day_index < 0 or day_index > 6:
+		return
+	var times: Array = tasks[index]["times"]
+	times[day_index] = {
+		"hour": clampi(hour, 0, 23),
+		"minute": clampi(minute, 0, 59),
+		"enabled": true,
+	}
+	_sync_day_alarms()
+	save_data()
+
+
+func task_day_enabled(index: int, day_index: int) -> bool:
+	if index < 0 or index >= tasks.size():
+		return true
+	if day_index < 0 or day_index > 6:
+		return true
+	var times: Array = tasks[index]["times"]
+	return bool(times[day_index].get("enabled", true))
+
+
+func set_task_day_enabled(index: int, day_index: int, enabled: bool) -> void:
+	if index < 0 or index >= tasks.size():
+		return
+	if day_index < 0 or day_index > 6:
+		return
+	var times: Array = tasks[index]["times"]
+	var moment: Dictionary = times[day_index]
+	moment["enabled"] = enabled
+	times[day_index] = moment
+	_sync_day_alarms()
+	save_data()
+
+
+func reorder_tasks(ids: Array) -> void:
+	var by_id := {}
+	for task in tasks:
+		by_id[str(task.get("id", ""))] = task
+	var next: Array[Dictionary] = []
+	for task_id in ids:
+		var key := str(task_id)
+		if not by_id.has(key):
+			return
+		next.append(by_id[key])
+	if next.size() != tasks.size():
+		return
+	tasks = next
+	_sync_day_alarms()
+	save_data()
+
+
+func remove_task(task_id: String) -> void:
+	var kept: Array[Dictionary] = []
+	for task in tasks:
+		if str(task.get("id", "")) != task_id:
+			kept.append(task)
+	tasks = kept
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
 
 
 func _sync_day_alarms() -> void:
@@ -110,8 +268,19 @@ func _sync_day_alarms() -> void:
 	for index in days.size():
 		var slot := days[index]
 		var weekday := index + 1
-		kept.append(_day_alarm("wake-%d" % weekday, int(slot["wake_hour"]), int(slot["wake_minute"]), weekday, "起床"))
-		kept.append(_day_alarm("sleep-%d" % weekday, int(slot["sleep_hour"]), int(slot["sleep_minute"]), weekday, "睡觉"))
+		if bool(slot.get("enabled", true)):
+			kept.append(_day_alarm("wake-%d" % weekday, int(slot["wake_hour"]), int(slot["wake_minute"]), weekday, "起床"))
+			kept.append(_day_alarm("sleep-%d" % weekday, int(slot["sleep_hour"]), int(slot["sleep_minute"]), weekday, "睡觉"))
+	for task in tasks:
+		var task_id := str(task.get("id", ""))
+		var label := task_label(task)
+		var times: Array = task.get("times", [])
+		for day_index in times.size():
+			var moment: Dictionary = times[day_index]
+			if not bool(moment.get("enabled", true)):
+				continue
+			var task_weekday := day_index + 1
+			kept.append(_day_alarm(task_alarm_id(task_id, task_weekday), int(moment["hour"]), int(moment["minute"]), task_weekday, label))
 	alarms = kept
 
 

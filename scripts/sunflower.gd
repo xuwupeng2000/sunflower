@@ -7,19 +7,37 @@ const BASE_SEGMENTS := 3
 const MAX_EXTRA := 24
 
 const FLOWER_KINDS := [
-	{"name": "向日葵", "stem": "res://models/stem_sunflower.vox", "flower": "res://models/flower_sunflower.vox"},
-	{"name": "橙葵", "stem": "res://models/stem_orange.vox", "flower": "res://models/flower_orange.vox"},
-	{"name": "柠檬葵", "stem": "res://models/stem_lemon.vox", "flower": "res://models/flower_lemon.vox"},
+	{"name": "白掌", "stem": "res://models/stem_peace.vox", "flower": "res://models/flower_peace.vox"},
+	{
+		"name": "向日葵",
+		"stem": "res://assets/sunflower/stem.glb",
+		"flower": "res://assets/sunflower/flower.glb",
+		"stem_materials": ["res://assets/sunflower/stem.tres", "res://assets/sunflower/leaf.tres"],
+		"flower_materials": [
+			"res://assets/sunflower/petal.tres",
+			"res://assets/sunflower/disk.tres",
+			"res://assets/sunflower/stem.tres",
+			"res://assets/sunflower/leaf.tres",
+		],
+	},
+	{"name": "兰花", "stem": "res://models/stem_orchid.vox", "flower": "res://models/flower_orchid.vox"},
 ]
 const POT_KINDS := [
-	{"name": "陶盆", "pot": "res://models/pot_clay.vox"},
+	{
+		"name": "陶盆",
+		"pot": "res://assets/pots/clay.glb",
+		"pot_materials": ["res://assets/pots/clay.tres", "res://assets/pots/soil.tres"],
+	},
 	{"name": "白瓷", "pot": "res://models/pot_white.vox"},
-	{"name": "蓝釉", "pot": "res://models/pot_blue.vox"},
+	{"name": "彩釉盆", "pot": "res://models/pot_glaze.vox"},
 ]
 
-var _voxel_mat: StandardMaterial3D
+var _voxel_mat: Material
 var _stem_mesh: Mesh
 var _flower_mesh: Mesh
+var _stem_materials: Array[Material] = []
+var _flower_materials: Array[Material] = []
+var _pot_materials: Array[Material] = []
 var _stem_height := 0.8
 var _flower_height := 1.2
 var _turntable: Node3D
@@ -33,7 +51,7 @@ var _pot: MeshInstance3D
 var _grow_player: AudioStreamPlayer
 var _token := 0
 var _dragging := false
-var flower_index := 0
+var flower_index := 1
 var pot_index := 0
 
 
@@ -43,10 +61,7 @@ func _ready() -> void:
 	_pot = $转台/花盆
 	_plant = $转台/植株
 	_grow_player = $生长音效
-	_voxel_mat = StandardMaterial3D.new()
-	_voxel_mat.vertex_color_use_as_albedo = true
-	_voxel_mat.roughness = 0.82
-	_pot.material_override = _voxel_mat
+	_voxel_mat = load("res://shaders/voxel_plastic.tres")
 	_load_voxel_meshes()
 	_show_base_flower()
 
@@ -110,31 +125,92 @@ func apply_style(next_flower: int, next_pot: int) -> void:
 	_load_voxel_meshes()
 	if _pot:
 		_pot.mesh = _pot_mesh()
+		_apply_materials(_pot, _pot_materials)
 	if _head:
 		_head.mesh = _flower_mesh
+		_apply_materials(_head, _flower_materials)
 	for child in _plant.get_children():
 		if child == _head:
 			continue
 		var stem := child as MeshInstance3D
 		if stem:
 			stem.mesh = _stem_mesh
+			_apply_materials(stem, _stem_materials)
 
 
 func _load_voxel_meshes() -> void:
 	var flower: Dictionary = FLOWER_KINDS[flower_index]
 	var pot: Dictionary = POT_KINDS[pot_index]
-	var stem := VoxModel.load_mesh(flower["stem"])
-	var bloom := VoxModel.load_mesh(flower["flower"])
+	var stem := _load_piece(str(flower["stem"]))
+	var bloom := _load_piece(str(flower["flower"]))
 	_stem_mesh = stem["mesh"]
 	_flower_mesh = bloom["mesh"]
 	_stem_height = float(stem["height"])
 	_flower_height = float(bloom["height"])
+	_stem_materials = _materials_from(flower.get("stem_materials", []))
+	_flower_materials = _materials_from(flower.get("flower_materials", []))
+	_pot_materials = _materials_from(pot.get("pot_materials", []))
 	if _pot:
-		_pot.mesh = VoxModel.load_mesh(pot["pot"])["mesh"]
+		_pot.mesh = _load_piece(str(pot["pot"]))["mesh"]
+		_apply_materials(_pot, _pot_materials)
 
 
 func _pot_mesh() -> Mesh:
-	return VoxModel.load_mesh(POT_KINDS[pot_index]["pot"])["mesh"]
+	return _load_piece(str(POT_KINDS[pot_index]["pot"]))["mesh"]
+
+
+func _load_piece(path: String) -> Dictionary:
+	if path.ends_with(".vox"):
+		return VoxModel.load_mesh(path)
+	var packed := load(path) as PackedScene
+	if packed == null:
+		push_error("打不开模型 %s" % path)
+		return {"mesh": ArrayMesh.new(), "height": 0.8}
+	var node := packed.instantiate()
+	var mesh := _find_mesh(node)
+	var height := 0.8
+	if mesh:
+		height = maxf(mesh.get_aabb().size.y, 0.01)
+	node.free()
+	return {"mesh": mesh if mesh != null else ArrayMesh.new(), "height": height}
+
+
+func _find_mesh(node: Node) -> Mesh:
+	if node is MeshInstance3D:
+		var inst := node as MeshInstance3D
+		if inst.mesh:
+			return inst.mesh
+	for child in node.get_children():
+		var found := _find_mesh(child)
+		if found:
+			return found
+	return null
+
+
+func _materials_from(paths: Variant) -> Array[Material]:
+	var mats: Array[Material] = []
+	if paths is Array:
+		for path in paths:
+			var mat := load(str(path)) as Material
+			if mat:
+				mats.append(mat)
+	if mats.is_empty() and _voxel_mat:
+		mats.append(_voxel_mat)
+	return mats
+
+
+func _apply_materials(piece: MeshInstance3D, materials: Array[Material]) -> void:
+	if piece == null or piece.mesh == null:
+		return
+	piece.material_override = null
+	if materials.is_empty():
+		return
+	if materials.size() == 1 or piece.mesh.get_surface_count() <= 1:
+		piece.material_override = materials[0]
+		return
+	for index in piece.mesh.get_surface_count():
+		var mat: Material = materials[index] if index < materials.size() else materials[-1]
+		piece.set_surface_override_material(index, mat)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -167,7 +243,7 @@ func _set_zoom(level: int) -> void:
 func _make_segment(index: int) -> MeshInstance3D:
 	var piece := MeshInstance3D.new()
 	piece.mesh = _stem_mesh
-	piece.material_override = _voxel_mat
+	_apply_materials(piece, _stem_materials)
 	piece.position = Vector3(0, index * _stem_height, 0)
 	piece.rotation.y = float(index) * 0.9
 	return piece
@@ -176,7 +252,7 @@ func _make_segment(index: int) -> MeshInstance3D:
 func _make_head() -> MeshInstance3D:
 	var head := MeshInstance3D.new()
 	head.mesh = _flower_mesh
-	head.material_override = _voxel_mat
+	_apply_materials(head, _flower_materials)
 	return head
 
 
@@ -186,7 +262,8 @@ func _frame_camera(segments: int) -> void:
 	var pot_height := 0.8
 	if _pot and _pot.mesh:
 		pot_height = maxf(_pot.mesh.get_aabb().size.y, 0.01)
-	var target_pot := bloom / 2.0
+	var base_bloom := float(BASE_SEGMENTS) * _stem_height + _flower_height
+	var target_pot := base_bloom / 2.0
 	var pot_scale := target_pot / pot_height
 	_pot.scale = Vector3(pot_scale, pot_scale, pot_scale)
 	_plant.position.y = target_pot

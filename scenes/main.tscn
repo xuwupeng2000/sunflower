@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/sunflower.tscn" id="2_flower"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://scenes/pot_page.tscn" id="7_pot"]
 [ext_resource type="PackedScene" path="res://scenes/alarm_page.tscn" id="8_alarm"]
 [ext_resource type="PackedScene" path="res://scenes/time_picker.tscn" id="9_picker"]
+[ext_resource type="PackedScene" path="res://scenes/task_name.tscn" id="11_name"]
 [ext_resource type="Script" path="res://scripts/cloud_frame.gd" id="10_clouds"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_page"]
@@ -203,6 +204,15 @@ vertical_icon_alignment = 1
 expand_icon = true
 
 [node name="时间选择" parent="UI/界面" instance=ExtResource("9_picker")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="任务命名" parent="UI/界面" instance=ExtResource("11_name")]
 visible = false
 layout_mode = 1
 anchors_preset = 15

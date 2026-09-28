@@ -1,12 +1,21 @@
 [gd_scene format=3 uid="uid://k62s0xol024v"]
 
 [ext_resource type="FontFile" uid="uid://bblo2i0chg8oi" path="res://fonts/DSEG7Classic-Regular.ttf" id="2_digit"]
+[ext_resource type="PackedScene" path="res://scenes/task_tab.tscn" id="3_tab"]
+[ext_resource type="Script" uid="uid://cy76wc2byt741" path="res://scripts/tab_scroll.gd" id="4_scroll"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_burst"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_border"]
 content_margin_left = 36.0
 content_margin_top = 36.0
-content_margin_right = 36.0
-content_margin_bottom = 36.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
 bg_color = Color(0.741176, 0.847059, 0.929412, 1)
 draw_center = false
 border_color = Color(0.372549, 0.576471, 0.721569, 1)
@@ -14,10 +23,71 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+corner_detail = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_time"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_actions"]
+content_margin_top = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+draw_center = false
+border_color = Color(0.372549, 0.576471, 0.721569, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skip_light"]
+bg_color = Color(0.98, 0.88, 0.55, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.86, 0.7, 0.28, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skip"]
+bg_color = Color(0.62, 0.42, 0.08, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.42, 0.28, 0.04, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_delete_light"]
+bg_color = Color(0.96, 0.74, 0.7, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.86, 0.48, 0.44, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_delete"]
+bg_color = Color(0.62, 0.14, 0.14, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.08, 0.08, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="定时" type="Control" unique_id=943383272]
+clip_contents = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,13 +97,19 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="生效光" type="Panel" parent="." unique_id=937688020]
+visible = false
+z_index = 8
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_burst")
+
 [node name="边框" type="PanelContainer" parent="." unique_id=1254547385]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -17.0
-offset_right = 17.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_border")
@@ -42,7 +118,36 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_border")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-theme_override_constants/separation = 40
+theme_override_constants/separation = 24
+
+[node name="标签行" type="HBoxContainer" parent="边框/内容" unique_id=1013400957]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="滚动" type="ScrollContainer" parent="边框/内容/标签行" unique_id=700375993]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+script = ExtResource("4_scroll")
+
+[node name="任务" type="HBoxContainer" parent="边框/内容/标签行/滚动" unique_id=1514184993]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 8
+
+[node name="睡觉" parent="边框/内容/标签行/滚动/任务" unique_id=1434496173 instance=ExtResource("3_tab")]
+layout_mode = 2
+mouse_filter = 1
+button_pressed = true
+text = "睡觉"
+
+[node name="加号" type="Button" parent="边框/内容/标签行" unique_id=1501892956]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+text = "+"
 
 [node name="行列" type="HBoxContainer" parent="边框/内容" unique_id=968760820]
 layout_mode = 2
@@ -94,22 +199,34 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_constants/separation = 36
+alignment = 1
 
-[node name="起床" type="HBoxContainer" parent="边框/内容/行列/时间" unique_id=1047628854]
+[node name="提醒标题" type="Label" parent="边框/内容/行列/时间" unique_id=328700502]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 20
+theme_override_font_sizes/font_size = 28
+text = "新的提醒"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="起床" type="VBoxContainer" parent="边框/内容/行列/时间" unique_id=1047628854]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
 
 [node name="标题" type="Label" parent="边框/内容/行列/时间/起床" unique_id=629635002]
-custom_minimum_size = Vector2(56, 52)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 20
-text = "起床"
+text = "☀️ 起床"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="钟点" type="Button" parent="边框/内容/行列/时间/起床" unique_id=1462486111]
 custom_minimum_size = Vector2(132, 52)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_digit")
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxEmpty_time")
@@ -117,23 +234,24 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_time")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_time")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_time")
 text = "07:00"
-alignment = 0
 
-[node name="睡觉" type="HBoxContainer" parent="边框/内容/行列/时间" unique_id=1908001044]
+[node name="睡觉" type="VBoxContainer" parent="边框/内容/行列/时间" unique_id=1908001044]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 20
+theme_override_constants/separation = 4
 
 [node name="标题" type="Label" parent="边框/内容/行列/时间/睡觉" unique_id=1167408268]
-custom_minimum_size = Vector2(56, 52)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 20
-text = "睡觉"
+text = "🛏️ 睡觉"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="钟点" type="Button" parent="边框/内容/行列/时间/睡觉" unique_id=670011296]
 custom_minimum_size = Vector2(132, 52)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_digit")
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxEmpty_time")
@@ -141,8 +259,62 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_time")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_time")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_time")
 text = "23:00"
+
+[node name="任务时间" type="HBoxContainer" parent="边框/内容/行列/时间" unique_id=976268558]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+
+[node name="钟点" type="Button" parent="边框/内容/行列/时间/任务时间" unique_id=174850017]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_digit")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_time")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_time")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_time")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_time")
+text = "09:00"
 alignment = 0
 
-[node name="记一次贪睡" type="Button" parent="边框/内容" unique_id=1051232717]
+[node name="操作" type="PanelContainer" parent="边框/内容" unique_id=1859072453]
 layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_actions")
+
+[node name="按钮" type="HBoxContainer" parent="边框/内容/操作" unique_id=1611365554]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="记一次贪睡" type="Button" parent="边框/内容/操作/按钮" unique_id=1051232717]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 text = "记一次贪睡"
+
+[node name="这天不提醒" type="Button" parent="边框/内容/操作/按钮" unique_id=394581570]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_skip_light")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_skip")
+theme_override_styles/hover = SubResource("StyleBoxFlat_skip_light")
+theme_override_styles/focus = SubResource("StyleBoxFlat_skip_light")
+text = "🏖️ 这天不提醒"
+
+[node name="删除" type="Button" parent="边框/内容/操作/按钮" unique_id=2058254794]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_delete_light")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_delete")
+theme_override_styles/hover = SubResource("StyleBoxFlat_delete_light")
+theme_override_styles/focus = SubResource("StyleBoxFlat_delete_light")
+text = "🗑️ 删除"
