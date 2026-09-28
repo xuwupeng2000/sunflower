@@ -20,15 +20,20 @@ const FLOWER_KINDS := [
 		"name": "蜀葵",
 		"mode": "stack",
 		"stem": "res://assets/hollyhock/stem.glb",
-		"height": 0.38,
+		"flower": "res://assets/hollyhock/flower.glb",
+		"base": "res://assets/hollyhock/base.glb",
+		"height": 0.30,
 		"stem_materials": [
 			"res://assets/hollyhock/stem.tres",
 			"res://assets/hollyhock/leaf.tres",
 			"res://assets/hollyhock/petal.tres",
 			"res://assets/hollyhock/eye.tres",
 		],
-		"flower_materials": ["res://assets/hollyhock/petal.tres", "res://assets/hollyhock/eye.tres"],
-		"crown": false,
+		"flower_materials": ["res://assets/hollyhock/stem.tres", "res://assets/hollyhock/leaf.tres"],
+		"base_materials": ["res://assets/hollyhock/leaf.tres"],
+		"crown": true,
+		"squash": false,
+		"yaw_step": 0.55,
 		"node_bloom": false,
 	},
 	{
@@ -75,14 +80,18 @@ const POT_KINDS := [
 
 var _voxel_mat: Material
 var _stem_mesh: Mesh
+var _base_mesh: Mesh
 var _flower_mesh: Mesh
 var _side_bloom_mesh: Mesh
 var _side_bloom_on := 0
 var _node_bloom := false
 var _crown := true
+var _squash := true
+var _yaw_step := 0.9
 var _plant_mode := "stack"
 var _growth_extra := 0
 var _stem_materials: Array[Material] = []
+var _base_materials: Array[Material] = []
 var _mate_materials: Array[Material] = []
 var _stalks: Array = []
 var _flower_materials: Array[Material] = []
@@ -168,6 +177,7 @@ func _grow_stack(token: int) -> void:
 	await get_tree().process_frame
 	if token != _token:
 		return
+	_place_base()
 	for index in BASE_SEGMENTS:
 		if _stalks.is_empty():
 			_plant.add_child(_make_segment(index))
@@ -192,7 +202,7 @@ func _grow_stack(token: int) -> void:
 		for piece in pieces:
 			var node := piece as Node3D
 			var full := node.scale
-			if not _crown:
+			if not _squash:
 				node.scale = full * 0.04
 			else:
 				node.scale = Vector3(1, 0.02, 1)
@@ -323,6 +333,13 @@ func _load_voxel_meshes() -> void:
 	_side_bloom_on = int(flower.get("side_bloom_on", 0))
 	_node_bloom = bool(flower.get("node_bloom", false))
 	_crown = bool(flower.get("crown", true))
+	_squash = bool(flower.get("squash", true))
+	_yaw_step = float(flower.get("yaw_step", 0.9))
+	_base_mesh = null
+	_base_materials = []
+	if str(flower.get("base", "")) != "":
+		_base_mesh = _load_piece(str(flower["base"]))["mesh"]
+		_base_materials = _materials_from(flower.get("base_materials", []))
 	_side_bloom_mesh = _flower_mesh
 	_stem_height = float(flower.get("height", stem["height"]))
 	_flower_height = float(bloom["height"])
@@ -421,6 +438,7 @@ func _show_stack(extra: int) -> void:
 	for child in _plant.get_children():
 		child.free()
 	var total := BASE_SEGMENTS + extra
+	_place_base()
 	for index in total:
 		if _stalks.is_empty():
 			_plant.add_child(_make_segment(index))
@@ -660,12 +678,22 @@ func _place_node_bloom(index: int, size: float) -> MeshInstance3D:
 	return bloom
 
 
+func _place_base() -> void:
+	if _base_mesh == null:
+		return
+	var base := MeshInstance3D.new()
+	base.name = "基叶"
+	base.mesh = _base_mesh
+	_apply_materials(base, _base_materials)
+	_plant.add_child(base)
+
+
 func _make_segment(index: int) -> MeshInstance3D:
 	var piece := MeshInstance3D.new()
 	piece.mesh = _stem_mesh
 	_apply_materials(piece, _stem_materials)
 	piece.position = Vector3(0, index * _stem_height, 0)
-	piece.rotation.y = float(index) * 0.9
+	piece.rotation.y = float(index) * _yaw_step
 	return piece
 
 
