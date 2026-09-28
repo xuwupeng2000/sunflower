@@ -1,33 +1,70 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene format=3 uid="uid://da22ymkvp6xbh"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://buuv4sovyypws" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/sunflower.tscn" id="2_flower"]
-[ext_resource type="Theme" path="res://theme/ui.tres" id="3_theme"]
-[ext_resource type="Texture2D" path="res://icons/tab_flower.svg" id="4_flower_icon"]
-[ext_resource type="Texture2D" path="res://icons/tab_pot.svg" id="5_pot_icon"]
-[ext_resource type="Texture2D" path="res://icons/tab_alarm.svg" id="6_alarm_icon"]
-[ext_resource type="PackedScene" path="res://scenes/pot_page.tscn" id="7_pot"]
-[ext_resource type="PackedScene" path="res://scenes/alarm_page.tscn" id="8_alarm"]
+[ext_resource type="Theme" uid="uid://bpwxm3suo7ea4" path="res://theme/ui.tres" id="3_theme"]
+[ext_resource type="Texture2D" uid="uid://dkjjoakoaxqvk" path="res://icons/tab_flower.svg" id="4_flower_icon"]
+[ext_resource type="Texture2D" uid="uid://cbxrhteny0idh" path="res://icons/tab_pot.svg" id="5_pot_icon"]
+[ext_resource type="Texture2D" uid="uid://boyy6fg505430" path="res://icons/tab_alarm.svg" id="6_alarm_icon"]
+[ext_resource type="PackedScene" uid="uid://c13b886ajh32e" path="res://scenes/pot_page.tscn" id="7_pot"]
+[ext_resource type="PackedScene" uid="uid://k62s0xol024v" path="res://scenes/alarm_page.tscn" id="8_alarm"]
 [ext_resource type="PackedScene" path="res://scenes/time_picker.tscn" id="9_picker"]
+[ext_resource type="Script" uid="uid://cv7sn0s0jqgne" path="res://scripts/cloud_frame.gd" id="10_clouds"]
 [ext_resource type="PackedScene" path="res://scenes/task_name.tscn" id="11_name"]
-[ext_resource type="Script" path="res://scripts/cloud_frame.gd" id="10_clouds"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_page"]
 bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alarm"]
+bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+
+[sub_resource type="Theme" id="Theme_vr8af"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
 bg_color = Color(0.741176, 0.847059, 0.929412, 0.55)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tab"]
 
-[node name="Main" type="Node"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_day"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.556863, 0.721569, 0.839216, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_day_hover"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.478431, 0.670588, 0.8, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.556863, 0.721569, 0.839216, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Main" type="Node" unique_id=1975189898]
 script = ExtResource("1_main")
 
-[node name="Sunflower" parent="." instance=ExtResource("2_flower")]
+[node name="Sunflower" parent="." unique_id=1896900470 instance=ExtResource("2_flower")]
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=174420533]
 
-[node name="界面" type="Control" parent="UI"]
+[node name="界面" type="Control" parent="UI" unique_id=291367713]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,7 +74,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("3_theme")
 
-[node name="看花页" type="Control" parent="UI/界面"]
+[node name="看花页" type="Control" parent="UI/界面" unique_id=1402542506]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,7 +84,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="顶部" type="VBoxContainer" parent="UI/界面/看花页"]
+[node name="顶部" type="VBoxContainer" parent="UI/界面/看花页" unique_id=175797592]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -58,42 +95,52 @@ offset_bottom = 118.0
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="日期行" type="HBoxContainer" parent="UI/界面/看花页/顶部"]
+[node name="日期行" type="HBoxContainer" parent="UI/界面/看花页/顶部" unique_id=577597131]
 layout_mode = 2
 alignment = 1
 
-[node name="前一天" type="Button" parent="UI/界面/看花页/顶部/日期行"]
+[node name="前一天" type="Button" parent="UI/界面/看花页/顶部/日期行" unique_id=1178509098]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_day")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_day_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_day_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_day")
+theme_override_styles/focus = SubResource("StyleBoxFlat_day_hover")
 text = "前一天"
 
-[node name="日期" type="Label" parent="UI/界面/看花页/顶部/日期行"]
+[node name="日期" type="Label" parent="UI/界面/看花页/顶部/日期行" unique_id=666349955]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "今天"
 horizontal_alignment = 1
 
-[node name="后一天" type="Button" parent="UI/界面/看花页/顶部/日期行"]
+[node name="后一天" type="Button" parent="UI/界面/看花页/顶部/日期行" unique_id=913785045]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_day")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_day_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_day_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_day")
+theme_override_styles/focus = SubResource("StyleBoxFlat_day_hover")
 text = "后一天"
 
-[node name="次数" type="Label" parent="UI/界面/看花页/顶部"]
+[node name="次数" type="Label" parent="UI/界面/看花页/顶部" unique_id=1995925269]
 layout_mode = 2
 text = "今天贪睡了 0 次"
 horizontal_alignment = 1
 
-[node name="花盆页" type="Panel" parent="UI/界面"]
-visible = false
+[node name="花盆页" type="Panel" parent="UI/界面" unique_id=280783598]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 54.0
-offset_bottom = -72.0
+offset_top = -196.0
+offset_bottom = -80.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_page")
 
-[node name="云彩" type="Control" parent="UI/界面/花盆页"]
+[node name="云彩" type="Control" parent="UI/界面/花盆页" unique_id=1266109902]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -103,15 +150,11 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("10_clouds")
 
-[node name="花盆" parent="UI/界面/花盆页" instance=ExtResource("7_pot")]
+[node name="花盆" parent="UI/界面/花盆页" unique_id=991506738 instance=ExtResource("7_pot")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+theme = SubResource("Theme_vr8af")
 
-[node name="定时页" type="Panel" parent="UI/界面"]
+[node name="定时页" type="Panel" parent="UI/界面" unique_id=2091018371]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -121,9 +164,9 @@ offset_top = 54.0
 offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_page")
+theme_override_styles/panel = SubResource("StyleBoxFlat_alarm")
 
-[node name="云彩" type="Control" parent="UI/界面/定时页"]
+[node name="云彩" type="Control" parent="UI/界面/定时页" unique_id=948373834]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -133,7 +176,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("10_clouds")
 
-[node name="定时" parent="UI/界面/定时页" instance=ExtResource("8_alarm")]
+[node name="定时" parent="UI/界面/定时页" unique_id=346153147 instance=ExtResource("8_alarm")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -141,7 +184,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="底栏" type="Panel" parent="UI/界面"]
+[node name="底栏" type="Panel" parent="UI/界面" unique_id=1119392066]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -149,9 +192,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -72.0
 grow_horizontal = 2
+grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_bar")
 
-[node name="图标" type="HBoxContainer" parent="UI/界面/底栏"]
+[node name="图标" type="HBoxContainer" parent="UI/界面/底栏" unique_id=1453755586]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -161,64 +205,51 @@ grow_vertical = 2
 theme_override_constants/separation = 28
 alignment = 1
 
-[node name="看花" type="Button" parent="UI/界面/底栏/图标"]
+[node name="看花" type="Button" parent="UI/界面/底栏/图标" unique_id=92295042]
 custom_minimum_size = Vector2(72, 56)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tab")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_tab")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_tab")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tab")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_tab")
 toggle_mode = true
 icon = ExtResource("4_flower_icon")
 flat = true
 icon_alignment = 1
-vertical_icon_alignment = 1
 expand_icon = true
 
-[node name="花盆" type="Button" parent="UI/界面/底栏/图标"]
+[node name="花盆" type="Button" parent="UI/界面/底栏/图标" unique_id=388562762]
 custom_minimum_size = Vector2(72, 56)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tab")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_tab")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_tab")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tab")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_tab")
 toggle_mode = true
 icon = ExtResource("5_pot_icon")
 flat = true
 icon_alignment = 1
-vertical_icon_alignment = 1
 expand_icon = true
 
-[node name="定时" type="Button" parent="UI/界面/底栏/图标"]
+[node name="定时" type="Button" parent="UI/界面/底栏/图标" unique_id=1766572632]
 custom_minimum_size = Vector2(72, 56)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_tab")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_tab")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_tab")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tab")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_tab")
 toggle_mode = true
 icon = ExtResource("6_alarm_icon")
 flat = true
 icon_alignment = 1
-vertical_icon_alignment = 1
 expand_icon = true
 
-[node name="时间选择" parent="UI/界面" instance=ExtResource("9_picker")]
+[node name="时间选择" parent="UI/界面" unique_id=899368215 instance=ExtResource("9_picker")]
 visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
-[node name="任务命名" parent="UI/界面" instance=ExtResource("11_name")]
+[node name="任务命名" parent="UI/界面" unique_id=927533225 instance=ExtResource("11_name")]
 visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
-[node name="RingPlayer" type="AudioStreamPlayer" parent="."]
+[node name="RingPlayer" type="AudioStreamPlayer" parent="." unique_id=1289277371]

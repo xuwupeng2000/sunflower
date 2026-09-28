@@ -1,9 +1,32 @@
-[gd_resource type="StandardMaterial3D" format=3]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cf71r2f7cp7lk"]
 
-[ext_resource type="Texture2D" path="res://assets/pots/clay.png" id="1_tex"]
+[ext_resource type="Shader" uid="uid://c4toonshader0" path="res://shaders/toon.gdshader" id="1_toon"]
+[ext_resource type="Shader" uid="uid://c4toonoutline" path="res://shaders/toon_outline.gdshader" id="2_outline"]
+[ext_resource type="Texture2D" uid="uid://32knpedqrm4" path="res://assets/pots/clay.png" id="3_tex"]
+
+[sub_resource type="ShaderMaterial" id="outline"]
+render_priority = 0
+shader = ExtResource("2_outline")
+shader_parameter/outline_width = 0.006
+shader_parameter/outline_color = Color(0.2, 0.08, 0.05, 1)
+shader_parameter/wind_strength = 0.0
+shader_parameter/wind_speed = 0.0
+shader_parameter/wind_direction = Vector2(1, 0.12)
 
 [resource]
-albedo_texture = ExtResource("1_tex")
-roughness = 0.85
-metallic = 0.0
-texture_filter = 2
+render_priority = 0
+next_pass = SubResource("outline")
+shader = ExtResource("1_toon")
+shader_parameter/albedo_tex = ExtResource("3_tex")
+shader_parameter/albedo_tint = Color(1, 1, 1, 1)
+shader_parameter/light_split = 0.25
+shader_parameter/light_softness = 0.02
+shader_parameter/shadow_color = Color(0.48, 0.24, 0.16, 1)
+shader_parameter/rim_color = Color(0.95, 0.72, 0.5, 1)
+shader_parameter/rim_split = 0.7
+shader_parameter/rim_strength = 0.12
+shader_parameter/wind_strength = 0.0
+shader_parameter/wind_speed = 0.0
+shader_parameter/wind_direction = Vector2(1, 0.12)
+shader_parameter/two_sided = false
+shader_parameter/alpha_cut = 0.5

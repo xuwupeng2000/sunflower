@@ -8,3 +8,9 @@ font_names = PackedStringArray("Apple Color Emoji", "Noto Color Emoji", "emoji")
 [resource]
 fallbacks = Array[Font]([SubResource("SystemFont_emoji")])
 base_font = ExtResource("1_noto")
+variation_opentype = {
+0: 1
+}
+opentype_features = {
+1667329140: 0
+}

@@ -3,24 +3,23 @@
 [ext_resource type="Script" uid="uid://djyuw1hjxhymc" path="res://scripts/snap_row.gd" id="2_snap"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_border"]
-content_margin_left = 5.0
-content_margin_top = 36.0
-content_margin_right = 5.0
-content_margin_bottom = 36.0
-bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(0.741176, 0.847059, 0.929412, 0.92)
 border_color = Color(0.372549, 0.576471, 0.721569, 1)
 
-[node name="花盆" type="Control" unique_id=806505304]
+[node name="花盆" type="Control" unique_id=1922213792]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+mouse_filter = 2
 
-[node name="边框" type="PanelContainer" parent="." unique_id=1460021294]
+[node name="边框" type="PanelContainer" parent="." unique_id=1951288401]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,20 +28,88 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_border")
 
-[node name="列表" type="VBoxContainer" parent="边框" unique_id=1931973220]
+[node name="列表" type="VBoxContainer" parent="边框" unique_id=530352051]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 0
+
+[node name="花" type="Control" parent="边框/列表" unique_id=1322931132]
+custom_minimum_size = Vector2(0, 52)
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 40
-alignment = 1
+size_flags_vertical = 3
+script = ExtResource("2_snap")
+index = 1
 
-[node name="花" type="Control" parent="边框/列表" unique_id=1803096732]
+[node name="蜀葵" type="Label" parent="边框/列表/花" unique_id=1990882959]
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 0
+offset_left = -57.2968
+offset_top = 2.08
+offset_right = 87.2168
+offset_bottom = 49.92
+text = "蜀葵"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="向日葵" type="Label" parent="边框/列表/花" unique_id=590463493]
+layout_mode = 0
+offset_left = 114.7432
+offset_top = 2.08
+offset_right = 259.2568
+offset_bottom = 49.92
+text = "向日葵"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="兰花" type="Label" parent="边框/列表/花" unique_id=1574468675]
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 0
+offset_left = 286.7832
+offset_top = 2.08
+offset_right = 431.2968
+offset_bottom = 49.92
+text = "兰花"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="盆" type="Control" parent="边框/列表" unique_id=2126646291]
+custom_minimum_size = Vector2(0, 52)
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("2_snap")
 
-[node name="盆" type="Control" parent="边框/列表" unique_id=1685553027]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-script = ExtResource("2_snap")
+[node name="陶盆" type="Label" parent="边框/列表/盆" unique_id=1813387968]
+layout_mode = 0
+offset_left = 114.7432
+offset_top = 2.08
+offset_right = 259.2568
+offset_bottom = 49.92
+text = "陶盆"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="白瓷" type="Label" parent="边框/列表/盆" unique_id=2141718412]
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 0
+offset_left = 286.7832
+offset_top = 2.08
+offset_right = 431.2968
+offset_bottom = 49.92
+text = "白瓷"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="彩釉盆" type="Label" parent="边框/列表/盆" unique_id=1474340873]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 0
+offset_left = 458.8232
+offset_top = 2.08
+offset_right = 603.3368
+offset_bottom = 49.92
+text = "彩釉盆"
+horizontal_alignment = 1
+vertical_alignment = 1

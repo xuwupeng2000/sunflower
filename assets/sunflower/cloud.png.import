@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvx7mum67gqtf"
-path.s3tc="res://.godot/imported/bud.png-2e01cb5071b5cfe47759f79eb84cd548.s3tc.ctex"
-path.etc2="res://.godot/imported/bud.png-2e01cb5071b5cfe47759f79eb84cd548.etc2.ctex"
+uid="uid://df8qi3li76cjq"
+path.s3tc="res://.godot/imported/cloud.png-ee3cf52e25a8a7a96c6562d84655769f.s3tc.ctex"
+path.etc2="res://.godot/imported/cloud.png-ee3cf52e25a8a7a96c6562d84655769f.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/orchid/bud.png"
-dest_files=["res://.godot/imported/bud.png-2e01cb5071b5cfe47759f79eb84cd548.s3tc.ctex", "res://.godot/imported/bud.png-2e01cb5071b5cfe47759f79eb84cd548.etc2.ctex"]
+source_file="res://assets/sunflower/cloud.png"
+dest_files=["res://.godot/imported/cloud.png-ee3cf52e25a8a7a96c6562d84655769f.s3tc.ctex", "res://.godot/imported/cloud.png-ee3cf52e25a8a7a96c6562d84655769f.etc2.ctex"]
 
 [params]
 

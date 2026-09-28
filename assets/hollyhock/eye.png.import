@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dkg71blcpa8p7"
-path.s3tc="res://.godot/imported/pot_glaze.png-e668f67ba550321f3766a484c0f4f634.s3tc.ctex"
-path.etc2="res://.godot/imported/pot_glaze.png-e668f67ba550321f3766a484c0f4f634.etc2.ctex"
+uid="uid://bshqbxyqm7nip"
+path.s3tc="res://.godot/imported/eye.png-a3099f2f70ee1054f178f476bcac9a12.s3tc.ctex"
+path.etc2="res://.godot/imported/eye.png-a3099f2f70ee1054f178f476bcac9a12.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/orchid/pot_glaze.png"
-dest_files=["res://.godot/imported/pot_glaze.png-e668f67ba550321f3766a484c0f4f634.s3tc.ctex", "res://.godot/imported/pot_glaze.png-e668f67ba550321f3766a484c0f4f634.etc2.ctex"]
+source_file="res://assets/hollyhock/eye.png"
+dest_files=["res://.godot/imported/eye.png-a3099f2f70ee1054f178f476bcac9a12.s3tc.ctex", "res://.godot/imported/eye.png-a3099f2f70ee1054f178f476bcac9a12.etc2.ctex"]
 
 [params]
 

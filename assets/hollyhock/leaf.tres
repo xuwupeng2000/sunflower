@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" path="res://shaders/toon.gdshader" id="1_toon"]
 [ext_resource type="Shader" path="res://shaders/toon_outline.gdshader" id="2_outline"]
-[ext_resource type="Texture2D" path="res://assets/orchid/leaf.png" id="3_tex"]
+[ext_resource type="Texture2D" path="res://assets/hollyhock/leaf.png" id="3_tex"]
 
 [sub_resource type="ShaderMaterial" id="outline"]
 shader = ExtResource("2_outline")
@@ -14,10 +14,10 @@ shader_parameter/wind_speed = 1.15
 [resource]
 shader = ExtResource("1_toon")
 shader_parameter/albedo_tex = ExtResource("3_tex")
-shader_parameter/shadow_color = Color(0.2, 0.4, 0.2, 1)
+shader_parameter/shadow_color = Color(0.22, 0.42, 0.18, 1)
 shader_parameter/light_split = 0.25
 shader_parameter/light_softness = 0.02
-shader_parameter/rim_color = Color(0.75, 0.92, 0.5, 1)
+shader_parameter/rim_color = Color(0.78, 0.92, 0.5, 1)
 shader_parameter/rim_split = 0.66
 shader_parameter/rim_strength = 0.16
 shader_parameter/wind_strength = 0.22

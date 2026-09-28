@@ -1,14 +1,102 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/sunflower.gd" id="1_flower"]
 [ext_resource type="AudioStream" path="res://ios/sounds/grow.wav" id="2_grow"]
+[ext_resource type="Material" path="res://assets/sunflower/cloud.tres" id="3_cloud"]
+[ext_resource type="Script" path="res://scripts/rain_cloud.gd" id="4_cloud"]
 
 [sub_resource type="Environment" id="Environment_world"]
 background_mode = 1
-background_color = Color(0.55, 0.72, 0.84, 1)
+background_color = Color(0.64, 0.84, 1, 1)
 ambient_light_source = 2
-ambient_light_color = Color(0.72, 0.78, 0.7, 1)
-ambient_light_energy = 0.55
+ambient_light_color = Color(1, 0.93, 0.78, 1)
+ambient_light_energy = 0.85
+
+[sub_resource type="SphereMesh" id="SphereMesh_cloud"]
+radius = 0.28
+height = 0.56
+radial_segments = 16
+rings = 8
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rain"]
+particle_flag_align_y = true
+emission_shape = 3
+emission_box_extents = Vector3(0.55, 0.04, 0.32)
+direction = Vector3(0.18, -1, 0.04)
+spread = 7.0
+initial_velocity_min = 2.4
+initial_velocity_max = 3.3
+gravity = Vector3(0.15, -7.2, 0)
+scale_min = 0.55
+scale_max = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rain"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.74, 0.84, 0.94, 0.78)
+billboard_mode = 3
+
+[sub_resource type="QuadMesh" id="QuadMesh_rain"]
+material = SubResource("StandardMaterial3D_rain")
+size = Vector2(0.018, 0.2)
+
+[sub_resource type="Animation" id="Animation_bob"]
+resource_name = "飘"
+length = 3.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("云朵:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.8, 3.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.05, 0.07, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bob"]
+_data = {
+&"飘": SubResource("Animation_bob")
+}
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
+size = Vector2(8, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
+albedo_color = Color(0.57, 0.66, 0.5, 1)
+roughness = 1.0
+metallic = 0.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_spark"]
+emission_shape = 1
+emission_sphere_radius = 0.05
+direction = Vector3(0, 1, 0)
+spread = 160.0
+initial_velocity_min = 0.55
+initial_velocity_max = 1.35
+gravity = Vector3(0, -1.1, 0)
+damping_min = 1.4
+damping_max = 2.2
+scale_min = 0.35
+scale_max = 1.0
+color = Color(1, 0.95, 0.78, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spark"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.96, 0.82, 1)
+emission_enabled = true
+emission = Color(1, 0.9, 0.55, 1)
+emission_energy_multiplier = 2.2
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_spark"]
+material = SubResource("StandardMaterial3D_spark")
+size = Vector2(0.045, 0.045)
 
 [node name="Sunflower" type="Node3D"]
 script = ExtResource("1_flower")
@@ -18,9 +106,13 @@ environment = SubResource("Environment_world")
 
 [node name="主光" type="DirectionalLight3D" parent="."]
 rotation_degrees = Vector3(-48, 32, 0)
-light_color = Color(1, 0.95, 0.84, 1)
-light_energy = 1.35
+light_color = Color(1, 0.9, 0.62, 1)
+light_energy = 2.1
 shadow_enabled = true
+shadow_opacity = 0.78
+shadow_blur = 1.4
+shadow_bias = 0.04
+directional_shadow_max_distance = 18.0
 
 [node name="补光" type="DirectionalLight3D" parent="."]
 rotation_degrees = Vector3(-18, -140, 0)
@@ -31,12 +123,67 @@ light_energy = 0.35
 transform = Transform3D(0.965, -0.05, -0.258, 0, 0.982, -0.19, 0.263, 0.183, 0.947, 2.53, 2.39, 6.65)
 current = true
 
+[node name="地面" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_ground")
+surface_material_override/0 = SubResource("StandardMaterial3D_ground")
+
 [node name="转台" type="Node3D" parent="."]
 
 [node name="花盆" type="MeshInstance3D" parent="转台"]
 
 [node name="植株" type="Node3D" parent="转台"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="雨云" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 4.2, 0.08)
+script = ExtResource("4_cloud")
+
+[node name="云朵" type="Node3D" parent="雨云"]
+
+[node name="云块1" type="MeshInstance3D" parent="雨云/云朵"]
+mesh = SubResource("SphereMesh_cloud")
+surface_material_override/0 = ExtResource("3_cloud")
+
+[node name="云块2" type="MeshInstance3D" parent="雨云/云朵"]
+transform = Transform3D(0.78, 0, 0, 0, 0.7, 0, 0, 0, 0.78, 0.32, -0.04, 0.06)
+mesh = SubResource("SphereMesh_cloud")
+surface_material_override/0 = ExtResource("3_cloud")
+
+[node name="云块3" type="MeshInstance3D" parent="雨云/云朵"]
+transform = Transform3D(0.72, 0, 0, 0, 0.64, 0, 0, 0, 0.72, -0.3, 0.02, -0.05)
+mesh = SubResource("SphereMesh_cloud")
+surface_material_override/0 = ExtResource("3_cloud")
+
+[node name="云块4" type="MeshInstance3D" parent="雨云/云朵"]
+transform = Transform3D(0.5, 0, 0, 0, 0.46, 0, 0, 0, 0.5, 0.06, 0.14, -0.08)
+mesh = SubResource("SphereMesh_cloud")
+surface_material_override/0 = ExtResource("3_cloud")
+
+[node name="雨" type="GPUParticles3D" parent="雨云"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.28, 0)
+amount = 36
+lifetime = 0.75
+visibility_aabb = AABB(-1.2, -2.8, -1.2, 2.4, 3.2, 2.4)
+process_material = SubResource("ParticleProcessMaterial_rain")
+draw_pass_1 = SubResource("QuadMesh_rain")
+
+[node name="云浮动" type="AnimationPlayer" parent="雨云"]
+libraries = {
+&"": SubResource("AnimationLibrary_bob")
+}
+autoplay = &"飘"
+
+[node name="星光" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 22
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+visibility_aabb = AABB(-0.8, -0.8, -0.8, 1.6, 1.6, 1.6)
+process_material = SubResource("ParticleProcessMaterial_spark")
+draw_pass_1 = SubResource("QuadMesh_spark")
 
 [node name="生长音效" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_grow")

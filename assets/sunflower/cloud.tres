@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3]
+
+[ext_resource type="Shader" path="res://shaders/toon.gdshader" id="1_toon"]
+[ext_resource type="Texture2D" path="res://assets/sunflower/cloud.png" id="2_tex"]
+
+[resource]
+shader = ExtResource("1_toon")
+shader_parameter/albedo_tex = ExtResource("2_tex")
+shader_parameter/albedo_tint = Color(0.42, 0.5, 0.62, 1)
+shader_parameter/shadow_color = Color(0.28, 0.32, 0.42, 1)
+shader_parameter/light_split = 0.35
+shader_parameter/rim_color = Color(0.75, 0.8, 0.9, 1)
+shader_parameter/rim_split = 0.7
+shader_parameter/rim_strength = 0.12
+shader_parameter/wind_strength = 0.0
+shader_parameter/two_sided = true
+shader_parameter/alpha_cut = 0.0

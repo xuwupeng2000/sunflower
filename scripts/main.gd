@@ -63,7 +63,6 @@ var _next_button: Button
 var _playback := -1
 var _times: Control
 var _time_fade: Tween
-var _click: AudioStreamPlayer
 var _hour_wheel: Control
 var _minute_wheel: Control
 var _picker: Control
@@ -86,8 +85,6 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	_sunflower = $Sunflower
 	_bind_nodes()
-	_bind_clicks(self)
-	get_tree().node_added.connect(_wire_click)
 	_start_forest()
 	var ring := load("res://ios/sounds/sunflower.wav")
 	if ring:
@@ -177,14 +174,14 @@ func _bind_nodes() -> void:
 
 
 func _fill_pot_rows() -> void:
-	var flower_names := PackedStringArray()
-	for kind in _sunflower.flower_kinds():
-		flower_names.append(str(kind["name"]))
-	var pot_names := PackedStringArray()
-	for kind in _sunflower.pot_kinds():
-		pot_names.append(str(kind["name"]))
 	var flower_row := _pot_page.get_node("边框/列表/花")
 	var pot_row := _pot_page.get_node("边框/列表/盆")
+	var flower_names := PackedStringArray()
+	var pot_names := PackedStringArray()
+	for kind in _sunflower.flower_kinds():
+		flower_names.append(str(kind["name"]))
+	for kind in _sunflower.pot_kinds():
+		pot_names.append(str(kind["name"]))
 	flower_row.set_labels(flower_names, _sunflower.flower_index)
 	pot_row.set_labels(pot_names, _sunflower.pot_index)
 	flower_row.selected.connect(func(index: int) -> void:
@@ -234,33 +231,12 @@ func _start_forest() -> void:
 	add_child(forest)
 	if forest.stream:
 		forest.play()
-	var click := AudioStreamPlayer.new()
-	click.name = "Click"
-	click.stream = load("res://ios/sounds/underwater_click.wav")
-	add_child(click)
-	_click = click
-
-
-func _bind_clicks(node: Node) -> void:
-	_wire_click(node)
-	for child in node.get_children():
-		_bind_clicks(child)
-
-
-func _wire_click(node: Node) -> void:
-	if node is BaseButton and not node.pressed.is_connected(_play_click):
-		node.pressed.connect(_play_click)
-
-
-func _play_click() -> void:
-	if _click and _click.stream:
-		_click.play()
 
 
 func _show_tab(tab: String) -> void:
 	for index in _tab_buttons.size():
 		_tab_buttons[index].set_pressed_no_signal(["flower", "pot", "alarm"][index] == tab)
-	_flower_page.visible = tab == "flower"
+	_flower_page.visible = tab != "alarm"
 	_pot_page.get_parent().visible = tab == "pot"
 	_alarm_page.get_parent().visible = tab == "alarm"
 

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://qlclxow6baqm"
-path="res://.godot/imported/pot.glb-5405001b5afa12f8f3a66c28f214f1aa.scn"
+uid="uid://cd558f6petkfc"
+path="res://.godot/imported/stem.glb-2290cbb01b0df802ceba1289e13c323a.scn"
 
 [deps]
 
-source_file="res://assets/orchid/pot.glb"
-dest_files=["res://.godot/imported/pot.glb-5405001b5afa12f8f3a66c28f214f1aa.scn"]
+source_file="res://assets/hollyhock/stem.glb"
+dest_files=["res://.godot/imported/stem.glb-2290cbb01b0df802ceba1289e13c323a.scn"]
 
 [params]
 

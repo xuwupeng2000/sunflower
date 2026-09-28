@@ -2,26 +2,26 @@
 
 [ext_resource type="Shader" path="res://shaders/toon.gdshader" id="1_toon"]
 [ext_resource type="Shader" path="res://shaders/toon_outline.gdshader" id="2_outline"]
-[ext_resource type="Texture2D" path="res://assets/orchid/leaf.png" id="3_tex"]
+[ext_resource type="Texture2D" path="res://assets/pots/white.png" id="3_tex"]
 
 [sub_resource type="ShaderMaterial" id="outline"]
 shader = ExtResource("2_outline")
-shader_parameter/outline_width = 0.008
-shader_parameter/outline_color = Color(0.08, 0.2, 0.07, 1)
-shader_parameter/wind_strength = 0.22
-shader_parameter/wind_speed = 1.15
+shader_parameter/outline_width = 0.006
+shader_parameter/outline_color = Color(0.45, 0.5, 0.54, 1)
+shader_parameter/wind_strength = 0.0
+shader_parameter/wind_speed = 0.0
 
 [resource]
 shader = ExtResource("1_toon")
 shader_parameter/albedo_tex = ExtResource("3_tex")
-shader_parameter/shadow_color = Color(0.2, 0.4, 0.2, 1)
-shader_parameter/light_split = 0.25
+shader_parameter/shadow_color = Color(0.72, 0.76, 0.8, 1)
+shader_parameter/light_split = 0.22
 shader_parameter/light_softness = 0.02
-shader_parameter/rim_color = Color(0.75, 0.92, 0.5, 1)
-shader_parameter/rim_split = 0.66
+shader_parameter/rim_color = Color(0.9, 0.94, 1, 1)
+shader_parameter/rim_split = 0.72
 shader_parameter/rim_strength = 0.16
-shader_parameter/wind_strength = 0.22
-shader_parameter/wind_speed = 1.15
-shader_parameter/two_sided = true
+shader_parameter/wind_strength = 0.0
+shader_parameter/wind_speed = 0.0
+shader_parameter/two_sided = false
 shader_parameter/alpha_cut = 0.5
 next_pass = SubResource("outline")
