@@ -12,19 +12,6 @@
 [ext_resource type="Script" uid="uid://cv7sn0s0jqgne" path="res://scripts/cloud_frame.gd" id="10_clouds"]
 [ext_resource type="PackedScene" path="res://scenes/task_name.tscn" id="11_name"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_page"]
-bg_color = Color(0.741176, 0.847059, 0.929412, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alarm"]
-bg_color = Color(0.741176, 0.847059, 0.929412, 1)
-
-[sub_resource type="Theme" id="Theme_vr8af"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
-bg_color = Color(0.741176, 0.847059, 0.929412, 0.55)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tab"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_day"]
 content_margin_left = 5.0
 content_margin_top = 5.0
@@ -56,6 +43,30 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_page"]
+bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+
+[sub_resource type="Theme" id="Theme_vr8af"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alarm"]
+bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
+bg_color = Color(0.741176, 0.847059, 0.929412, 0.55)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tab"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_due"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.741176, 0.847059, 0.929412, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
 
 [node name="Main" type="Node" unique_id=1975189898]
 script = ExtResource("1_main")
@@ -125,8 +136,14 @@ text = "后一天"
 
 [node name="次数" type="Label" parent="UI/界面/看花页/顶部" unique_id=1995925269]
 layout_mode = 2
-text = "今天贪睡了 0 次"
+text = "今天推迟了 0 次"
 horizontal_alignment = 1
+
+[node name="到点事项" type="Label" parent="UI/界面/看花页/顶部" unique_id=484090349]
+layout_mode = 2
+text = "现在要做"
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="花盆页" type="Panel" parent="UI/界面" unique_id=280783598]
 layout_mode = 1
@@ -178,11 +195,6 @@ script = ExtResource("10_clouds")
 
 [node name="定时" parent="UI/界面/定时页" unique_id=346153147 instance=ExtResource("8_alarm")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="底栏" type="Panel" parent="UI/界面" unique_id=1119392066]
 layout_mode = 1
@@ -251,5 +263,53 @@ layout_mode = 1
 [node name="任务命名" parent="UI/界面" unique_id=927533225 instance=ExtResource("11_name")]
 visible = false
 layout_mode = 1
+
+[node name="到点弹窗" type="ColorRect" parent="UI/界面" unique_id=1692891024]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="居中" type="CenterContainer" parent="UI/界面/到点弹窗" unique_id=493554821]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="面板" type="PanelContainer" parent="UI/界面/到点弹窗/居中" unique_id=251325005]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_due")
+
+[node name="内容" type="VBoxContainer" parent="UI/界面/到点弹窗/居中/面板" unique_id=1021651615]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="标题" type="Label" parent="UI/界面/到点弹窗/居中/面板/内容" unique_id=526129443]
+layout_mode = 2
+text = "到时间了"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="名单" type="Label" parent="UI/界面/到点弹窗/居中/面板/内容" unique_id=379168516]
+layout_mode = 2
+text = "起床"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="去改" type="Button" parent="UI/界面/到点弹窗/居中/面板/内容" unique_id=1075460753]
+layout_mode = 2
+text = "去改这个提醒"
+
+[node name="看花" type="Button" parent="UI/界面/到点弹窗/居中/面板/内容" unique_id=1640401008]
+layout_mode = 2
+text = "确定"
 
 [node name="RingPlayer" type="AudioStreamPlayer" parent="." unique_id=1289277371]

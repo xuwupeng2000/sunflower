@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Language</string>
+			<key>Key</key>
+			<string>sunflower_ui_language</string>
+			<key>DefaultValue</key>
+			<string>system</string>
+			<key>Titles</key>
+			<array>
+				<string>System</string>
+				<string>Chinese</string>
+				<string>English</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>system</string>
+				<string>zh</string>
+				<string>en</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

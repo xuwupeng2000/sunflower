@@ -2,13 +2,22 @@ extends Control
 
 signal settled(value: int)
 
-var minimum := 0
-var maximum := 23
+@export var minimum := 0
+@export var maximum := 23
+@export_range(0.5, 6.0, 0.1) var sensitivity := 1.0
+@export var coast := false
 var value := 0
 var _drag_y := 0.0
+var _velocity := 0.0
 var _dragging := false
+var _coasting := false
+var _snapping := false
+var _samples: Array[Vector2] = []
 
 const ROW := 44.0
+const COAST_DRAG := 3.4
+const COAST_STOP := 80.0
+const SAMPLE_WINDOW := 0.09
 
 
 func _ready() -> void:
@@ -17,28 +26,107 @@ func _ready() -> void:
 	set_process(false)
 
 
+func commit_value() -> int:
+	_dragging = false
+	_coasting = false
+	_snapping = false
+	_velocity = 0.0
+	_samples.clear()
+	_align_nearest()
+	_drag_y = 0.0
+	set_process(false)
+	queue_redraw()
+	return value
+
+
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		_dragging = event.pressed
-		if not event.pressed:
-			set_process(true)
-			settled.emit(value)
+		if event.pressed:
+			_dragging = true
+			_coasting = false
+			_snapping = false
+			_velocity = 0.0
+			_samples.clear()
+			set_process(false)
+		else:
+			_dragging = false
+			if coast:
+				_begin_coast()
+			else:
+				set_process(true)
+				settled.emit(value)
 		accept_event()
 	elif event is InputEventMouseMotion and _dragging:
-		_drag_y += event.relative.y
+		var motion := event as InputEventMouseMotion
+		var step := motion.relative.y * sensitivity
+		_drag_y += step
+		_samples.append(Vector2(Time.get_ticks_msec() / 1000.0, step))
+		if _samples.size() > 8:
+			_samples.remove_at(0)
 		_absorb_rows()
 		queue_redraw()
 		accept_event()
 
 
 func _process(delta: float) -> void:
-	if _dragging or absf(_drag_y) < 0.4:
+	if _dragging:
+		return
+	if _coasting:
+		_drag_y += _velocity * delta
+		_absorb_rows()
+		_velocity *= exp(-COAST_DRAG * delta)
+		if absf(_velocity) < COAST_STOP:
+			_coasting = false
+			_snapping = true
+			_align_nearest()
+		queue_redraw()
+		return
+	if _snapping:
+		_drag_y = lerpf(_drag_y, 0.0, 1.0 - exp(-18.0 * delta))
+		if absf(_drag_y) < 0.4:
+			_drag_y = 0.0
+			_snapping = false
+			set_process(false)
+			settled.emit(value)
+		queue_redraw()
+		return
+	if absf(_drag_y) < 0.4:
 		_drag_y = 0.0
 		set_process(false)
 		queue_redraw()
 		return
 	_drag_y = lerpf(_drag_y, 0.0, 1.0 - exp(-16.0 * delta))
 	queue_redraw()
+
+
+func _begin_coast() -> void:
+	var now := Time.get_ticks_msec() / 1000.0
+	var moved := 0.0
+	var oldest := now
+	var used := false
+	for sample in _samples:
+		if now - sample.x <= SAMPLE_WINDOW:
+			moved += sample.y
+			oldest = minf(oldest, sample.x)
+			used = true
+	_samples.clear()
+	var elapsed := maxf(now - oldest, 0.016) if used else 0.016
+	_velocity = clampf(moved / elapsed, -4200.0, 4200.0)
+	if absf(_velocity) < 160.0:
+		_snapping = true
+		_align_nearest()
+	else:
+		_coasting = true
+	set_process(true)
+
+
+func _align_nearest() -> void:
+	if _drag_y <= -ROW * 0.5:
+		_drag_y += ROW
+		value = _wrap(value + 1)
+	elif _drag_y >= ROW * 0.5:
+		_drag_y -= ROW
+		value = _wrap(value - 1)
 
 
 func _absorb_rows() -> void:

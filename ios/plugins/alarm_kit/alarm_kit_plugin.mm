@@ -16,6 +16,8 @@ protected:
 		ClassDB::bind_method(D_METHOD("schedule_weekly", "alarm"), &AlarmKitPlugin::schedule_weekly);
 		ClassDB::bind_method(D_METHOD("cancel", "alarm_id"), &AlarmKitPlugin::cancel);
 		ClassDB::bind_method(D_METHOD("snooze_log_json"), &AlarmKitPlugin::snooze_log_json);
+		ClassDB::bind_method(D_METHOD("active_alarms_json"), &AlarmKitPlugin::active_alarms_json);
+		ClassDB::bind_method(D_METHOD("settings_language"), &AlarmKitPlugin::settings_language);
 		ADD_SIGNAL(MethodInfo("snoozes_changed"));
 	}
 
@@ -36,6 +38,16 @@ public:
 	String snooze_log_json() {
 		NSString *json = [AlarmKitBridge snoozeLogJSON];
 		return String::utf8([json UTF8String]);
+	}
+
+	String active_alarms_json() {
+		NSString *json = [AlarmKitBridge activeAlarmsJSON];
+		return String::utf8([json UTF8String]);
+	}
+
+	String settings_language() {
+		NSString *code = [AlarmKitBridge settingsLanguage];
+		return String::utf8([code UTF8String]);
 	}
 
 	void emit_snoozes_changed() {

@@ -5,12 +5,22 @@ const WEEKDAY_NAMES := ["一", "二", "三", "四", "五", "六", "日"]
 
 var alarms: Array[Dictionary] = []
 var snoozes: Array[Dictionary] = []
+var language := "zh"
 
 signal changed
 
 
 func _ready() -> void:
+	_install_locale()
 	load_data()
+
+
+func _install_locale() -> void:
+	var packed := load("res://locale/ui.en.translation")
+	if packed is Translation:
+		TranslationServer.add_translation(packed)
+	language = _settings_language()
+	TranslationServer.set_locale(language)
 
 
 func load_data() -> void:
@@ -41,6 +51,9 @@ func load_data() -> void:
 			})
 	_load_tasks(data.get("tasks", []))
 	_load_days(data.get("days", []))
+	scheduled_ids.clear()
+	for item in data.get("scheduled_ids", []):
+		scheduled_ids.append(str(item))
 	changed.emit()
 
 
@@ -54,11 +67,37 @@ func save_data() -> void:
 		"snoozes": snoozes,
 		"days": days,
 		"tasks": tasks,
+		"scheduled_ids": scheduled_ids,
 	}, "  "))
+
+
+func apply_system_setting() -> bool:
+	var next := _settings_language()
+	if next == language:
+		return false
+	language = next
+	TranslationServer.set_locale(language)
+	return true
+
+
+func _settings_language() -> String:
+	if Engine.has_singleton("AlarmKit"):
+		var native := Engine.get_singleton("AlarmKit")
+		if native.has_method("settings_language"):
+			var chosen := str(native.settings_language())
+			if chosen == "zh" or chosen == "en":
+				return chosen
+	return _system_language()
+
+
+func _system_language() -> String:
+	var preferred := OS.get_locale().substr(0, 2).to_lower()
+	return "zh" if preferred == "zh" else "en"
 
 
 var days: Array[Dictionary] = []
 var tasks: Array[Dictionary] = []
+var scheduled_ids: Array[String] = []
 
 
 func day_count() -> int:
@@ -284,6 +323,73 @@ func _sync_day_alarms() -> void:
 	alarms = kept
 
 
+func due_groups() -> Array[Dictionary]:
+	var buckets := {}
+	for alarm in alarms:
+		if not bool(alarm.get("enabled", false)):
+			continue
+		for day in alarm.get("weekdays", []):
+			var weekday := int(day)
+			var hour := int(alarm.get("hour", 0))
+			var minute := int(alarm.get("minute", 0))
+			var key := "%d-%d-%d" % [weekday, hour, minute]
+			if not buckets.has(key):
+				buckets[key] = {
+					"id": "due-%s" % key,
+					"hour": hour,
+					"minute": minute,
+					"weekdays": [weekday],
+					"enabled": true,
+					"events": [],
+				}
+			var events: Array = buckets[key]["events"]
+			events.append({
+				"id": str(alarm.get("id", "")),
+				"label": tr(str(alarm.get("label", ""))),
+			})
+	var groups: Array[Dictionary] = []
+	for key in buckets:
+		var group: Dictionary = buckets[key]
+		var names := PackedStringArray()
+		for event in group["events"]:
+			var event_label := str(event.get("label", ""))
+			if not event_label.is_empty():
+				names.append(event_label)
+		group["label"] = "、".join(names)
+		groups.append(group)
+	return groups
+
+
+func current_due_labels() -> PackedStringArray:
+	var now := Time.get_datetime_dict_from_system()
+	var godot_day := int(now.get("weekday", 0))
+	var weekday := 7 if godot_day == 0 else godot_day
+	var now_minutes := int(now.get("hour", 0)) * 60 + int(now.get("minute", 0))
+	var best_gap := 10
+	var labels := PackedStringArray()
+	for group in due_groups():
+		var days: Array = group.get("weekdays", [])
+		if days.is_empty() or int(days[0]) != weekday:
+			continue
+		var gap := now_minutes - (int(group.get("hour", 0)) * 60 + int(group.get("minute", 0)))
+		if gap < 0 or gap > 9 or gap >= best_gap:
+			continue
+		best_gap = gap
+		labels = PackedStringArray()
+		for event in group.get("events", []):
+			var event_label := str(event.get("label", ""))
+			if not event_label.is_empty():
+				labels.append(event_label)
+	return labels
+
+
+func replace_scheduled_ids(next_ids: Array) -> void:
+	scheduled_ids.clear()
+	for item in next_ids:
+		scheduled_ids.append(str(item))
+	save_data()
+
+
 func _day_alarm(alarm_id: String, hour: int, minute: int, weekday: int, label: String) -> Dictionary:
 	return {
 		"id": alarm_id,
@@ -343,6 +449,29 @@ func find_alarm(alarm_id: String) -> Dictionary:
 		if str(alarm.get("id", "")) == alarm_id:
 			return alarm
 	return {}
+
+
+func record_snooze_once(alarm_id: String) -> bool:
+	var today := today_key()
+	for event in snoozes:
+		if str(event.get("date", "")) == today and str(event.get("alarm_id", "")) == alarm_id:
+			return false
+	record_snooze(alarm_id)
+	return true
+
+
+func due_group(group_id: String) -> Dictionary:
+	for group in due_groups():
+		if str(group.get("id", "")) == group_id:
+			return group
+	return {}
+
+
+func task_index_for_alarm(alarm_id: String, weekday: int) -> int:
+	for index in tasks.size():
+		if task_alarm_id(str(tasks[index].get("id", "")), weekday) == alarm_id:
+			return index
+	return -1
 
 
 func record_snooze(alarm_id: String, when: int = -1) -> Dictionary:
@@ -412,11 +541,11 @@ func shift_date(date_key: String, days: int) -> String:
 
 func format_date(date_key: String) -> String:
 	if date_key == today_key():
-		return "今天"
+		return tr("今天")
 	var parts := date_key.split("-")
 	if parts.size() != 3:
 		return date_key
-	return "%d月%d日" % [int(parts[1]), int(parts[2])]
+	return tr("%d月%d日") % [int(parts[1]), int(parts[2])]
 
 
 func format_time(hour: int, minute: int) -> String:
@@ -429,11 +558,11 @@ func format_weekdays(weekdays: Array) -> String:
 		days.append(int(day))
 	days.sort()
 	if days == [1, 2, 3, 4, 5]:
-		return "周一至周五"
+		return tr("周一至周五")
 	if days == [1, 2, 3, 4, 5, 6, 7]:
-		return "每天"
+		return tr("每天")
 	if days.is_empty():
-		return "不重复"
+		return tr("不重复")
 	var names: PackedStringArray = []
 	for day in days:
 		if day >= 1 and day <= 7:

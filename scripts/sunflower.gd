@@ -1,7 +1,5 @@
 @tool
 extends Node3D
-
-const VoxModel = preload("res://scripts/vox_model.gd")
 const SEGMENT_HEIGHT := 0.8
 const BASE_SEGMENTS := 3
 const MAX_EXTRA := 24
@@ -9,6 +7,9 @@ const MAX_EXTRA := 24
 const SPIKE_LIFT := 0.34
 const ORCHID_SINK := 0.70
 const ORCHID_BASE_DROP := 0.32
+const ORCHID_ROOT_TUCK := {
+	"Root_1": Vector3(-0.06, 0.0, -0.006),
+}
 const ORCHID_BRANCHES := [
 	{"uniform": 1.0, "at": 0, "offset": Vector3(0, 0, 0), "yaw": 0.0},
 	{"uniform": 0.62, "at": 1, "offset": Vector3(0.24, 0, -0.1), "yaw": 0.85},
@@ -78,7 +79,6 @@ const POT_KINDS := [
 	},
 ]
 
-var _voxel_mat: Material
 var _stem_mesh: Mesh
 var _base_mesh: Mesh
 var _flower_mesh: Mesh
@@ -127,6 +127,8 @@ var _rain_cloud: Node3D
 var _grow_player: AudioStreamPlayer
 var _token := 0
 var _dragging := false
+var _pinch_points := {}
+var _pinch_span := 0.0
 var flower_index := 1
 var pot_index := 0
 
@@ -139,8 +141,7 @@ func _ready() -> void:
 	_rain_cloud = get_node_or_null("雨云") as Node3D
 	_spark = get_node_or_null("星光") as GPUParticles3D
 	_grow_player = $生长音效
-	_voxel_mat = load("res://shaders/voxel_plastic.tres")
-	_load_voxel_meshes()
+	_load_plant_meshes()
 	_present(_growth_extra)
 
 
@@ -303,11 +304,11 @@ func apply_style(next_flower: int, next_pot: int) -> void:
 	_halt()
 	flower_index = clampi(next_flower, 0, FLOWER_KINDS.size() - 1)
 	pot_index = clampi(next_pot, 0, POT_KINDS.size() - 1)
-	_load_voxel_meshes()
+	_load_plant_meshes()
 	_present(_growth_extra)
 
 
-func _load_voxel_meshes() -> void:
+func _load_plant_meshes() -> void:
 	var flower: Dictionary = FLOWER_KINDS[flower_index]
 	var pot: Dictionary = POT_KINDS[pot_index]
 	_plant_mode = str(flower.get("mode", "stack"))
@@ -354,8 +355,6 @@ func _pot_mesh() -> Mesh:
 
 
 func _load_piece(path: String) -> Dictionary:
-	if path.ends_with(".vox"):
-		return VoxModel.load_mesh(path)
 	var packed := load(path) as PackedScene
 	if packed == null:
 		push_error("打不开模型 %s" % path)
@@ -388,8 +387,6 @@ func _materials_from(paths: Variant) -> Array[Material]:
 			var mat := load(str(path)) as Material
 			if mat:
 				mats.append(mat)
-	if mats.is_empty() and _voxel_mat:
-		mats.append(_voxel_mat)
 	return mats
 
 
@@ -410,6 +407,8 @@ func _apply_materials(piece: MeshInstance3D, materials: Array[Material]) -> void
 func _unhandled_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint():
 		return
+	if _pinch(event):
+		return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			_dragging = event.pressed
@@ -417,13 +416,48 @@ func _unhandled_input(event: InputEvent) -> void:
 			_set_zoom(_zoom_level + 1)
 		elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			_set_zoom(_zoom_level - 1)
-	elif event is InputEventMouseMotion and _dragging:
+	elif event is InputEventMouseMotion and _dragging and _pinch_points.size() < 2:
 		_turntable.rotate_y(-event.relative.x * 0.012)
 	elif event is InputEventMagnifyGesture:
 		if event.factor > 1.05:
 			_set_zoom(_zoom_level + 1)
 		elif event.factor < 0.95:
 			_set_zoom(_zoom_level - 1)
+
+
+func _pinch(event: InputEvent) -> bool:
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			_pinch_points[event.index] = event.position
+		else:
+			_pinch_points.erase(event.index)
+		_pinch_span = _pinch_distance()
+		return _pinch_points.size() >= 2
+	if event is InputEventScreenDrag:
+		_pinch_points[event.index] = event.position
+		if _pinch_points.size() < 2:
+			return false
+		var span := _pinch_distance()
+		if _pinch_span > 8.0:
+			var ratio := span / _pinch_span
+			if ratio >= 1.1:
+				_set_zoom(_zoom_level + 1)
+				_pinch_span = span
+			elif ratio <= 0.9:
+				_set_zoom(_zoom_level - 1)
+				_pinch_span = span
+		else:
+			_pinch_span = span
+		_dragging = false
+		return true
+	return false
+
+
+func _pinch_distance() -> float:
+	var points: Array = _pinch_points.values()
+	if points.size() < 2:
+		return 0.0
+	return (points[0] as Vector2).distance_to(points[1])
 
 
 func _set_zoom(level: int) -> void:
@@ -500,6 +534,7 @@ func _populate_orchid(plant: Node3D) -> Dictionary:
 		elif label.begins_with("Root"):
 			mesh_node.reparent(plant, true)
 			mesh_node.position.y -= ORCHID_SINK + ORCHID_BASE_DROP
+			mesh_node.position += ORCHID_ROOT_TUCK.get(label, Vector3.ZERO)
 			_paint(mesh_node, _orchid_stem)
 			var bounds := mesh_node.mesh.get_aabb()
 			roots.append({"node": mesh_node, "rest_y": mesh_node.position.y, "base_y": bounds.position.y})
@@ -779,180 +814,9 @@ func _frame_height(bloom: float, base_bloom: float) -> void:
 		_rain_cloud.position.y = head_top + 0.85
 
 
-func fill_preview(pot_node: MeshInstance3D, plant_node: Node3D, flower_i: int, pot_i: int) -> void:
-	if pot_node == null or plant_node == null:
-		return
-	for child in plant_node.get_children():
-		child.free()
-	var flower: Dictionary = FLOWER_KINDS[clampi(flower_i, 0, FLOWER_KINDS.size() - 1)]
-	var pot: Dictionary = POT_KINDS[clampi(pot_i, 0, POT_KINDS.size() - 1)]
-	var pot_piece := _load_piece(str(pot["pot"]))
-	pot_node.mesh = pot_piece["mesh"]
-	_apply_materials(pot_node, _materials_from(pot.get("pot_materials", [])))
-	var top := 1.2
-	if str(flower.get("mode", "stack")) == "spike":
-		_orchid_petal = load(str(flower["petal"]))
-		_orchid_lip = load(str(flower["lip"]))
-		_orchid_bud = load(str(flower["bud"]))
-		_orchid_leaf = load(str(flower["leaf"]))
-		_orchid_stem = load(str(flower["stem"]))
-		var built := _populate_orchid(plant_node)
-		_pose_orchid(built["branches"], built["roots"], 0)
-		top = float(built["rest_top"])
-	else:
-		top = _preview_stack(plant_node, flower)
-	var pot_height := 0.48
-	if pot_node.mesh:
-		pot_height = maxf(pot_node.mesh.get_aabb().size.y, 0.01)
-	var pot_scale := 0.55 / pot_height
-	pot_node.scale = Vector3(pot_scale, pot_scale, pot_scale)
-	pot_node.position = Vector3.ZERO
-	plant_node.position = Vector3(0, pot_height * pot_scale, 0)
-	var content := plant_node.position.y + top
-	var fit := 1.55 / maxf(content, 0.2)
-	var group := plant_node.get_parent() as Node3D
-	if group:
-		group.scale = Vector3(fit, fit, fit)
-
 
 func _load_bloom(flower: Dictionary) -> Dictionary:
 	var path := str(flower.get("flower", ""))
 	if path == "":
 		return {"mesh": null, "height": 0.0}
 	return _load_piece(path)
-
-
-func _preview_stack(plant_node: Node3D, flower: Dictionary) -> float:
-	var stem := _load_piece(str(flower["stem"]))
-	var bloom := _load_bloom(flower)
-	var stem_height := float(flower.get("height", stem["height"]))
-	var stem_materials := _materials_from(flower.get("stem_materials", []))
-	var flower_materials := _materials_from(flower.get("flower_materials", []))
-	var node_bloom := bool(flower.get("node_bloom", false))
-	var crown := bool(flower.get("crown", true))
-	var stalks: Array = flower.get("stalks", [])
-	var mate_materials := _materials_from(flower.get("mate_materials", []))
-	for index in BASE_SEGMENTS:
-		if stalks.is_empty():
-			var piece := MeshInstance3D.new()
-			piece.mesh = stem["mesh"]
-			_apply_materials(piece, stem_materials)
-			piece.position = Vector3(0, float(index) * stem_height, 0)
-			piece.rotation.y = float(index) * 0.9
-			plant_node.add_child(piece)
-		else:
-			for stalk in stalks:
-				_add_stalk(plant_node, stem["mesh"], stem_materials, mate_materials, index, stem_height, stalk)
-		if node_bloom:
-			var yaw := float(index) * 0.9
-			var outward := Vector3(cos(yaw), 0.0, -sin(yaw))
-			var flower_node := MeshInstance3D.new()
-			flower_node.mesh = bloom["mesh"]
-			_apply_materials(flower_node, flower_materials)
-			flower_node.position = outward * 0.36 + Vector3(0, float(index) * stem_height + stem_height * 0.55, 0)
-			flower_node.rotation = Vector3(-0.45, yaw, 0)
-			var size := 1.35 if index % 2 == 0 else 0.95
-			flower_node.scale = Vector3(size, size, size)
-			plant_node.add_child(flower_node)
-	if crown:
-		var head := MeshInstance3D.new()
-		head.mesh = bloom["mesh"]
-		_apply_materials(head, flower_materials)
-		head.position.y = float(BASE_SEGMENTS) * stem_height
-		plant_node.add_child(head)
-		return float(BASE_SEGMENTS) * stem_height + float(bloom["height"])
-	return float(BASE_SEGMENTS) * stem_height
-
-
-func _mat(color: Color, roughness: float) -> StandardMaterial3D:
-	var material := StandardMaterial3D.new()
-	material.albedo_color = color
-	material.roughness = roughness
-	material.metallic = 0.0
-	return material
-
-
-func _lathe(profile: Array, sides: int) -> ArrayMesh:
-	var tool := SurfaceTool.new()
-	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for ring in profile.size() - 1:
-		var a: Vector2 = profile[ring]
-		var b: Vector2 = profile[ring + 1]
-		for side in sides:
-			var t0 := float(side) / float(sides) * TAU
-			var t1 := float(side + 1) / float(sides) * TAU
-			var p00 := Vector3(cos(t0) * a.x, a.y, sin(t0) * a.x)
-			var p01 := Vector3(cos(t1) * a.x, a.y, sin(t1) * a.x)
-			var p10 := Vector3(cos(t0) * b.x, b.y, sin(t0) * b.x)
-			var p11 := Vector3(cos(t1) * b.x, b.y, sin(t1) * b.x)
-			tool.set_smooth_group(-1)
-			tool.add_vertex(p00)
-			tool.add_vertex(p10)
-			tool.add_vertex(p11)
-			tool.add_vertex(p00)
-			tool.add_vertex(p11)
-			tool.add_vertex(p01)
-	tool.generate_normals()
-	return tool.commit()
-
-
-func _leaf_mesh() -> ArrayMesh:
-	var tool := SurfaceTool.new()
-	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var outline := [
-		Vector3(0, 0, 0), Vector3(0.08, 0.05, 0.02), Vector3(0.16, 0.16, 0.03),
-		Vector3(0.12, 0.30, 0.02), Vector3(0, 0.42, 0), Vector3(-0.10, 0.28, 0.02),
-		Vector3(-0.12, 0.12, 0.025),
-	]
-	for i in outline.size() - 1:
-		tool.add_vertex(outline[0])
-		tool.add_vertex(outline[i])
-		tool.add_vertex(outline[(i + 1) % outline.size()])
-	tool.generate_normals()
-	return tool.commit()
-
-
-func _petal_mesh() -> ArrayMesh:
-	var tool := SurfaceTool.new()
-	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var pts := [
-		Vector3(0, 0, 0),
-		Vector3(0.045, 0.02, 0.08),
-		Vector3(0.03, 0.05, 0.20),
-		Vector3(0, 0.07, 0.30),
-		Vector3(-0.03, 0.05, 0.20),
-		Vector3(-0.045, 0.02, 0.08),
-	]
-	for i in range(1, pts.size() - 1):
-		tool.add_vertex(pts[0])
-		tool.add_vertex(pts[i])
-		tool.add_vertex(pts[i + 1])
-	tool.generate_normals()
-	return tool.commit()
-
-
-func _disk_mesh() -> ArrayMesh:
-	var tool := SurfaceTool.new()
-	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var rings := 5
-	var sides := 16
-	for ring in rings:
-		var r0 := float(ring) / float(rings) * 0.16
-		var r1 := float(ring + 1) / float(rings) * 0.16
-		var y0 := sin(float(ring) / float(rings) * PI) * 0.045
-		var y1 := sin(float(ring + 1) / float(rings) * PI) * 0.03
-		for side in sides:
-			var t0 := float(side) / float(sides) * TAU
-			var t1 := float(side + 1) / float(sides) * TAU
-			var p00 := Vector3(cos(t0) * r0, y0, sin(t0) * r0)
-			var p01 := Vector3(cos(t1) * r0, y0, sin(t1) * r0)
-			var p10 := Vector3(cos(t0) * r1, y1, sin(t0) * r1)
-			var p11 := Vector3(cos(t1) * r1, y1, sin(t1) * r1)
-			tool.add_vertex(p00)
-			tool.add_vertex(p10)
-			tool.add_vertex(p11)
-			tool.add_vertex(p00)
-			tool.add_vertex(p11)
-			tool.add_vertex(p01)
-	tool.generate_normals()
-	return tool.commit()

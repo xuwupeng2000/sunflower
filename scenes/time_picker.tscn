@@ -89,6 +89,8 @@ theme_override_fonts/font = ExtResource("2_digit")
 script = ExtResource("1_wheel")
 minimum = 0
 maximum = 59
+sensitivity = 3.0
+coast = true
 
 [node name="完成" type="Button" parent="居中/面板/内容"]
 custom_minimum_size = Vector2(0, 48)

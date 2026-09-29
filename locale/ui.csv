@@ -1,0 +1,44 @@
+keys,en
+前一天,Previous day
+今天,Today
+后一天,Next day
+今天推迟了 0 次,Postponed 0 times today
+今天推迟了 %d 次,Postponed %d times today
+%s推迟了 %d 次,%s postponed %d times
+现在要做,Now
+现在要做\n%s,Now\n%s
+到时间了,It's time
+起床,Wake up
+去改这个提醒,Edit this reminder
+确定,Confirm
+完成,Done
+蜀葵,Hollyhock
+向日葵,Sunflower
+兰花,Orchid
+陶盆,Clay pot
+白瓷,White porcelain
+彩釉盆,Glazed pot
+睡觉,Sleep
+周一,Mon
+周二,Tue
+周三,Wed
+周四,Thu
+周五,Fri
+周六,Sat
+周日,Sun
+新的提醒,New reminder
+☀️ 起床,☀️ Wake up
+🛏️ 睡觉,🛏️ Sleep
+记一次推迟,Postpone once
+🏖️ 这天不提醒,🏖️ Skip this day
+🗑️ 删除,🗑️ Delete
+输入提醒名称,Name this reminder
+💪 健身,💪 Workout
+👶 接娃,👶 Pick up the kids
+💊 吃药,💊 Take medicine
+不提醒,Off
+提醒,Reminder
+%d月%d日,%d/%d
+周一至周五,Weekdays
+每天,Every day
+不重复,Once

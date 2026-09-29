@@ -290,7 +290,7 @@ custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 14
-text = "记一次贪睡"
+text = "记一次推迟"
 
 [node name="这天不提醒" type="Button" parent="边框/内容/操作/按钮" unique_id=394581570]
 custom_minimum_size = Vector2(0, 44)

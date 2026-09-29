@@ -7,11 +7,13 @@ public enum SnoozeStore {
 
     public static func recordCountdown(alarmId: String) {
         let defaults = UserDefaults(suiteName: appGroup)
+        let day = dayKey(Date())
         let key = modeKeyPrefix + alarmId
-        if defaults?.string(forKey: key) == "countdown" {
+        let mark = "countdown:" + day
+        if defaults?.string(forKey: key) == mark {
             return
         }
-        defaults?.set("countdown", forKey: key)
+        defaults?.set(mark, forKey: key)
         append(alarmId: alarmId)
     }
 

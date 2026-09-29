@@ -3,11 +3,17 @@ extends Node
 var _date_key := ""
 var _date_label: Label
 var _count_label: Label
+var _due_label: Label
 var _sunflower: Node3D
 var _flower_page: Control
 var _pot_page: Control
 var _alarm_page: Control
 var _selected_day := 0
+var _current_tab := ""
+var _ring_popup: Control
+var _ring_names: Label
+var _triggered_id := ""
+var _dismissed_ring := ""
 var _wake_button: Button
 var _sleep_button: Button
 var _task_button: Button
@@ -57,6 +63,8 @@ var _editing_kind := "wake"
 var _picker_hour := 7
 var _picker_minute := 0
 var _day_buttons: Array[Button] = []
+var _week_drag := false
+var _week_days: Control
 var _tab_buttons: Array[Button] = []
 var _prev_button: Button
 var _next_button: Button
@@ -93,17 +101,31 @@ func _ready() -> void:
 	AlarmStore.changed.connect(_refresh)
 	AlarmService.snoozes_updated.connect(_refresh)
 	_fill_pot_rows()
-	_select_day(0, false)
+	_select_day(_today_alarm_index(), false)
 	shift_date(0)
 	_show_tab("flower")
+	_catch_ringing()
 	_schedule_days()
 	set_process(false)
+
+
+func _notification(what: int) -> void:
+	if what != NOTIFICATION_APPLICATION_FOCUS_IN:
+		return
+	if _date_label != null and AlarmStore.apply_system_setting():
+		_refresh()
+		_update_time_label()
+		_apply_task_chrome()
+		_schedule_days()
+	if _ring_popup != null:
+		_catch_ringing()
 
 
 func _bind_nodes() -> void:
 	var root := $UI/界面
 	_date_label = root.get_node("看花页/顶部/日期行/日期")
 	_count_label = root.get_node("看花页/顶部/次数")
+	_due_label = root.get_node("看花页/顶部/到点事项")
 	_prev_button = root.get_node("看花页/顶部/日期行/前一天")
 	_next_button = root.get_node("看花页/顶部/日期行/后一天")
 	_prev_button.pressed.connect(func() -> void: shift_date(-1))
@@ -111,11 +133,13 @@ func _bind_nodes() -> void:
 	_flower_page = root.get_node("看花页")
 	_pot_page = root.get_node("花盆页/花盆")
 	_alarm_page = root.get_node("定时页/定时")
-	var days := _alarm_page.get_node("边框/内容/行列/星期")
+	var days := _alarm_page.get_node("边框/内容/行列/星期") as Control
+	days.mouse_filter = Control.MOUSE_FILTER_STOP
+	days.gui_input.connect(_on_week_gesture.bind(days))
 	for index in days.get_child_count():
 		var button := days.get_child(index) as Button
 		button.toggle_mode = true
-		button.pressed.connect(_select_day.bind(index))
+		button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_day_buttons.append(button)
 	_times = _alarm_page.get_node("边框/内容/行列/时间")
 	_wake_button = _times.get_node("起床/钟点")
@@ -150,7 +174,13 @@ func _bind_nodes() -> void:
 	_alarm_page.get_node("边框/内容/标签行/加号").pressed.connect(_open_task_name)
 	_rebuild_task_tabs()
 	_show_sleep_task()
-	_alarm_page.get_node("边框/内容/操作/按钮/记一次贪睡").pressed.connect(_record_snooze)
+	var debug_snooze := _alarm_page.get_node("边框/内容/操作/按钮/记一次贪睡") as Button
+	debug_snooze.visible = OS.has_feature("editor")
+	debug_snooze.pressed.connect(_record_snooze)
+	_ring_popup = root.get_node("到点弹窗")
+	_ring_names = _ring_popup.get_node("居中/面板/内容/名单")
+	_ring_popup.get_node("居中/面板/内容/去改").pressed.connect(_open_triggered_alarm)
+	_ring_popup.get_node("居中/面板/内容/看花").pressed.connect(_dismiss_ring)
 	var icons := root.get_node("底栏/图标")
 	var specs := ["flower", "pot", "alarm"]
 	for index in icons.get_child_count():
@@ -162,9 +192,9 @@ func _bind_nodes() -> void:
 	_name_dialog = root.get_node("任务命名")
 	_name_dialog.gui_input.connect(_close_name_on_click)
 	_name_field = _name_dialog.get_node("居中/面板/内容/名字")
-	_name_dialog.get_node("居中/面板/内容/健身").pressed.connect(_confirm_new_task.bind("💪 健身"))
-	_name_dialog.get_node("居中/面板/内容/接娃").pressed.connect(_confirm_new_task.bind("👶 接娃"))
-	_name_dialog.get_node("居中/面板/内容/吃药").pressed.connect(_confirm_new_task.bind("💊 吃药"))
+	_name_dialog.get_node("居中/面板/内容/健身").pressed.connect(_confirm_new_task.bind(tr("💪 健身")))
+	_name_dialog.get_node("居中/面板/内容/接娃").pressed.connect(_confirm_new_task.bind(tr("👶 接娃")))
+	_name_dialog.get_node("居中/面板/内容/吃药").pressed.connect(_confirm_new_task.bind(tr("💊 吃药")))
 	_name_dialog.get_node("居中/面板/内容/完成").pressed.connect(_confirm_typed_task)
 	_hour_wheel = _picker.get_node("居中/面板/内容/滚轮区/列/时")
 	_minute_wheel = _picker.get_node("居中/面板/内容/滚轮区/列/分")
@@ -198,6 +228,9 @@ func _close_picker_on_click(event: InputEvent) -> void:
 
 
 func _finish_picker() -> void:
+	_picker_hour = _hour_wheel.commit_value()
+	_picker_minute = _minute_wheel.commit_value()
+	_commit_time()
 	_picker.visible = false
 
 
@@ -233,12 +266,61 @@ func _start_forest() -> void:
 		forest.play()
 
 
-func _show_tab(tab: String) -> void:
+func _today_alarm_index() -> int:
+	var godot_day := int(Time.get_datetime_dict_from_system().get("weekday", 0))
+	return 6 if godot_day == 0 else godot_day - 1
+
+
+func _show_tab(tab: String, pin_today: bool = true) -> void:
+	if pin_today and tab != "flower" and _current_tab == tab:
+		tab = "flower"
+	_current_tab = tab
+	if tab == "alarm" and pin_today:
+		_select_day(_today_alarm_index(), false)
 	for index in _tab_buttons.size():
 		_tab_buttons[index].set_pressed_no_signal(["flower", "pot", "alarm"][index] == tab)
 	_flower_page.visible = tab != "alarm"
 	_pot_page.get_parent().visible = tab == "pot"
 	_alarm_page.get_parent().visible = tab == "alarm"
+
+
+func _on_week_gesture(event: InputEvent, days: Control) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		_week_drag = true
+		_week_days = days
+		_preview_week(days.get_local_mouse_position())
+		days.accept_event()
+
+
+func _input(event: InputEvent) -> void:
+	if not _week_drag or _week_days == null:
+		return
+	if event is InputEventMouseMotion and (event.button_mask & MOUSE_BUTTON_MASK_LEFT) != 0:
+		_preview_week(_week_days.get_local_mouse_position())
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		_week_drag = false
+		_select_day(_day_index_at(_week_days, _week_days.get_local_mouse_position()))
+		get_viewport().set_input_as_handled()
+
+
+func _preview_week(local: Vector2) -> void:
+	var index := _day_index_at(_week_days, local)
+	for day_index in _day_buttons.size():
+		_day_buttons[day_index].set_pressed_no_signal(day_index == index)
+
+
+func _day_index_at(days: Control, local: Vector2) -> int:
+	var best := 0
+	var best_dist := INF
+	for index in days.get_child_count():
+		var child := days.get_child(index) as Control
+		var middle := child.position.y + child.size.y * 0.5
+		var dist := absf(local.y - middle)
+		if dist < best_dist:
+			best_dist = dist
+			best = index
+	return best
 
 
 func _select_day(index: int, animate: bool = true) -> void:
@@ -298,8 +380,7 @@ func _update_time_label() -> void:
 
 
 func _schedule_days() -> void:
-	for alarm in AlarmStore.alarms:
-		AlarmService.schedule(alarm)
+	AlarmService.sync_alarms()
 
 
 func _on_task_name_input(event: InputEvent) -> void:
@@ -325,7 +406,7 @@ func _on_task_name_input(event: InputEvent) -> void:
 
 func _open_task_name() -> void:
 	_rename_mode = false
-	_name_field.text = "新的提醒"
+	_name_field.text = tr("新的提醒")
 	_name_dialog.visible = true
 
 
@@ -351,7 +432,7 @@ func _confirm_typed_task() -> void:
 func _limit_name(task_name: String) -> String:
 	var trimmed := task_name.strip_edges()
 	if trimmed.is_empty():
-		return "新的提醒"
+		return tr("新的提醒")
 	return trimmed
 
 
@@ -381,7 +462,7 @@ func _show_clock(button: Button, hour: int, minute: int, enabled: bool) -> void:
 	if not enabled:
 		button.remove_theme_font_override("font")
 		button.add_theme_font_size_override("font_size", 20)
-		button.text = "不提醒"
+		button.text = tr("不提醒")
 		return
 	button.add_theme_font_override("font", DigitFont)
 	button.add_theme_font_size_override("font_size", 32)
@@ -702,6 +783,61 @@ func _finish_reorder() -> void:
 	_schedule_days()
 
 
+func _catch_ringing() -> void:
+	var ringing: Array = AlarmService.note_ringing()
+	if ringing.is_empty() or _ring_popup == null:
+		return
+	var names := PackedStringArray()
+	var first_id := ""
+	for item in ringing:
+		if typeof(item) != TYPE_DICTIONARY:
+			continue
+		var group_id := str(item.get("id", ""))
+		if first_id.is_empty():
+			first_id = group_id
+		for event in AlarmStore.due_group(group_id).get("events", []):
+			var label := str(event.get("label", ""))
+			if not label.is_empty() and label not in names:
+				names.append(label)
+	if first_id.is_empty() or first_id == _dismissed_ring:
+		return
+	_triggered_id = first_id
+	_ring_names.text = "\n".join(names) if names.size() > 0 else tr("提醒")
+	_ring_popup.visible = true
+
+
+func _dismiss_ring() -> void:
+	_dismissed_ring = _triggered_id
+	if _ring_popup:
+		_ring_popup.visible = false
+	_show_tab("flower", false)
+
+
+func _open_triggered_alarm() -> void:
+	var group_id := _triggered_id
+	_dismissed_ring = group_id
+	if _ring_popup:
+		_ring_popup.visible = false
+	var parts := group_id.split("-")
+	var weekday := int(parts[1]) if parts.size() >= 2 else _today_alarm_index() + 1
+	_show_tab("alarm", false)
+	_select_day(clampi(weekday - 1, 0, 6), false)
+	var event_id := ""
+	for event in AlarmStore.due_group(group_id).get("events", []):
+		var candidate := str(event.get("id", ""))
+		if candidate.begins_with("task-"):
+			event_id = candidate
+			break
+		if event_id.is_empty():
+			event_id = candidate
+	if event_id.begins_with("task-"):
+		var index := AlarmStore.task_index_for_alarm(event_id, weekday)
+		if index >= 0:
+			_show_custom_task(index)
+			return
+	_show_sleep_task()
+
+
 func _record_snooze() -> void:
 	if AlarmService.using_native:
 		return
@@ -716,13 +852,29 @@ func _refresh() -> void:
 	var count := AlarmStore.count_on(_date_key)
 	var when := AlarmStore.format_date(_date_key)
 	_date_label.text = when
-	if when == "今天":
-		_count_label.text = "今天贪睡了 %d 次" % count
+	_count_label.visible = count > 0
+	if _date_key == AlarmStore.today_key():
+		_count_label.text = tr("今天推迟了 %d 次") % count
 	else:
-		_count_label.text = "%s贪睡了 %d 次" % [when, count]
+		_count_label.text = tr("%s推迟了 %d 次") % [when, count]
 	if _playback != count:
 		_playback = count
 		_sunflower.play_count(count)
+	_show_due_list()
+
+
+func _show_due_list() -> void:
+	if _due_label == null:
+		return
+	if _date_key != AlarmStore.today_key():
+		_due_label.visible = false
+		return
+	var labels := AlarmStore.current_due_labels()
+	if labels.is_empty():
+		_due_label.visible = false
+		return
+	_due_label.text = tr("现在要做\n%s") % "\n".join(labels)
+	_due_label.visible = true
 
 
 func shift_date(days: int) -> void:

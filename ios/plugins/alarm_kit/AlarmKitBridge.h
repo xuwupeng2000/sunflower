@@ -8,5 +8,7 @@ typedef void (^SnoozeCallback)(void);
 + (void)scheduleWeeklyJSON:(NSString *)json;
 + (void)cancelAlarm:(NSString *)alarmId;
 + (NSString *)snoozeLogJSON;
++ (NSString *)activeAlarmsJSON;
++ (NSString *)settingsLanguage;
 + (void)startObserving;
 @end

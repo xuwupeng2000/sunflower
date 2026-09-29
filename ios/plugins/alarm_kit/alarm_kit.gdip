@@ -2,15 +2,15 @@
 
 name="AlarmKit"
 binary="alarm_kit.xcframework"
-use_swift_runtime=true
 initialization="alarm_kit_init"
 deinitialization="alarm_kit_deinit"
 
 [dependencies]
 
 linked=[]
-embedded=[]
+embedded=["SunflowerShared.xcframework"]
 system=["AlarmKit.framework", "ActivityKit.framework", "AppIntents.framework", "SwiftUI.framework"]
+files=["sunflower.wav"]
 
 [plist]
 

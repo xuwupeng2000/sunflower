@@ -28,7 +28,63 @@ func schedule(alarm: Dictionary) -> void:
 	if using_native:
 		native.schedule_weekly(alarm)
 		return
-	print("桌面预览：已记下闹钟 %s %02d:%02d" % [alarm.get("label", ""), int(alarm.get("hour", 0)), int(alarm.get("minute", 0))])
+	var names := PackedStringArray()
+	for event in alarm.get("events", []):
+		if typeof(event) == TYPE_DICTIONARY:
+			names.append(str(event.get("label", "")))
+	var shown := "、".join(names) if names.size() > 0 else str(alarm.get("label", ""))
+	print("桌面预览：已记下闹钟 %s %02d:%02d" % [shown, int(alarm.get("hour", 0)), int(alarm.get("minute", 0))])
+
+
+func sync_alarms() -> void:
+	var live := {}
+	for item in ringing_alarms():
+		if typeof(item) == TYPE_DICTIONARY:
+			live[str(item.get("id", ""))] = true
+	var previous: Array[String] = []
+	previous.assign(store.scheduled_ids)
+	for alarm_id in previous:
+		if live.has(alarm_id):
+			continue
+		cancel(alarm_id)
+	for alarm in store.alarms:
+		var alarm_id := str(alarm.get("id", ""))
+		if live.has(alarm_id):
+			continue
+		cancel(alarm_id)
+	var next_ids: Array[String] = []
+	for group in store.due_groups():
+		var group_id := str(group.get("id", ""))
+		next_ids.append(group_id)
+		if live.has(group_id):
+			continue
+		schedule(group)
+	store.replace_scheduled_ids(next_ids)
+
+
+func ringing_alarms() -> Array:
+	if native == null:
+		return []
+	var parsed: Variant = JSON.parse_string(str(native.active_alarms_json()))
+	if typeof(parsed) != TYPE_ARRAY:
+		return []
+	return parsed
+
+
+func note_ringing() -> Array:
+	var ringing: Array = []
+	var seen: Array = ringing_alarms()
+	_pull_native_snoozes()
+	for item in seen:
+		if typeof(item) != TYPE_DICTIONARY:
+			continue
+		var state := str(item.get("state", ""))
+		var alarm_id := str(item.get("id", ""))
+		if state == "countdown" or state == "paused":
+			store.record_snooze_once(alarm_id)
+		if state == "alerting" or state == "countdown" or state == "paused":
+			ringing.append(item)
+	return ringing
 
 
 func cancel(alarm_id: String) -> void:
