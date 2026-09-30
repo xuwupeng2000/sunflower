@@ -5,7 +5,19 @@ const WEEKDAY_NAMES := ["一", "二", "三", "四", "五", "六", "日"]
 
 var alarms: Array[Dictionary] = []
 var snoozes: Array[Dictionary] = []
+var care: Array[Dictionary] = []
+var fertilizer := 0
+var fertilizer_used := 0
+var last_watered := ""
 var language := "zh"
+var tutorial_seen := false
+var timer_tutorial_seen := false
+var sleep_present := true
+var sleep_paused := false
+## 计时页里自己加的计时：{title, minutes}。
+var custom_timers: Array[Dictionary] = []
+## 正在走的那一个：{id, title, minutes, ends_at}；空字典就是没在计时。
+var active_timer: Dictionary = {}
 
 signal changed
 
@@ -26,9 +38,11 @@ func _install_locale() -> void:
 func load_data() -> void:
 	alarms.clear()
 	snoozes.clear()
+	care.clear()
 	if not FileAccess.file_exists(SAVE_PATH):
 		_ensure_days()
 		_sync_day_alarms()
+		last_watered = today_key()
 		changed.emit()
 		return
 	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
@@ -49,11 +63,28 @@ func load_data() -> void:
 				"alarm_id": str(item.get("alarm_id", "")),
 				"at": int(item.get("at", 0)),
 			})
+	for item in data.get("care", []):
+		if typeof(item) == TYPE_DICTIONARY:
+			var kind := str(item.get("kind", ""))
+			if kind != "water" and kind != "feed":
+				continue
+			care.append({
+				"date": str(item.get("date", "")),
+				"kind": kind,
+				"at": int(item.get("at", 0)),
+			})
 	_load_tasks(data.get("tasks", []))
+	# 睡觉不能删了；以前删掉的接回来，但先暂停，免得突然响。
+	sleep_present = true
+	sleep_paused = bool(data.get("sleep_paused", false)) or not bool(data.get("sleep_present", true))
 	_load_days(data.get("days", []))
+	tutorial_seen = bool(data.get("tutorial_seen", false))
+	timer_tutorial_seen = bool(data.get("timer_tutorial_seen", false))
 	scheduled_ids.clear()
 	for item in data.get("scheduled_ids", []):
 		scheduled_ids.append(str(item))
+	_load_fertilizer(data)
+	_load_timers(data)
 	changed.emit()
 
 
@@ -65,10 +96,111 @@ func save_data() -> void:
 	file.store_string(JSON.stringify({
 		"alarms": alarms,
 		"snoozes": snoozes,
+		"care": care,
 		"days": days,
 		"tasks": tasks,
 		"scheduled_ids": scheduled_ids,
+		"tutorial_seen": tutorial_seen,
+		"timer_tutorial_seen": timer_tutorial_seen,
+		"sleep_present": sleep_present,
+		"sleep_paused": sleep_paused,
+		"fertilizer": fertilizer,
+		"fertilizer_used": fertilizer_used,
+		"last_watered": last_watered,
+		"custom_timers": custom_timers,
+		"active_timer": active_timer,
 	}, "  "))
+
+
+func _load_timers(data: Dictionary) -> void:
+	custom_timers.clear()
+	for item in data.get("custom_timers", []):
+		if typeof(item) == TYPE_DICTIONARY:
+			custom_timers.append({
+				"title": str(item.get("title", "")),
+				"minutes": maxi(1, int(item.get("minutes", 1))),
+			})
+	var active: Variant = data.get("active_timer", {})
+	active_timer = {}
+	if typeof(active) == TYPE_DICTIONARY and active.has("ends_at"):
+		active_timer = {
+			"id": str(active.get("id", "")),
+			"title": str(active.get("title", "")),
+			"minutes": maxi(1, int(active.get("minutes", 1))),
+			"ends_at": float(active.get("ends_at", 0.0)),
+		}
+
+
+func start_timer(title: String, minutes: int) -> Dictionary:
+	var now := Time.get_unix_time_from_system()
+	active_timer = {
+		"id": str(int(now * 1000.0)),
+		"title": title,
+		"minutes": maxi(1, minutes),
+		"ends_at": now + maxi(1, minutes) * 60.0,
+	}
+	save_data()
+	return active_timer
+
+
+func clear_timer() -> void:
+	if active_timer.is_empty():
+		return
+	active_timer = {}
+	save_data()
+
+
+func add_custom_timer(title: String, minutes: int) -> void:
+	custom_timers.append({"title": title, "minutes": maxi(1, minutes)})
+	save_data()
+
+
+func remove_custom_timer(index: int) -> void:
+	if index < 0 or index >= custom_timers.size():
+		return
+	custom_timers.remove_at(index)
+	save_data()
+
+
+func set_sleep_paused(paused: bool) -> void:
+	sleep_paused = paused
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
+
+
+func task_paused(index: int) -> bool:
+	if index < 0 or index >= tasks.size():
+		return false
+	return bool(tasks[index].get("paused", false))
+
+
+func set_task_paused(index: int, paused: bool) -> void:
+	if index < 0 or index >= tasks.size():
+		return
+	tasks[index]["paused"] = paused
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
+
+
+## 教程只放一次；只有电脑上的调试运行每次都放，方便调。
+func replay_tutorials() -> bool:
+	return OS.is_debug_build() and OS.has_feature("pc")
+
+
+func mark_tutorial_seen() -> void:
+	if tutorial_seen:
+		return
+	tutorial_seen = true
+	save_data()
+
+
+func mark_timer_tutorial_seen() -> void:
+	if timer_tutorial_seen:
+		return
+	timer_tutorial_seen = true
+	save_data()
 
 
 func apply_system_setting() -> bool:
@@ -175,13 +307,19 @@ func _normalize_task(raw: Dictionary) -> Dictionary:
 		for item in stored:
 			if typeof(item) != TYPE_DICTIONARY:
 				continue
-			times.append({
+			var moment := {
 				"hour": clampi(int(item.get("hour", 9)), 0, 23),
 				"minute": clampi(int(item.get("minute", 0)), 0, 59),
 				"enabled": bool(item.get("enabled", true)),
-			})
+			}
+			if bool(item.get("paused", false)):
+				moment["paused"] = true
+			if item.has("end_hour"):
+				moment["end_hour"] = clampi(int(item.get("end_hour", 0)), 0, 23)
+				moment["end_minute"] = clampi(int(item.get("end_minute", 0)), 0, 59)
+			times.append(moment)
 	while times.size() < 7:
-		times.append({"hour": 9, "minute": 0, "enabled": true})
+		times.append({"hour": 9, "minute": 0, "enabled": false})
 	if times.size() > 7:
 		times.resize(7)
 	var task_id := str(raw.get("id", ""))
@@ -191,6 +329,7 @@ func _normalize_task(raw: Dictionary) -> Dictionary:
 		"id": task_id,
 		"name": str(raw.get("name", "")),
 		"times": times,
+		"paused": bool(raw.get("paused", false)),
 	}
 
 
@@ -217,6 +356,10 @@ func task_alarm_id(task_id: String, weekday: int) -> String:
 	return "task-%s-%d" % [task_id, weekday]
 
 
+func task_end_alarm_id(task_id: String, weekday: int) -> String:
+	return "task-%s-%d-end" % [task_id, weekday]
+
+
 func add_task(task_name: String = "新的提醒") -> Dictionary:
 	var task := _normalize_task({"id": _new_task_id(), "name": task_name})
 	tasks.append(task)
@@ -224,6 +367,70 @@ func add_task(task_name: String = "新的提醒") -> Dictionary:
 	save_data()
 	changed.emit()
 	return task
+
+
+func task_has_end(index: int, day_index: int) -> bool:
+	if index < 0 or index >= tasks.size() or day_index < 0 or day_index > 6:
+		return false
+	return tasks[index]["times"][day_index].has("end_hour")
+
+
+func set_task_end(index: int, day_index: int, hour: int, minute: int) -> void:
+	if index < 0 or index >= tasks.size() or day_index < 0 or day_index > 6:
+		return
+	var moment: Dictionary = tasks[index]["times"][day_index]
+	moment["end_hour"] = clampi(hour, 0, 23)
+	moment["end_minute"] = clampi(minute, 0, 59)
+	_sync_day_alarms()
+	save_data()
+
+
+func clear_task_end(index: int, day_index: int) -> void:
+	if not task_has_end(index, day_index):
+		return
+	var moment: Dictionary = tasks[index]["times"][day_index]
+	moment.erase("end_hour")
+	moment.erase("end_minute")
+	_sync_day_alarms()
+	save_data()
+
+
+# 结束早于开始就是跨过半夜，算到下一天响。
+func _end_weekday(moment: Dictionary, day_index: int) -> int:
+	var start := int(moment["hour"]) * 60 + int(moment["minute"])
+	var end := int(moment["end_hour"]) * 60 + int(moment["end_minute"])
+	return (day_index + (1 if end <= start else 0)) % 7 + 1
+
+
+func task_has_reminder(index: int) -> bool:
+	if index < 0 or index >= tasks.size():
+		return false
+	for moment in tasks[index].get("times", []):
+		if typeof(moment) == TYPE_DICTIONARY and bool(moment.get("enabled", true)):
+			return true
+	return false
+
+
+func set_task_times_on_days(index: int, days: Array, hour: int, minute: int, end: Dictionary = {}) -> void:
+	if index < 0 or index >= tasks.size():
+		return
+	var times: Array = tasks[index]["times"]
+	for day_index in days:
+		var day := int(day_index)
+		if day < 0 or day > 6:
+			continue
+		var moment := {
+			"hour": clampi(hour, 0, 23),
+			"minute": clampi(minute, 0, 59),
+			"enabled": true,
+		}
+		if end.has("hour"):
+			moment["end_hour"] = clampi(int(end["hour"]), 0, 23)
+			moment["end_minute"] = clampi(int(end["minute"]), 0, 59)
+		times[day] = moment
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
 
 
 func rename_task(task_id: String, name: String) -> void:
@@ -242,12 +449,10 @@ func set_task_time(index: int, day_index: int, hour: int, minute: int) -> void:
 		return
 	if day_index < 0 or day_index > 6:
 		return
-	var times: Array = tasks[index]["times"]
-	times[day_index] = {
-		"hour": clampi(hour, 0, 23),
-		"minute": clampi(minute, 0, 59),
-		"enabled": true,
-	}
+	var moment: Dictionary = tasks[index]["times"][day_index]
+	moment["hour"] = clampi(hour, 0, 23)
+	moment["minute"] = clampi(minute, 0, 59)
+	moment["enabled"] = true
 	_sync_day_alarms()
 	save_data()
 
@@ -272,6 +477,26 @@ func set_task_day_enabled(index: int, day_index: int, enabled: bool) -> void:
 	times[day_index] = moment
 	_sync_day_alarms()
 	save_data()
+
+
+func task_day_paused(index: int, day_index: int) -> bool:
+	if index < 0 or index >= tasks.size() or day_index < 0 or day_index > 6:
+		return false
+	var moment: Dictionary = tasks[index]["times"][day_index]
+	return bool(moment.get("enabled", false)) and bool(moment.get("paused", false))
+
+
+func set_task_day_paused(index: int, day_index: int, paused: bool) -> void:
+	if index < 0 or index >= tasks.size() or day_index < 0 or day_index > 6:
+		return
+	var moment: Dictionary = tasks[index]["times"][day_index]
+	if paused:
+		moment["paused"] = true
+	else:
+		moment.erase("paused")
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
 
 
 func reorder_tasks(ids: Array) -> void:
@@ -307,19 +532,23 @@ func _sync_day_alarms() -> void:
 	for index in days.size():
 		var slot := days[index]
 		var weekday := index + 1
-		if bool(slot.get("enabled", true)):
+		if sleep_present and not sleep_paused and bool(slot.get("enabled", true)):
 			kept.append(_day_alarm("wake-%d" % weekday, int(slot["wake_hour"]), int(slot["wake_minute"]), weekday, "起床"))
 			kept.append(_day_alarm("sleep-%d" % weekday, int(slot["sleep_hour"]), int(slot["sleep_minute"]), weekday, "睡觉"))
 	for task in tasks:
+		if bool(task.get("paused", false)):
+			continue
 		var task_id := str(task.get("id", ""))
 		var label := task_label(task)
 		var times: Array = task.get("times", [])
 		for day_index in times.size():
 			var moment: Dictionary = times[day_index]
-			if not bool(moment.get("enabled", true)):
+			if not bool(moment.get("enabled", true)) or bool(moment.get("paused", false)):
 				continue
 			var task_weekday := day_index + 1
 			kept.append(_day_alarm(task_alarm_id(task_id, task_weekday), int(moment["hour"]), int(moment["minute"]), task_weekday, label))
+			if moment.has("end_hour"):
+				kept.append(_day_alarm(task_end_alarm_id(task_id, task_weekday), int(moment["end_hour"]), int(moment["end_minute"]), _end_weekday(moment, day_index), label))
 	alarms = kept
 
 
@@ -343,9 +572,13 @@ func due_groups() -> Array[Dictionary]:
 					"events": [],
 				}
 			var events: Array = buckets[key]["events"]
+			var alarm_id := str(alarm.get("id", ""))
+			var event_label := tr(str(alarm.get("label", "")))
+			if alarm_id.ends_with("-end"):
+				event_label = tr("%s结束") % event_label
 			events.append({
-				"id": str(alarm.get("id", "")),
-				"label": tr(str(alarm.get("label", ""))),
+				"id": alarm_id,
+				"label": event_label,
 			})
 	var groups: Array[Dictionary] = []
 	for key in buckets:
@@ -469,7 +702,10 @@ func due_group(group_id: String) -> Dictionary:
 
 func task_index_for_alarm(alarm_id: String, weekday: int) -> int:
 	for index in tasks.size():
-		if task_alarm_id(str(tasks[index].get("id", "")), weekday) == alarm_id:
+		var task_id := str(tasks[index].get("id", ""))
+		if alarm_id == task_alarm_id(task_id, weekday):
+			return index
+		if alarm_id.begins_with("task-%s-" % task_id) and alarm_id.ends_with("-end"):
 			return index
 	return -1
 
@@ -484,6 +720,8 @@ func record_snooze(alarm_id: String, when: int = -1) -> Dictionary:
 	if _has_snooze(event):
 		return event
 	snoozes.append(event)
+	if _is_sleep_snooze(alarm_id):
+		fertilizer += 1
 	save_data()
 	changed.emit()
 	return event
@@ -502,6 +740,8 @@ func merge_snoozes(events: Array) -> int:
 		if event["date"].is_empty() or event["at"] <= 0 or _has_snooze(event):
 			continue
 		snoozes.append(event)
+		if _is_sleep_snooze(event["alarm_id"]):
+			fertilizer += 1
 		added += 1
 	if added > 0:
 		save_data()
@@ -510,11 +750,139 @@ func merge_snoozes(events: Array) -> int:
 
 
 func count_on(date_key: String) -> int:
+	return sleep_snooze_on(date_key)
+
+
+func sleep_snooze_on(date_key: String) -> int:
 	var total := 0
 	for event in snoozes:
-		if str(event.get("date", "")) == date_key:
+		if str(event.get("date", "")) != date_key:
+			continue
+		if _is_sleep_snooze(str(event.get("alarm_id", ""))):
 			total += 1
 	return total
+
+
+func care_on(date_key: String) -> int:
+	var total := 0
+	for item in care:
+		if str(item.get("date", "")) == date_key:
+			total += 1
+	return total
+
+
+func growth_on(_date_key: String) -> int:
+	return fertilizer_used
+
+
+func use_fertilizer() -> bool:
+	if fertilizer <= 0:
+		return false
+	fertilizer -= 1
+	fertilizer_used += 1
+	save_data()
+	changed.emit()
+	return true
+
+
+func watered_today() -> bool:
+	return watered_on(today_key())
+
+
+func watered_on(date_key: String) -> bool:
+	for item in care:
+		if str(item.get("date", "")) != date_key:
+			continue
+		if str(item.get("kind", "")) == "water":
+			return true
+	return false
+
+
+func record_water() -> bool:
+	var today := today_key()
+	if watered_on(today):
+		return false
+	care.append({
+		"date": today,
+		"kind": "water",
+		"at": int(Time.get_unix_time_from_system()),
+	})
+	last_watered = today
+	save_data()
+	changed.emit()
+	return true
+
+
+func days_without_water() -> int:
+	if last_watered.is_empty():
+		return 0
+	var then_unix := _noon_unix(last_watered)
+	var now_unix := _noon_unix(today_key())
+	if then_unix <= 0 or now_unix <= 0:
+		return 0
+	return maxi(0, int((now_unix - then_unix) / 86400.0))
+
+
+func is_wilted() -> bool:
+	return wilt_level() > 0
+
+
+## 3 天没浇水蔫了，5 天更蔫，7 天干枯。
+func wilt_level() -> int:
+	var days := days_without_water()
+	if days >= 7:
+		return 3
+	if days >= 5:
+		return 2
+	if days >= 3:
+		return 1
+	return 0
+
+
+func _noon_unix(date_key: String) -> int:
+	var parts := date_key.split("-")
+	if parts.size() != 3:
+		return 0
+	return int(Time.get_unix_time_from_datetime_dict({
+		"year": int(parts[0]),
+		"month": int(parts[1]),
+		"day": int(parts[2]),
+		"hour": 12,
+		"minute": 0,
+		"second": 0,
+	}))
+
+
+func _load_fertilizer(data: Dictionary) -> void:
+	fertilizer_used = int(data.get("fertilizer_used", -1))
+	if fertilizer_used < 0:
+		fertilizer_used = 0
+		for item in care:
+			if str(item.get("kind", "")) == "feed":
+				fertilizer_used += 1
+	var sleep_total := 0
+	for event in snoozes:
+		if _is_sleep_snooze(str(event.get("alarm_id", ""))):
+			sleep_total += 1
+	if data.has("fertilizer"):
+		fertilizer = maxi(0, int(data.get("fertilizer", 0)))
+	else:
+		fertilizer = maxi(0, sleep_total - fertilizer_used)
+	last_watered = str(data.get("last_watered", ""))
+	if last_watered.is_empty():
+		last_watered = today_key()
+
+
+func _is_sleep_snooze(alarm_id: String) -> bool:
+	if alarm_id.begins_with("sleep-"):
+		return true
+	if not alarm_id.begins_with("due-"):
+		return false
+	var group := due_group(alarm_id)
+	for event in group.get("events", []):
+		if str(event.get("id", "")).begins_with("sleep-"):
+			return true
+	return false
 
 
 func today_key() -> String:
@@ -566,7 +934,7 @@ func format_weekdays(weekdays: Array) -> String:
 	var names: PackedStringArray = []
 	for day in days:
 		if day >= 1 and day <= 7:
-			names.append("周" + WEEKDAY_NAMES[day - 1])
+			names.append(tr("周" + WEEKDAY_NAMES[day - 1]))
 	return " ".join(names)
 
 

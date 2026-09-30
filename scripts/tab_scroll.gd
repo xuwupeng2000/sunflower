@@ -5,4 +5,4 @@ func _ready() -> void:
 
 
 func _get_minimum_size() -> Vector2:
-	return Vector2(0, 48)
+	return Vector2(0, 56)

@@ -3,6 +3,7 @@ import AlarmKit
 import AppIntents
 import Foundation
 import SwiftUI
+import UserNotifications
 
 private var snoozeCallback: (() -> Void)?
 
@@ -42,29 +43,88 @@ private var snoozeCallback: (() -> Void)?
         guard let data = json.data(using: .utf8),
               let raw = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let idText = raw["id"] as? String,
-              let id = UUID(uuidString: idText) ?? UUID(uuidString: stableUUID(idText)) else {
+              let id = alarmUUID(idText) else {
             return
         }
         let hour = raw["hour"] as? Int ?? 7
         let minute = raw["minute"] as? Int ?? 0
-        let label = raw["label"] as? String ?? "起床"
+        let label = raw["label"] as? String ?? Copy.text("起床", "Wake up")
         let weekdayNumbers = raw["weekdays"] as? [Int] ?? [1, 2, 3, 4, 5]
         let eventRows = raw["events"] as? [[String: Any]] ?? []
         let eventLabels = eventRows.compactMap { $0["label"] as? String }.filter { !$0.isEmpty }
         let events = eventLabels.isEmpty ? label : eventLabels.joined(separator: "\n")
-        let title = eventLabels.isEmpty ? label : eventLabels.joined(separator: "、")
+        let title = eventLabels.isEmpty ? label : eventLabels.joined(separator: Copy.text("、", ", "))
         Task {
             try? await schedule(id: id, logicalId: idText, hour: hour, minute: minute, label: title, events: events, weekdayNumbers: weekdayNumbers)
         }
     }
 
     @objc public static func cancelAlarm(_ alarmId: String) {
-        guard let id = UUID(uuidString: alarmId) ?? UUID(uuidString: stableUUID(alarmId)) else {
+        guard let id = alarmUUID(alarmId) else {
             return
         }
         Task {
             try? await AlarmManager.shared.cancel(id: id)
         }
+    }
+
+    /// Stops the ring or postpone countdown now; a weekly alarm stays scheduled.
+    @objc public static func stopAlarm(_ alarmId: String) {
+        guard let id = alarmUUID(alarmId) else {
+            return
+        }
+        try? AlarmManager.shared.stop(id: id)
+    }
+
+    /// Replaces any running timer: a notification at the end plus a Live Activity counting down.
+    @objc public static func startTimer(_ timerId: String, title: String, seconds: Int) {
+        let start = Date()
+        let end = start.addingTimeInterval(TimeInterval(max(1, seconds)))
+        Task {
+            let center = UNUserNotificationCenter.current()
+            let old = await center.pendingNotificationRequests()
+                .map(\.identifier)
+                .filter { $0.hasPrefix(SunflowerTimer.notificationID("")) }
+            center.removePendingNotificationRequests(withIdentifiers: old)
+            await SunflowerTimer.end("")
+            _ = try? await center.requestAuthorization(options: [.alert, .sound])
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.body = Copy.text("时间到啦 ☁️", "Time's up ☁️")
+            content.sound = UNNotificationSound(named: UNNotificationSoundName("sunflower.wav"))
+            if let sky = skyAttachment(timerId) {
+                content.attachments = [sky]
+            }
+            content.interruptionLevel = .timeSensitive
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: end.timeIntervalSince(start), repeats: false)
+            let request = UNNotificationRequest(identifier: SunflowerTimer.notificationID(timerId), content: content, trigger: trigger)
+            try? await center.add(request)
+            let attributes = SunflowerTimerAttributes(timerId: timerId, title: title, startDate: start, endDate: end)
+            let state = SunflowerTimerAttributes.ContentState()
+            _ = try? Activity.request(
+                attributes: attributes,
+                content: ActivityContent(state: state, staleDate: end),
+                pushType: nil
+            )
+        }
+    }
+
+    @objc public static func cancelTimer(_ timerId: String) {
+        Task {
+            await SunflowerTimer.cancel(timerId)
+        }
+    }
+
+    /// Time is up while the app is open: the page already rang, so just drop the activity.
+    @objc public static func finishTimer(_ timerId: String) {
+        Task {
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [SunflowerTimer.notificationID(timerId)])
+            await SunflowerTimer.end(timerId)
+        }
+    }
+
+    @objc public static func takeCancelledTimer() -> String {
+        SunflowerTimer.takeCancelled()
     }
 
     @objc public static func snoozeLogJSON() -> String {
@@ -120,6 +180,19 @@ private var snoozeCallback: (() -> Void)?
     }
 }
 
+/// 通知右边那张蓝天白云小图。系统会把附件挪走，所以先拷一份到临时目录。
+private func skyAttachment(_ timerId: String) -> UNNotificationAttachment? {
+    guard let source = Bundle.main.url(forResource: "notify_sky", withExtension: "png") else {
+        return nil
+    }
+    let copy = FileManager.default.temporaryDirectory.appendingPathComponent("notify_sky-\(timerId).png")
+    try? FileManager.default.removeItem(at: copy)
+    guard (try? FileManager.default.copyItem(at: source, to: copy)) != nil else {
+        return nil
+    }
+    return try? UNNotificationAttachment(identifier: "sky", url: copy)
+}
+
 private func schedule(id: UUID, logicalId: String, hour: Int, minute: Int, label: String, events: String, weekdayNumbers: [Int]) async throws {
     typealias Config = AlarmManager.AlarmConfiguration<SunflowerMetadata>
     let weekdays = weekdayNumbers.compactMap(localeWeekday)
@@ -143,7 +216,7 @@ private func schedule(id: UUID, logicalId: String, hour: Int, minute: Int, label
     let attributes = AlarmAttributes<SunflowerMetadata>(
         presentation: AlarmPresentation(alert: alert, countdown: countdown, paused: paused),
         metadata: SunflowerMetadata(alarmId: logicalId, events: events),
-        tintColor: Color(red: 0.95, green: 0.72, blue: 0.12)
+        tintColor: Color(red: 127.0 / 255.0, green: 167.0 / 255.0, blue: 198.0 / 255.0)
     )
     let sound = AlertConfiguration.AlertSound.named("sunflower.wav")
     let configuration = Config(
@@ -228,30 +301,4 @@ private func localeWeekday(_ day: Int) -> Locale.Weekday? {
     case 7: return .sunday
     default: return nil
     }
-}
-
-private func stableUUID(_ text: String) -> String {
-    let raw = Array(text.utf8)
-    func mix(_ seed: UInt64) -> UInt64 {
-        var hash = seed
-        for byte in raw {
-            hash ^= UInt64(byte)
-            hash &*= 1099511628211
-        }
-        return hash
-    }
-    let left = mix(14695981039346656037)
-    let right = mix(1099511628211)
-    var bytes = Array(repeating: UInt8(0), count: 16)
-    for index in 0..<8 {
-        bytes[index] = UInt8((left >> (UInt64(index) * 8)) & 0xff)
-        bytes[index + 8] = UInt8((right >> (UInt64(index) * 8)) & 0xff)
-    }
-    bytes[6] = (bytes[6] & 0x0F) | 0x40
-    bytes[8] = (bytes[8] & 0x3F) | 0x80
-    return String(
-        format: "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
-        bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7],
-        bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]
-    )
 }

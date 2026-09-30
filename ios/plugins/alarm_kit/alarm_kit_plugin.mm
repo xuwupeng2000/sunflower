@@ -15,9 +15,14 @@ protected:
 		ClassDB::bind_method(D_METHOD("request_authorization"), &AlarmKitPlugin::request_authorization);
 		ClassDB::bind_method(D_METHOD("schedule_weekly", "alarm"), &AlarmKitPlugin::schedule_weekly);
 		ClassDB::bind_method(D_METHOD("cancel", "alarm_id"), &AlarmKitPlugin::cancel);
+		ClassDB::bind_method(D_METHOD("stop", "alarm_id"), &AlarmKitPlugin::stop);
 		ClassDB::bind_method(D_METHOD("snooze_log_json"), &AlarmKitPlugin::snooze_log_json);
 		ClassDB::bind_method(D_METHOD("active_alarms_json"), &AlarmKitPlugin::active_alarms_json);
 		ClassDB::bind_method(D_METHOD("settings_language"), &AlarmKitPlugin::settings_language);
+		ClassDB::bind_method(D_METHOD("start_timer", "timer_id", "title", "seconds"), &AlarmKitPlugin::start_timer);
+		ClassDB::bind_method(D_METHOD("cancel_timer", "timer_id"), &AlarmKitPlugin::cancel_timer);
+		ClassDB::bind_method(D_METHOD("finish_timer", "timer_id"), &AlarmKitPlugin::finish_timer);
+		ClassDB::bind_method(D_METHOD("take_cancelled_timer"), &AlarmKitPlugin::take_cancelled_timer);
 		ADD_SIGNAL(MethodInfo("snoozes_changed"));
 	}
 
@@ -35,6 +40,10 @@ public:
 		[AlarmKitBridge cancelAlarm:[NSString stringWithUTF8String:alarm_id.utf8().get_data()]];
 	}
 
+	void stop(const String &alarm_id) {
+		[AlarmKitBridge stopAlarm:[NSString stringWithUTF8String:alarm_id.utf8().get_data()]];
+	}
+
 	String snooze_log_json() {
 		NSString *json = [AlarmKitBridge snoozeLogJSON];
 		return String::utf8([json UTF8String]);
@@ -48,6 +57,25 @@ public:
 	String settings_language() {
 		NSString *code = [AlarmKitBridge settingsLanguage];
 		return String::utf8([code UTF8String]);
+	}
+
+	void start_timer(const String &timer_id, const String &title, int seconds) {
+		[AlarmKitBridge startTimer:[NSString stringWithUTF8String:timer_id.utf8().get_data()]
+							 title:[NSString stringWithUTF8String:title.utf8().get_data()]
+						   seconds:seconds];
+	}
+
+	void cancel_timer(const String &timer_id) {
+		[AlarmKitBridge cancelTimer:[NSString stringWithUTF8String:timer_id.utf8().get_data()]];
+	}
+
+	void finish_timer(const String &timer_id) {
+		[AlarmKitBridge finishTimer:[NSString stringWithUTF8String:timer_id.utf8().get_data()]];
+	}
+
+	String take_cancelled_timer() {
+		NSString *timer_id = [AlarmKitBridge takeCancelledTimer];
+		return String::utf8([timer_id UTF8String]);
 	}
 
 	void emit_snoozes_changed() {

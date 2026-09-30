@@ -1,18 +1,6 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scripts/time_wheel.gd" id="1_wheel"]
-[ext_resource type="FontFile" path="res://fonts/DSEG7Classic-Regular.ttf" id="2_digit"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_picker"]
-bg_color = Color(0.741176, 0.847059, 0.929412, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-content_margin_left = 16.0
-content_margin_top = 16.0
-content_margin_right = 16.0
-content_margin_bottom = 16.0
 
 [node name="时间选择" type="ColorRect"]
 anchors_preset = 15
@@ -33,16 +21,37 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="面板" type="PanelContainer" parent="居中"]
-custom_minimum_size = Vector2(320, 320)
+theme_type_variation = &"Dialog"
+custom_minimum_size = Vector2(340, 320)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_picker")
 
 [node name="内容" type="VBoxContainer" parent="居中/面板"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
+[node name="页签" type="HBoxContainer" parent="居中/面板/内容"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="开始" type="Button" parent="居中/面板/内容/页签"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+clip_text = true
+toggle_mode = true
+text = "开始"
+
+[node name="结束" type="Button" parent="居中/面板/内容/页签"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+clip_text = true
+toggle_mode = true
+text = "结束"
+
 [node name="滚轮区" type="Control" parent="居中/面板/内容"]
-custom_minimum_size = Vector2(300, 220)
+custom_minimum_size = Vector2(320, 220)
 layout_mode = 2
 
 [node name="选中条" type="ColorRect" parent="居中/面板/内容/滚轮区"]
@@ -69,28 +78,86 @@ grow_vertical = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="时" type="Control" parent="居中/面板/内容/滚轮区/列"]
+[node name="上下午" type="Control" parent="居中/面板/内容/滚轮区/列"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_digit")
 script = ExtResource("1_wheel")
 minimum = 0
-maximum = 23
+maximum = 1
+labels = PackedStringArray("上午", "下午")
+wrap = false
+wheel_width = 76.0
+
+[node name="时" type="Control" parent="居中/面板/内容/滚轮区/列"]
+theme_type_variation = &"TimeWheel"
+layout_mode = 2
+script = ExtResource("1_wheel")
+minimum = 1
+maximum = 12
 
 [node name="冒号" type="Label" parent="居中/面板/内容/滚轮区/列"]
+theme_type_variation = &"ClockColon"
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_digit")
-theme_override_font_sizes/font_size = 36
 text = ":"
 vertical_alignment = 1
 
 [node name="分" type="Control" parent="居中/面板/内容/滚轮区/列"]
+theme_type_variation = &"TimeWheel"
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_digit")
 script = ExtResource("1_wheel")
 minimum = 0
 maximum = 59
 sensitivity = 3.0
 coast = true
+
+[node name="结束区" type="VBoxContainer" parent="居中/面板/内容"]
+visible = false
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="选项" type="VBoxContainer" parent="居中/面板/内容/结束区"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="15分钟" type="Button" parent="居中/面板/内容/结束区/选项"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_type_variation = &"SkipButton"
+toggle_mode = true
+text = "15 分钟后结束"
+
+[node name="30分钟" type="Button" parent="居中/面板/内容/结束区/选项"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_type_variation = &"SkipButton"
+toggle_mode = true
+text = "30 分钟后结束"
+
+[node name="1小时" type="Button" parent="居中/面板/内容/结束区/选项"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_type_variation = &"SkipButton"
+toggle_mode = true
+text = "1 小时后结束"
+
+[node name="没有结束" type="Button" parent="居中/面板/内容/结束区/选项"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_type_variation = &"SkipButton"
+text = "没有结束提醒"
+
+[node name="增加结束" type="Button" parent="居中/面板/内容"]
+visible = false
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_type_variation = &"SkipButton"
+text = "＋ 增加结束时间"
+
+[node name="时间提示" type="Label" parent="居中/面板/内容"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"PickerWarn"
+text = "结束时间要晚于开始时间"
+horizontal_alignment = 1
 
 [node name="完成" type="Button" parent="居中/面板/内容"]
 custom_minimum_size = Vector2(0, 48)

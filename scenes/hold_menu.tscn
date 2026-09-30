@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/hold_menu.gd" id="1_menu"]
+
+[node name="长按菜单" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="遮罩" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.05, 0.1, 0.16, 0.3)
+
+[node name="菜单" type="PanelContainer" parent="."]
+z_index = 2
+custom_minimum_size = Vector2(212, 0)
+layout_mode = 0
+theme_type_variation = &"HoldMenu"
+
+[node name="列表" type="VBoxContainer" parent="菜单"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="暂停" type="Button" parent="菜单/列表"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_type_variation = &"MenuItem"
+text = "暂停提醒"
+alignment = 0
+
+[node name="分隔" type="ColorRect" parent="菜单/列表"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.133333, 0.219608, 0.290196, 0.1)
+
+[node name="删除" type="Button" parent="菜单/列表"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_type_variation = &"MenuDanger"
+text = "删除"
+alignment = 0

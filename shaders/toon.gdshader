@@ -1,9 +1,14 @@
 shader_type spatial;
-render_mode cull_disabled, specular_disabled, ambient_light_disabled;
+render_mode cull_disabled, specular_disabled, ambient_light_disabled, alpha_to_coverage;
 
 group_uniforms albedo;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap, repeat_enable;
 uniform vec4 albedo_tint : source_color = vec4(1.0);
+
+group_uniforms dry;
+// 0 新鲜，0.5 左右发黄发橄榄，1 干成褐色。缺水枯萎时由 sunflower.gd 调。
+uniform float dry : hint_range(0.0, 1.0) = 0.0;
+uniform vec3 dry_color : source_color = vec3(0.56, 0.38, 0.2);
 
 group_uniforms bands;
 uniform float light_split : hint_range(0.0, 1.0) = 0.25;
@@ -23,6 +28,8 @@ uniform vec2 wind_direction = vec2(1.0, 0.12);
 group_uniforms clip;
 uniform bool two_sided = false;
 uniform float alpha_cut : hint_range(0.0, 1.0) = 0.5;
+// 抠图边缘交给 MSAA 抗锯齿的过渡宽度。
+uniform float alpha_edge : hint_range(0.0, 1.0) = 0.3;
 
 void vertex() {
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
@@ -35,9 +42,14 @@ void vertex() {
 
 void fragment() {
 	vec4 tex = texture(albedo_tex, UV) * albedo_tint;
+	float luma = dot(tex.rgb, vec3(0.3, 0.59, 0.11));
+	vec3 faded = mix(tex.rgb, vec3(luma) * vec3(1.18, 1.02, 0.55), smoothstep(0.0, 0.55, dry) * 0.8);
+	tex.rgb = mix(faded, dry_color * (0.55 + 0.9 * luma), smoothstep(0.45, 1.0, dry));
 	ALBEDO = tex.rgb;
 	ALPHA = tex.a;
 	ALPHA_SCISSOR_THRESHOLD = alpha_cut;
+	ALPHA_ANTIALIASING_EDGE = alpha_edge;
+	ALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));
 	if (two_sided && !FRONT_FACING) {
 		NORMAL = -NORMAL;
 	}

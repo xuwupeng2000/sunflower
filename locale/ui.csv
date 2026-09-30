@@ -5,11 +5,18 @@ keys,en
 今天推迟了 0 次,Postponed 0 times today
 今天推迟了 %d 次,Postponed %d times today
 %s推迟了 %d 次,%s postponed %d times
+今天贪睡了 %d 次,Snoozed %d times today
+%s贪睡了 %d 次,%s snoozed %d times
+浇水,Water
+施肥,Fertilize
+浇水不枯萎,Water keeps it from wilting
+施肥会长高,Fertilizer makes it grow taller
 现在要做,Now
 现在要做\n%s,Now\n%s
 到时间了,It's time
 起床,Wake up
 去改这个提醒,Edit this reminder
+取消推迟,Cancel snooze
 确定,Confirm
 完成,Done
 蜀葵,Hollyhock
@@ -34,11 +41,69 @@ keys,en
 🗑️ 删除,🗑️ Delete
 输入提醒名称,Name this reminder
 💪 健身,💪 Workout
+＋ 增加结束时间,＋ Add end time
+＋ 添加结束时间,＋ Add end time
+15 分钟后结束,End in 15 min
+30 分钟后结束,End in 30 min
+1 小时后结束,End in 1 hour
+没有结束提醒,No end reminder
+开始,Start
+结束,End
+%s结束,%s ends
 👶 接娃,👶 Pick up the kids
 💊 吃药,💊 Take medicine
 不提醒,Off
 提醒,Reminder
 %d月%d日,%d/%d
+点 + 添加不同的提醒项目,Tap + to add more reminders
+周一到周日 每一天的时间都是独立的,Monday to Sunday each day keeps its own time
+点击时间可以修改,Tap the time to change it
+点 + 添加提醒,Tap + to add a reminder
 周一至周五,Weekdays
 每天,Every day
 不重复,Once
+这个时间用在哪几天,Which days should this time apply to
+上午,am
+下午,pm
+选一个任务，开始计时,Pick a task to start the timer
+%s 时间到了,%s · time's up
+时间到了,Time's up
+共 %s · %s 到,%s · done at %s
+%d 分钟,%d min
+%d 小时,%d h
+%d 小时 %d 分钟,%d h %d min
+删除「%s」？,Delete “%s”?
+⏳ 计时,⏳ Timer
+🍝 煮面,🍝 Noodles
+🍅 番茄钟,🍅 Pomodoro
+☕ 休息,☕ Break
+自定计时,Custom timer
+写个名字，比如 🧺 洗衣服,"Name it, e.g. 🧺 Laundry"
+开始计时,Start timer
+小时,h
+分钟,min
+取消,Cancel
+删除,Delete
+"＋ 自定
+选时长","＋ Custom
+pick a length"
+开始「%s」？,Start “%s”?
+%s · %s 到,%s · done at %s
+会停掉正在走的「%s」,This stops “%s”
+"点一下就开始计时
+到点只发一条提醒，不会响闹钟","Tap to start the timer
+When it's done you get a notification, no alarm"
+自己加的计时 长按可以删除,Long-press your own timers to delete them
+点 ＋ 自定 写个名字、选个时长,"Tap ＋ Custom to pick a name and a length"
+暂停提醒,Pause
+继续提醒,Resume
+暂停这天,Pause this day
+继续这天,Resume this day
+暂停,Paused
+暂停中 · 长按星期可以继续,Paused · hold the day to resume
+整个提醒已暂停 · 长按标签可以继续,Reminder paused · hold the tab to resume
+长按标签或星期，可以暂停或删除,Hold a tab or a day to pause or delete
+结束时间要晚于开始时间,End time must be after the start time
+睡觉时间要晚于起床时间,Bedtime must be after wake-up time
+Work in progress,Work in progress
+在努力研发中,We are working hard on it

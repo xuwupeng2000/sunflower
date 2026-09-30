@@ -19,11 +19,6 @@ boot_splash/show_image=false
 boot_splash/image="res://assets/splash.png"
 config/icon="res://icon.svg"
 
-[internationalization]
-
-locale/fallback="zh"
-locale/translations=PackedStringArray("res://locale/ui.en.translation")
-
 [autoload]
 
 AlarmStore="*res://scripts/alarm_store.gd"
@@ -54,6 +49,11 @@ theme/custom_font="res://theme/font_android.tres"
 
 theme/custom_font="res://theme/font_ios.tres"
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://locale/ui.en.translation")
+locale/fallback="zh"
+
 [ios]
 
 plugins/AlarmKit="res://ios/plugins/alarm_kit/alarm_kit.gdip"
@@ -63,3 +63,4 @@ plugins_plist/NSAlarmKitUsageDescription="用向日葵闹钟在你设定的时�
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+anti_aliasing/quality/msaa_3d=2

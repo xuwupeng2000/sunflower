@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[node name="任务命名" type="ColorRect"]
+[node name="删除计时" type="ColorRect"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -25,35 +25,27 @@ layout_mode = 2
 
 [node name="内容" type="VBoxContainer" parent="居中/面板"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 14
 
 [node name="提示" type="Label" parent="居中/面板/内容"]
 layout_mode = 2
-text = "输入提醒名称"
+text = "删除「⏳ 计时」？"
 horizontal_alignment = 1
+autowrap_mode = 3
 
-[node name="名字" type="LineEdit" parent="居中/面板/内容"]
+[node name="按钮" type="HBoxContainer" parent="居中/面板/内容"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="取消" type="Button" parent="居中/面板/内容/按钮"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-text = "新的提醒"
-alignment = 1
+size_flags_horizontal = 3
+text = "取消"
 
-[node name="健身" type="Button" parent="居中/面板/内容"]
+[node name="删除" type="Button" parent="居中/面板/内容/按钮"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-text = "💪 健身"
-
-[node name="接娃" type="Button" parent="居中/面板/内容"]
-custom_minimum_size = Vector2(0, 48)
-layout_mode = 2
-text = "👶 接娃"
-
-[node name="吃药" type="Button" parent="居中/面板/内容"]
-custom_minimum_size = Vector2(0, 48)
-layout_mode = 2
-text = "💊 吃药"
-
-[node name="完成" type="Button" parent="居中/面板/内容"]
-custom_minimum_size = Vector2(0, 48)
-layout_mode = 2
-text = "完成"
+size_flags_horizontal = 3
+theme_type_variation = &"DeleteButton"
+text = "删除"

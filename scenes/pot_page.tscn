@@ -2,14 +2,6 @@
 
 [ext_resource type="Script" uid="uid://djyuw1hjxhymc" path="res://scripts/snap_row.gd" id="2_snap"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_border"]
-content_margin_left = 8.0
-content_margin_top = 6.0
-content_margin_right = 8.0
-content_margin_bottom = 6.0
-bg_color = Color(0.741176, 0.847059, 0.929412, 0.92)
-border_color = Color(0.372549, 0.576471, 0.721569, 1)
-
 [node name="花盆" type="Control" unique_id=1922213792]
 layout_mode = 3
 anchors_preset = 15
@@ -20,13 +12,13 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="边框" type="PanelContainer" parent="." unique_id=1951288401]
+theme_type_variation = &"PotFrame"
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_border")
 
 [node name="列表" type="VBoxContainer" parent="边框" unique_id=530352051]
 layout_mode = 2

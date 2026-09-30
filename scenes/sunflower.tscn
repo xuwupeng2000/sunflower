@@ -1,9 +1,12 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Shader" uid="uid://c4toonshader0" path="res://shaders/toon.gdshader" id="6_toon"]
 
 [ext_resource type="Script" path="res://scripts/sunflower.gd" id="1_flower"]
 [ext_resource type="AudioStream" path="res://ios/sounds/grow.wav" id="2_grow"]
 [ext_resource type="Material" path="res://assets/sunflower/cloud.tres" id="3_cloud"]
 [ext_resource type="Script" path="res://scripts/rain_cloud.gd" id="4_cloud"]
+[ext_resource type="Texture2D" path="res://icons/poop.svg" id="5_poop"]
 
 [sub_resource type="Environment" id="Environment_world"]
 background_mode = 1
@@ -66,10 +69,16 @@ _data = {
 [sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
 size = Vector2(8, 8)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
-albedo_color = Color(0.57, 0.66, 0.5, 1)
-roughness = 1.0
-metallic = 0.0
+[sub_resource type="ShaderMaterial" id="StandardMaterial3D_ground"]
+shader = ExtResource("6_toon")
+shader_parameter/albedo_tint = Color(0.84, 0.9, 0.68, 1)
+shader_parameter/light_split = 0.25
+shader_parameter/light_softness = 0.02
+shader_parameter/shadow_color = Color(0.56, 0.58, 0.5, 1)
+shader_parameter/rim_strength = 0.0
+shader_parameter/wind_strength = 0.0
+shader_parameter/two_sided = false
+shader_parameter/alpha_cut = 0.0
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_spark"]
 emission_shape = 1
@@ -97,6 +106,74 @@ billboard_mode = 1
 [sub_resource type="QuadMesh" id="QuadMesh_spark"]
 material = SubResource("StandardMaterial3D_spark")
 size = Vector2(0.045, 0.045)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pour"]
+particle_flag_align_y = true
+emission_shape = 1
+emission_sphere_radius = 0.025
+direction = Vector3(-0.25, -1, 0)
+spread = 6.0
+initial_velocity_min = 0.5
+initial_velocity_max = 0.8
+gravity = Vector3(0, -9.0, 0)
+scale_min = 0.7
+scale_max = 1.0
+collision_mode = 2
+collision_use_scale = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pour"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.45, 0.68, 0.95, 0.85)
+billboard_mode = 3
+
+[sub_resource type="QuadMesh" id="QuadMesh_pour"]
+material = SubResource("StandardMaterial3D_pour")
+size = Vector2(0.04, 0.18)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_splash"]
+direction = Vector3(0, 1, 0)
+spread = 70.0
+initial_velocity_min = 0.5
+initial_velocity_max = 1.1
+gravity = Vector3(0, -6.0, 0)
+scale_min = 0.5
+scale_max = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_splash"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.82, 0.92, 1, 0.95)
+billboard_mode = 3
+
+[sub_resource type="QuadMesh" id="QuadMesh_splash"]
+material = SubResource("StandardMaterial3D_splash")
+size = Vector2(0.05, 0.05)
+
+[sub_resource type="Gradient" id="Gradient_puddle"]
+offsets = PackedFloat32Array(0, 0.55, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.85, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_puddle"]
+gradient = SubResource("Gradient_puddle")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_puddle"]
+transparency = 1
+albedo_color = Color(0.32, 0.5, 0.72, 0)
+albedo_texture = SubResource("GradientTexture2D_puddle")
+metallic = 0.45
+metallic_specular = 1.0
+roughness = 0.05
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_puddle"]
+material = SubResource("StandardMaterial3D_puddle")
+size = Vector2(1, 1)
 
 [node name="Sunflower" type="Node3D"]
 script = ExtResource("1_flower")
@@ -184,6 +261,54 @@ explosiveness = 1.0
 visibility_aabb = AABB(-0.8, -0.8, -0.8, 1.6, 1.6, 1.6)
 process_material = SubResource("ParticleProcessMaterial_spark")
 draw_pass_1 = SubResource("QuadMesh_spark")
+
+[node name="浇水" type="Node3D" parent="."]
+
+[node name="水流" type="GPUParticles3D" parent="浇水"]
+emitting = false
+amount = 160
+lifetime = 1.1
+local_coords = false
+collision_base_size = 0.02
+visibility_aabb = AABB(-3, -6, -3, 6, 7, 6)
+process_material = SubResource("ParticleProcessMaterial_pour")
+draw_pass_1 = SubResource("QuadMesh_pour")
+
+[node name="溅水" type="GPUParticles3D" parent="浇水"]
+emitting = false
+amount = 40
+lifetime = 0.35
+local_coords = false
+visibility_aabb = AABB(-3, -2, -3, 6, 4, 6)
+process_material = SubResource("ParticleProcessMaterial_splash")
+draw_pass_1 = SubResource("QuadMesh_splash")
+
+[node name="地面挡水" type="GPUParticlesCollisionBox3D" parent="浇水"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12, 0)
+size = Vector3(8, 0.2, 8)
+
+[node name="花盆挡水" type="GPUParticlesCollisionBox3D" parent="浇水"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+size = Vector3(1, 1, 1)
+
+[node name="水渍" type="MeshInstance3D" parent="浇水"]
+visible = false
+transform = Transform3D(2.4, 0, 0, 0, 1, 0, 0, 0, 2.4, 0, -0.012, 0)
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_puddle")
+
+[node name="施肥" type="Node3D" parent="."]
+
+[node name="便便" type="Sprite3D" parent="施肥"]
+visible = false
+cast_shadow = 0
+pixel_size = 0.004
+billboard = 1
+shaded = false
+no_depth_test = true
+render_priority = 1
+texture_filter = 4
+texture = ExtResource("5_poop")
 
 [node name="生长音效" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_grow")

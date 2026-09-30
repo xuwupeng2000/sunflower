@@ -1,16 +1,108 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-  <g transform="translate(32 34) scale(0.8) translate(-32 -32)">
-    <circle cx="32" cy="28" r="8" fill="#6b3a16"/>
-    <g fill="#f2c14e">
-      <ellipse cx="32" cy="10" rx="6" ry="10"/>
-      <ellipse cx="32" cy="46" rx="6" ry="10"/>
-      <ellipse cx="14" cy="28" rx="10" ry="6"/>
-      <ellipse cx="50" cy="28" rx="10" ry="6"/>
-      <ellipse cx="18" cy="14" rx="6" ry="10" transform="rotate(-40 18 14)"/>
-      <ellipse cx="46" cy="14" rx="6" ry="10" transform="rotate(40 46 14)"/>
-      <ellipse cx="18" cy="42" rx="6" ry="10" transform="rotate(40 18 42)"/>
-      <ellipse cx="46" cy="42" rx="6" ry="10" transform="rotate(-40 46 42)"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="tab_flower.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs9" />
+  <sodipodi:namedview
+     id="namedview9"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="12.453125"
+     inkscape:cx="32"
+     inkscape:cy="32"
+     inkscape:window-width="1444"
+     inkscape:window-height="946"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g9" />
+  <g
+     transform="translate(32 34) scale(0.8) translate(-32 -32)"
+     id="g9">
+    <rect
+       x="28.899624"
+       y="47.011292"
+       width="6"
+       height="14"
+       rx="2"
+       fill="#2f7a32"
+       id="rect8" />
+    <circle
+       cx="32"
+       cy="28"
+       r="8"
+       fill="#6b3a16"
+       id="circle1" />
+    <g
+       fill="#f2c14e"
+       id="g8">
+      <ellipse
+         cx="32"
+         cy="10"
+         rx="6"
+         ry="10"
+         id="ellipse1" />
+      <ellipse
+         cx="32"
+         cy="46"
+         rx="6"
+         ry="10"
+         id="ellipse2" />
+      <ellipse
+         cx="14"
+         cy="28"
+         rx="10"
+         ry="6"
+         id="ellipse3" />
+      <ellipse
+         cx="50"
+         cy="28"
+         rx="10"
+         ry="6"
+         id="ellipse4" />
+      <ellipse
+         cx="18"
+         cy="14"
+         rx="6"
+         ry="10"
+         transform="rotate(-40 18 14)"
+         id="ellipse5" />
+      <ellipse
+         cx="46"
+         cy="14"
+         rx="6"
+         ry="10"
+         transform="rotate(40 46 14)"
+         id="ellipse6" />
+      <ellipse
+         cx="18"
+         cy="42"
+         rx="6"
+         ry="10"
+         transform="rotate(40 18 42)"
+         id="ellipse7" />
+      <ellipse
+         cx="46"
+         cy="42"
+         rx="6"
+         ry="10"
+         transform="rotate(-40 46 42)"
+         id="ellipse8" />
     </g>
-    <rect x="29" y="44" width="6" height="14" rx="2" fill="#2f7a32"/>
   </g>
 </svg>

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="TimerTemplate" format=3]
+
+[ext_resource type="Script" path="res://scripts/timer_template.gd" id="1_tpl"]
+
+[resource]
+script = ExtResource("1_tpl")
+title = "☕ 休息"
+minutes = 5

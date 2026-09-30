@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Add the AlarmKit widget extension to a Godot-exported Xcode project."""
 
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -9,6 +10,17 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT = ROOT / "build" / "ios" / "Sunflower Alarm.xcodeproj" / "project.pbxproj"
 APP = ROOT / "build" / "ios" / "Sunflower Alarm"
 WIDGET_SRC = ROOT / "ios" / "widget"
+
+
+def add_to_main_group(text: str, entry: str) -> str:
+    """Godot leaves the last plugin file in the main group without a comma, and which file is last changes."""
+    main = re.search(r"mainGroup = (\w+);", text).group(1)
+    start = text.index("\t\t" + main + " ")
+    close = text.index("\n\t\t\t);", start)
+    head = text[:close].rstrip()
+    if not head.endswith((",", "(")):
+        head += ","
+    return head + "\n\t\t\t\t" + entry + text[close:]
 
 
 def main() -> None:
@@ -46,10 +58,7 @@ def main() -> None:
         "\t\t\t\tD0BCFE3418AEBDA2004A7AAE /* Sunflower Alarm.app */,\n\t\t\t);",
         "\t\t\t\tD0BCFE3418AEBDA2004A7AAE /* Sunflower Alarm.app */,\n\t\t\t\tA10000000000000000000004 /* Sunflower Alarm Widget.appex */,\n\t\t\t);",
     )
-    text = text.replace(
-        "\t\t\t\t58938401000000000000000F\n\t\t\t);",
-        "\t\t\t\t58938401000000000000000F,\n\t\t\t\tA10000000000000000000050 /* Widget */,\n\t\t\t);",
-    )
+    text = add_to_main_group(text, "A10000000000000000000050 /* Widget */,")
 
     extra = r"""
 /* Begin widget extension */

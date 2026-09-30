@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" format=3 uid="uid://d2p7k4yam1q0c"]
+
+[ext_resource type="FontFile" uid="uid://bblo2i0chg8oi" path="res://fonts/DSEG7Classic-Regular.ttf" id="1_digit"]
+[ext_resource type="FontFile" uid="uid://owionv02wmnx" path="res://fonts/NotoColorEmoji.woff" id="2_emoji"]
+[ext_resource type="FontVariation" uid="uid://bvat2utpj3x7w" path="res://theme/font_ios.tres" id="3_ios"]
+
+[resource]
+fallbacks = Array[Font]([ExtResource("2_emoji"), ExtResource("3_ios")])
+base_font = ExtResource("1_digit")

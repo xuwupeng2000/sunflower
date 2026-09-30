@@ -6,6 +6,11 @@ signal settled(value: int)
 @export var maximum := 23
 @export_range(0.5, 6.0, 0.1) var sensitivity := 1.0
 @export var coast := false
+## 不为空时按下标画这些字（会过翻译表），比如上午/下午；为空画两位数字。
+@export var labels: PackedStringArray = []
+## 关掉后到头就停，不会从 12 绕回 1。
+@export var wrap := true
+@export var wheel_width := 96.0
 var value := 0
 var _drag_y := 0.0
 var _velocity := 0.0
@@ -21,7 +26,7 @@ const SAMPLE_WINDOW := 0.09
 
 
 func _ready() -> void:
-	custom_minimum_size = Vector2(96, ROW * 5.0)
+	custom_minimum_size = Vector2(wheel_width, ROW * 5.0)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	set_process(false)
 
@@ -121,21 +126,34 @@ func _begin_coast() -> void:
 
 
 func _align_nearest() -> void:
-	if _drag_y <= -ROW * 0.5:
+	if _drag_y <= -ROW * 0.5 and _can_step(1):
 		_drag_y += ROW
 		value = _wrap(value + 1)
-	elif _drag_y >= ROW * 0.5:
+	elif _drag_y >= ROW * 0.5 and _can_step(-1):
 		_drag_y -= ROW
 		value = _wrap(value - 1)
 
 
 func _absorb_rows() -> void:
-	while _drag_y <= -ROW:
+	while _drag_y <= -ROW and _can_step(1):
 		_drag_y += ROW
 		value = _wrap(value + 1)
-	while _drag_y >= ROW:
+	while _drag_y >= ROW and _can_step(-1):
 		_drag_y -= ROW
 		value = _wrap(value - 1)
+	if not wrap:
+		# 到头了就别再往外拖，最多只能拉出一小段回弹。
+		if value == maximum:
+			_drag_y = maxf(_drag_y, -ROW * 0.35)
+		if value == minimum:
+			_drag_y = minf(_drag_y, ROW * 0.35)
+
+
+func _can_step(direction: int) -> bool:
+	if wrap:
+		return true
+	var next := value + direction
+	return next >= minimum and next <= maximum
 
 
 func _wrap(number: int) -> int:
@@ -147,7 +165,10 @@ func _draw() -> void:
 	var font := get_theme_font("font")
 	var center_y := size.y * 0.5
 	for delta in range(-3, 4):
-		var number := _wrap(value + delta)
+		var raw := value + delta
+		if not wrap and (raw < minimum or raw > maximum):
+			continue
+		var number := _wrap(raw)
 		var y := center_y + float(delta) * ROW + _drag_y
 		var distance := absf(y - center_y) / ROW
 		if distance > 2.6:
@@ -155,6 +176,8 @@ func _draw() -> void:
 		var alpha := clampf(1.0 - distance * 0.34, 0.18, 1.0)
 		var font_size := 28 if distance < 0.45 else 22
 		var text := "%02d" % number
+		if not labels.is_empty():
+			text = tr(labels[clampi(number - minimum, 0, labels.size() - 1)])
 		var text_width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		var position := Vector2((size.x - text_width) * 0.5, y + font_size * 0.32)
 		font.draw_string(get_canvas_item(), position, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(0.15, 0.16, 0.18, alpha))

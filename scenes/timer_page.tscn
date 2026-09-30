@@ -1,0 +1,99 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/timer_page.gd" id="1_page"]
+[ext_resource type="PackedScene" path="res://scenes/timer_button.tscn" id="2_button"]
+[ext_resource type="Resource" path="res://timers/noodle.tres" id="3_noodle"]
+[ext_resource type="Resource" path="res://timers/tomato.tres" id="4_tomato"]
+[ext_resource type="Resource" path="res://timers/break.tres" id="5_break"]
+
+[node name="计时" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_page")
+
+[node name="边框" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"AlarmFrame"
+
+[node name="内容" type="VBoxContainer" parent="边框"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="大字" type="VBoxContainer" parent="边框/内容"]
+custom_minimum_size = Vector2(0, 230)
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="名字" type="Label" parent="边框/内容/大字"]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "选一个任务，开始计时"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="倒计时" type="Label" parent="边框/内容/大字"]
+layout_mode = 2
+theme_type_variation = &"ClockDigits"
+theme_override_font_sizes/font_size = 72
+text = "00:00"
+horizontal_alignment = 1
+
+[node name="说明" type="Label" parent="边框/内容/大字"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+horizontal_alignment = 1
+
+[node name="取消" type="Button" parent="边框/内容/大字"]
+visible = false
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_type_variation = &"DeleteButton"
+text = "取消"
+
+[node name="分隔" type="HSeparator" parent="边框/内容"]
+layout_mode = 2
+
+[node name="滚动" type="ScrollContainer" parent="边框/内容"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="按钮" type="GridContainer" parent="边框/内容/滚动"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="煮面" parent="边框/内容/滚动/按钮" instance=ExtResource("2_button")]
+layout_mode = 2
+metadata/template = ExtResource("3_noodle")
+
+[node name="番茄钟" parent="边框/内容/滚动/按钮" instance=ExtResource("2_button")]
+layout_mode = 2
+metadata/template = ExtResource("4_tomato")
+
+[node name="休息" parent="边框/内容/滚动/按钮" instance=ExtResource("2_button")]
+layout_mode = 2
+metadata/template = ExtResource("5_break")
+
+[node name="自定" type="Button" parent="边框/内容/滚动/按钮"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"CardButton"
+text = "＋ 自定
+选时长"

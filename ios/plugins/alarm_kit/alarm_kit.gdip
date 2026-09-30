@@ -10,7 +10,7 @@ deinitialization="alarm_kit_deinit"
 linked=[]
 embedded=["SunflowerShared.xcframework"]
 system=["AlarmKit.framework", "ActivityKit.framework", "AppIntents.framework", "SwiftUI.framework"]
-files=["sunflower.wav"]
+files=["sunflower.wav", "notify_sky.png"]
 
 [plist]
 

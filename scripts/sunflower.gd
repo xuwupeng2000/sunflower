@@ -39,11 +39,10 @@ const FLOWER_KINDS := [
 	},
 	{
 		"name": "向日葵",
-		"mode": "stack",
-		"stem": "res://assets/sunflower/stem.glb",
-		"flower": "res://assets/sunflower/flower.glb",
-		"stem_materials": ["res://assets/sunflower/stem.tres", "res://assets/sunflower/leaf.tres"],
-		"flower_materials": [
+		"mode": "rig",
+		"scene": "res://scenes/sunflower_plant.tscn",
+		"height": 1.9,
+		"dry_materials": [
 			"res://assets/sunflower/petal.tres",
 			"res://assets/sunflower/disk.tres",
 			"res://assets/sunflower/stem.tres",
@@ -127,10 +126,50 @@ var _rain_cloud: Node3D
 var _grow_player: AudioStreamPlayer
 var _token := 0
 var _dragging := false
+var _drag_moved := false
+var _press_pos := Vector2.ZERO
+var _press_msec := 0
+var _plant_rest := Transform3D()
+var _shake: Tween
 var _pinch_points := {}
 var _pinch_span := 0.0
 var flower_index := 1
 var pot_index := 0
+const TAP_MOVE := 12.0
+const TAP_MS := 300
+const WILT_LEAN := 0.32
+## 骨骼向日葵：施肥 0 小苗、1 花苞、2 开花、到 6 长到最高；当天贪睡 3 次弯到底；缺水分三档。
+const RIG_GROW_MAX := 6
+const RIG_BEND_FULL := 3.0
+const RIG_GROW_SECONDS := 0.7
+const RIG_POSE_SECONDS := 0.6
+const WILT_DRY := [0.0, 0.2, 0.55, 1.0]
+const GROW_PARAM := &"parameters/生长/blend_position"
+const BEND_PARAM := &"parameters/折弯/add_amount"
+const WILT_PARAM := &"parameters/枯萎程度/blend_position"
+var _pose: AnimationTree
+var _rig_height := 1.9
+var _dry_materials: Array[Material] = []
+var _growth_shown := 0.0
+var _bend := 0.0
+var _wilt_level := 0
+var _rig_tween: Tween
+const WILT_COLOR := Color(0.95, 0.78, 0.28, 1)
+var _wilted := false
+var _wilt_tween: Tween
+const PUDDLE_ALPHA := 0.75
+const PUDDLE_STAY := 30.0
+const PUDDLE_DRY := 240.0
+var _pour: GPUParticles3D
+var _splash: GPUParticles3D
+var _pot_block: GPUParticlesCollisionBox3D
+var _puddle: MeshInstance3D
+var _puddle_width := 2.4
+var _puddle_tween: Tween
+const POOP_FALL := 0.6
+const POOP_FADE := 0.3
+const POOP_WIDTH := 0.5
+var _poop: Sprite3D
 
 
 func _ready() -> void:
@@ -141,6 +180,12 @@ func _ready() -> void:
 	_rain_cloud = get_node_or_null("雨云") as Node3D
 	_spark = get_node_or_null("星光") as GPUParticles3D
 	_grow_player = $生长音效
+	_pour = get_node_or_null("浇水/水流") as GPUParticles3D
+	_splash = get_node_or_null("浇水/溅水") as GPUParticles3D
+	_pot_block = get_node_or_null("浇水/花盆挡水") as GPUParticlesCollisionBox3D
+	_puddle = get_node_or_null("浇水/水渍") as MeshInstance3D
+	_poop = get_node_or_null("施肥/便便") as Sprite3D
+	_plant_rest = _plant.transform
 	_load_plant_meshes()
 	_present(_growth_extra)
 
@@ -153,22 +198,31 @@ func _halt() -> void:
 
 
 func _present(extra: int) -> void:
-	if _plant_mode == "spike":
+	if _plant_mode == "rig":
+		_mount_rig()
+		_set_growth(float(clampi(extra, 0, RIG_GROW_MAX)))
+		_pose_rig(false)
+	elif _plant_mode == "spike":
 		_mount_orchid()
 		_apply_orchid_pose(extra)
 		_frame_orchid(extra)
 	else:
 		_show_stack(extra)
+	_apply_wilt_pose()
 
 
 func play_count(count: int) -> void:
 	_halt()
 	var token := _token
 	_growth_extra = clampi(count, 0, MAX_EXTRA)
-	if _plant_mode == "spike":
+	if _plant_mode == "rig":
+		await _grow_rig(token)
+	elif _plant_mode == "spike":
 		await _grow_orchid(token)
 	else:
 		await _grow_stack(token)
+	if token == _token:
+		_apply_wilt_pose()
 
 
 func _grow_stack(token: int) -> void:
@@ -233,6 +287,87 @@ func _grow_stack(token: int) -> void:
 		await tween.finished
 		if token != _token:
 			return
+
+
+func _mount_rig() -> void:
+	for child in _plant.get_children():
+		child.free()
+	_head = null
+	_pose = null
+	var packed := load(str(FLOWER_KINDS[flower_index].get("scene", ""))) as PackedScene
+	if packed == null:
+		return
+	var rig := packed.instantiate() as Node3D
+	_plant.add_child(rig)
+	_pose = rig.get_node_or_null("姿态") as AnimationTree
+
+
+func _grow_rig(token: int) -> void:
+	if _pose == null or not is_instance_valid(_pose):
+		_mount_rig()
+		_pose_rig(false)
+	var goal := float(clampi(_growth_extra, 0, RIG_GROW_MAX))
+	var start := 0.0 if goal > 0.0 and _growth_shown >= goal else _growth_shown
+	if is_equal_approx(start, goal):
+		_set_growth(goal)
+		return
+	if goal > start and _grow_player and _grow_player.stream:
+		_grow_player.play()
+	var tween := _begin_motion()
+	tween.tween_method(_set_growth, start, goal, RIG_GROW_SECONDS * clampf(absf(goal - start), 1.0, 3.0)).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_callback(func() -> void: _spark_at(_plant.global_position + Vector3(0, _framed_bloom * 0.9, 0)))
+	await tween.finished
+	if token != _token:
+		return
+
+
+func _rig_scale(growth: float) -> float:
+	if growth <= 1.0:
+		return lerpf(0.36, 0.72, growth)
+	if growth <= 2.0:
+		return lerpf(0.72, 1.0, growth - 1.0)
+	return lerpf(1.0, 1.3, (growth - 2.0) / float(RIG_GROW_MAX - 2))
+
+
+func _set_growth(growth: float) -> void:
+	_growth_shown = growth
+	if _pose:
+		_pose.set(GROW_PARAM, growth)
+	_frame_height(_rig_height * maxf(_rig_scale(growth), 1.0), _rig_height)
+
+
+## 当天贪睡几次，花就低头几分；3 次弯到底。
+func set_bend(snoozes: int) -> void:
+	_bend = clampf(float(snoozes) / RIG_BEND_FULL, 0.0, 1.0)
+	if _plant_mode == "rig":
+		_pose_rig(true)
+
+
+func _pose_rig(animate: bool) -> void:
+	if _pose == null:
+		return
+	var dry := float(WILT_DRY[_wilt_level])
+	if _rig_tween and _rig_tween.is_valid():
+		_rig_tween.kill()
+	if not animate:
+		_pose.set(BEND_PARAM, _bend)
+		_pose.set(WILT_PARAM, float(_wilt_level))
+		_set_dry(dry)
+		return
+	var from_dry := 0.0
+	if not _dry_materials.is_empty():
+		from_dry = float((_dry_materials[0] as ShaderMaterial).get_shader_parameter("dry"))
+	_rig_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_rig_tween.tween_property(_pose, NodePath(BEND_PARAM), _bend, RIG_POSE_SECONDS)
+	_rig_tween.parallel().tween_property(_pose, NodePath(WILT_PARAM), float(_wilt_level), RIG_POSE_SECONDS * 1.6)
+	_rig_tween.parallel().tween_method(_set_dry, from_dry, dry, RIG_POSE_SECONDS * 1.6)
+
+
+func _set_dry(amount: float) -> void:
+	for material in _dry_materials:
+		var shader := material as ShaderMaterial
+		if shader:
+			shader.set_shader_parameter("dry", amount)
 
 
 func _grow_orchid(token: int) -> void:
@@ -318,6 +453,13 @@ func _load_plant_meshes() -> void:
 	if _pot:
 		_pot.mesh = _load_piece(str(pot["pot"]))["mesh"]
 		_apply_materials(_pot, _pot_materials)
+	_set_dry(0.0)
+	_dry_materials = _materials_from(flower.get("dry_materials", []))
+	if _plant_mode == "rig":
+		_rig_height = float(flower.get("height", 1.9))
+		_side_bloom_on = 0
+		_node_bloom = false
+		return
 	if _plant_mode == "spike":
 		_orchid_petal = load(str(flower["petal"]))
 		_orchid_lip = load(str(flower["lip"]))
@@ -410,14 +552,27 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _pinch(event):
 		return
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			_dragging = event.pressed
-		elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_UP:
+		var mouse := event as InputEventMouseButton
+		if mouse.button_index == MOUSE_BUTTON_LEFT:
+			if mouse.pressed:
+				_dragging = true
+				_drag_moved = false
+				_press_pos = mouse.position
+				_press_msec = Time.get_ticks_msec()
+			else:
+				var tap: bool = not _drag_moved and Time.get_ticks_msec() - _press_msec < TAP_MS and mouse.position.distance_to(_press_pos) < TAP_MOVE
+				_dragging = false
+				if tap:
+					_try_shake(mouse.position)
+		elif mouse.pressed and mouse.button_index == MOUSE_BUTTON_WHEEL_UP:
 			_set_zoom(_zoom_level + 1)
-		elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+		elif mouse.pressed and mouse.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			_set_zoom(_zoom_level - 1)
 	elif event is InputEventMouseMotion and _dragging and _pinch_points.size() < 2:
-		_turntable.rotate_y(-event.relative.x * 0.012)
+		var motion := event as InputEventMouseMotion
+		if motion.position.distance_to(_press_pos) >= TAP_MOVE:
+			_drag_moved = true
+			_turntable.rotate_y(-motion.relative.x * 0.012)
 	elif event is InputEventMagnifyGesture:
 		if event.factor > 1.05:
 			_set_zoom(_zoom_level + 1)
@@ -458,6 +613,198 @@ func _pinch_distance() -> float:
 	if points.size() < 2:
 		return 0.0
 	return (points[0] as Vector2).distance_to(points[1])
+
+
+func hits_plant(screen: Vector2) -> bool:
+	if _camera == null or _plant == null:
+		return false
+	var origin := _plant.global_position
+	var top := origin + Vector3(0, maxf(_framed_bloom, 1.6), 0)
+	var a := _camera.unproject_position(origin)
+	var b := _camera.unproject_position(top)
+	var ab := b - a
+	if ab.length() < 8.0:
+		return false
+	var t := clampf((screen - a).dot(ab) / ab.length_squared(), 0.0, 1.0)
+	return (a + ab * t).distance_to(screen) <= 88.0
+
+
+func _try_shake(screen: Vector2) -> void:
+	if hits_plant(screen):
+		_shake_plant()
+
+
+func _shake_plant() -> void:
+	if _plant == null:
+		return
+	if _shake and _shake.is_valid():
+		_shake.kill()
+	_apply_wilt_pose()
+	var base_z := _plant.rotation.z
+	_shake = create_tween()
+	_shake.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	var swings := PackedFloat32Array([0.028, -0.022, 0.012, -0.005, 0.0])
+	for amount in swings:
+		_shake.tween_property(_plant, "rotation:z", base_z + amount, 0.16)
+	_shake.tween_callback(_apply_wilt_pose)
+
+
+## level 0 精神，1 蔫了，2 更蔫，3 干枯；别的花只分蔫没蔫。
+func apply_wilt(level: int, animate: bool = false) -> void:
+	if _plant == null:
+		return
+	if _wilt_tween and _wilt_tween.is_valid():
+		_wilt_tween.kill()
+	_wilt_level = clampi(level, 0, WILT_DRY.size() - 1)
+	var wilted := _wilt_level > 0
+	_wilted = wilted
+	if _plant_mode == "rig":
+		_plant.transform = _plant_rest
+		_pose_rig(animate)
+		return
+	if not animate:
+		_apply_wilt_pose()
+		return
+	var rest := _plant_rest.basis.get_euler()
+	var goal_z := rest.z + (WILT_LEAN if wilted else 0.0)
+	_wilt_tween = create_tween()
+	_wilt_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	_wilt_tween.tween_property(_plant, "rotation:z", goal_z, 0.45)
+	_wilt_tween.parallel().tween_callback(_tint_plant.bind(wilted))
+
+
+func _apply_wilt_pose() -> void:
+	if _plant == null:
+		return
+	_plant.transform = _plant_rest
+	if _plant_mode == "rig":
+		return
+	if _wilted:
+		_plant.rotation.z = _plant_rest.basis.get_euler().z + WILT_LEAN
+	_tint_plant(_wilted)
+
+
+func _tint_plant(wilted: bool) -> void:
+	var overlay: Material = null
+	if wilted:
+		var mat := StandardMaterial3D.new()
+		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		mat.albedo_color = Color(WILT_COLOR, 0.42)
+		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		overlay = mat
+	_overlay_meshes(_plant, overlay)
+
+
+func _overlay_meshes(node: Node, overlay: Material) -> void:
+	var geo := node as GeometryInstance3D
+	if geo:
+		geo.material_overlay = overlay
+	for child in node.get_children():
+		_overlay_meshes(child, overlay)
+
+
+func water() -> void:
+	apply_wilt(0, true)
+
+
+# screen 是壶嘴在屏幕上的位置，水从花那一层深度落下。
+func pour_at(screen: Vector2) -> void:
+	if _camera == null or _pour == null:
+		return
+	var forward := -_camera.global_transform.basis.z
+	var depth := (_plant.global_position - _camera.global_position).dot(forward)
+	_pour.global_position = _camera.project_position(screen, depth)
+	_place_splash()
+	if _pour.emitting:
+		return
+	_pour.emitting = true
+	if _splash:
+		_splash.emitting = true
+	_wet_ground()
+
+
+func stop_pour() -> void:
+	if _pour == null or not _pour.emitting:
+		return
+	_pour.emitting = false
+	if _splash:
+		_splash.emitting = false
+	_dry_ground()
+
+
+func _place_splash() -> void:
+	if _splash == null or _pot_block == null:
+		return
+	var at := _pour.global_position
+	var radius := _pot_block.size.x * 0.5
+	var land := _pot_block.size.y if Vector2(at.x, at.z).length() < radius else 0.0
+	_splash.global_position = Vector3(at.x, land, at.z)
+
+
+func _wet_ground() -> void:
+	if _puddle == null:
+		return
+	if _puddle_tween and _puddle_tween.is_valid():
+		_puddle_tween.kill()
+	var mat := _puddle.mesh.surface_get_material(0) as StandardMaterial3D
+	if not _puddle.visible:
+		_puddle.scale = Vector3(_puddle_width * 0.4, 1, _puddle_width * 0.4)
+	_puddle.visible = true
+	_puddle_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	_puddle_tween.tween_interval(0.35)
+	_puddle_tween.tween_property(mat, "albedo_color:a", PUDDLE_ALPHA, 1.4)
+	_puddle_tween.parallel().tween_property(_puddle, "scale", Vector3(_puddle_width, 1, _puddle_width), 2.4)
+
+
+func _dry_ground() -> void:
+	if _puddle == null:
+		return
+	if _puddle_tween and _puddle_tween.is_valid():
+		_puddle_tween.kill()
+	var mat := _puddle.mesh.surface_get_material(0) as StandardMaterial3D
+	_puddle_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	_puddle_tween.tween_interval(PUDDLE_STAY)
+	_puddle_tween.tween_property(mat, "albedo_color:a", 0.0, PUDDLE_DRY)
+	_puddle_tween.parallel().tween_property(_puddle, "scale", Vector3(_puddle_width * 0.7, 1, _puddle_width * 0.7), PUDDLE_DRY)
+	_puddle_tween.tween_callback(func() -> void: _puddle.visible = false)
+
+
+# screen 是袋口在屏幕上的位置；落到盆土上消失以后才调 landed。
+func drop_fertilizer(screen: Vector2, landed: Callable) -> void:
+	if _camera == null or _poop == null:
+		feed()
+		landed.call()
+		return
+	var forward := -_camera.global_transform.basis.z
+	var depth := (_plant.global_position - _camera.global_position).dot(forward)
+	var start := _camera.project_position(screen, depth)
+	var land := global_position + Vector3(0, 0.35, 0)
+	if _pot_block:
+		land = _pot_block.global_position + Vector3(0, _pot_block.size.y * 0.5, 0)
+	_poop.global_position = start
+	_poop.scale = Vector3.ONE
+	_poop.modulate.a = 1.0
+	_poop.visible = true
+	var tween := create_tween()
+	tween.tween_property(_poop, "global_position", land, POOP_FALL).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.tween_callback(feed)
+	tween.tween_property(_poop, "scale", Vector3(1.3, 0.5, 1.0), 0.08)
+	tween.tween_property(_poop, "scale", Vector3(0.2, 0.2, 0.2), POOP_FADE).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(_poop, "modulate:a", 0.0, POOP_FADE)
+	tween.tween_callback(func() -> void:
+		_poop.visible = false
+		landed.call()
+	)
+
+
+func feed() -> void:
+	var at := _pot.global_position + Vector3(0, 0.35, 0) if _pot else global_position
+	_spark_at(at)
+	if _pot:
+		var rest := _pot.scale
+		var tween := create_tween()
+		tween.tween_property(_pot, "scale", rest * Vector3(1.06, 0.94, 1.06), 0.12)
+		tween.tween_property(_pot, "scale", rest, 0.18)
 
 
 func _set_zoom(level: int) -> void:
@@ -812,6 +1159,20 @@ func _frame_height(bloom: float, base_bloom: float) -> void:
 	_camera.look_at(Vector3(0, look_y, 0))
 	if _rain_cloud:
 		_rain_cloud.position.y = head_top + 0.85
+	_fit_water(pot_scale, target_pot)
+
+
+func _fit_water(pot_scale: float, pot_top: float) -> void:
+	if _pot == null or _pot.mesh == null or _pot_block == null or _puddle == null:
+		return
+	var aabb := _pot.mesh.get_aabb()
+	var width := maxf(aabb.size.x, aabb.size.z) * pot_scale
+	_pot_block.size = Vector3(width, pot_top, width)
+	_pot_block.position = Vector3(0, pot_top * 0.5, 0)
+	_puddle_width = width * 2.2
+	_puddle.scale = Vector3(_puddle_width, 1, _puddle_width)
+	if _poop and _poop.texture:
+		_poop.pixel_size = width * POOP_WIDTH / _poop.texture.get_width()
 
 
 

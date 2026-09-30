@@ -1,0 +1,87 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://cyrkxqh6wxxu2" path="res://assets/sunflower/sunflower.glb" id="1_model"]
+
+[sub_resource type="AnimationNodeAnimation" id="grow_sprout"]
+animation = &"小苗"
+
+[sub_resource type="AnimationNodeAnimation" id="grow_bud"]
+animation = &"花苞"
+
+[sub_resource type="AnimationNodeAnimation" id="grow_bloom"]
+animation = &"开花"
+
+[sub_resource type="AnimationNodeAnimation" id="grow_tall"]
+animation = &"长高"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="grow"]
+blend_point_0/node = SubResource("grow_sprout")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("grow_bud")
+blend_point_1/pos = 1.0
+blend_point_2/node = SubResource("grow_bloom")
+blend_point_2/pos = 2.0
+blend_point_3/node = SubResource("grow_tall")
+blend_point_3/pos = 6.0
+max_space = 6.0
+snap = 0.5
+value_label = "施肥次数"
+
+[sub_resource type="AnimationNodeAnimation" id="bow"]
+animation = &"贪睡"
+
+[sub_resource type="AnimationNodeAdd2" id="bend"]
+
+[sub_resource type="AnimationNodeAnimation" id="wilt_none"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeAnimation" id="wilt_1"]
+animation = &"蔫1"
+
+[sub_resource type="AnimationNodeAnimation" id="wilt_2"]
+animation = &"蔫2"
+
+[sub_resource type="AnimationNodeAnimation" id="wilt_3"]
+animation = &"蔫3"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="wilt_level"]
+blend_point_0/node = SubResource("wilt_none")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("wilt_1")
+blend_point_1/pos = 1.0
+blend_point_2/node = SubResource("wilt_2")
+blend_point_2/pos = 2.0
+blend_point_3/node = SubResource("wilt_3")
+blend_point_3/pos = 3.0
+max_space = 3.0
+snap = 1.0
+value_label = "枯萎程度"
+
+[sub_resource type="AnimationNodeAdd2" id="wilt"]
+
+[sub_resource type="AnimationNodeBlendTree" id="pose_tree"]
+"nodes/生长/node" = SubResource("grow")
+"nodes/生长/position" = Vector2(-420, 60)
+"nodes/贪睡/node" = SubResource("bow")
+"nodes/贪睡/position" = Vector2(-420, 260)
+"nodes/折弯/node" = SubResource("bend")
+"nodes/折弯/position" = Vector2(-180, 120)
+"nodes/枯萎程度/node" = SubResource("wilt_level")
+"nodes/枯萎程度/position" = Vector2(-180, 320)
+"nodes/枯萎/node" = SubResource("wilt")
+"nodes/枯萎/position" = Vector2(60, 160)
+nodes/output/position = Vector2(300, 160)
+node_connections = [&"output", 0, &"枯萎", &"折弯", 0, &"生长", &"折弯", 1, &"贪睡", &"枯萎", 0, &"折弯", &"枯萎", 1, &"枯萎程度"]
+
+[node name="向日葵" type="Node3D"]
+
+[node name="模型" parent="." instance=ExtResource("1_model")]
+
+[node name="姿态" type="AnimationTree" parent="."]
+root_node = NodePath("../模型")
+tree_root = SubResource("pose_tree")
+anim_player = NodePath("../模型/AnimationPlayer")
+"parameters/生长/blend_position" = 2.0
+"parameters/折弯/add_amount" = 0.0
+"parameters/枯萎程度/blend_position" = 0.0
+"parameters/枯萎/add_amount" = 1.0
