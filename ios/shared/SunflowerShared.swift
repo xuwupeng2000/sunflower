@@ -2,7 +2,22 @@ import ActivityKit
 import AlarmKit
 import AppIntents
 import SwiftUI
+import UIKit
 import UserNotifications
+
+public enum Haptics {
+    public static func tap(_ style: UIImpactFeedbackGenerator.FeedbackStyle = .medium) {
+        let generator = UIImpactFeedbackGenerator(style: style)
+        generator.prepare()
+        generator.impactOccurred()
+    }
+
+    public static func success() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        generator.notificationOccurred(.success)
+    }
+}
 
 public enum Copy {
     public static var chinese: Bool {
@@ -30,10 +45,13 @@ public enum Copy {
 public struct SunflowerMetadata: AlarmMetadata {
     public let alarmId: String
     public let events: String
+    /// AlarmKit 排程用的 UUID，取消时直接按这个停，避免只靠逻辑 id 对不上。
+    public let kitId: String
 
-    public init(alarmId: String, events: String) {
+    public init(alarmId: String, events: String, kitId: String = "") {
         self.alarmId = alarmId
         self.events = events
+        self.kitId = kitId
     }
 }
 
@@ -66,32 +84,6 @@ public func alarmUUID(_ alarmId: String) -> UUID? {
         bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]
     )
     return UUID(uuidString: text)
-}
-
-/// Ends the current postpone countdown; the weekly alarm still rings next time.
-public struct CancelSnoozeIntent: LiveActivityIntent {
-    public static var title: LocalizedStringResource {
-        LocalizedStringResource(stringLiteral: Copy.text("取消推迟", "Cancel snooze"))
-    }
-    public static var openAppWhenRun = false
-
-    @Parameter(title: "Group")
-    public var logicalID: String
-
-    public init() {
-        logicalID = ""
-    }
-
-    public init(logicalID: String) {
-        self.logicalID = logicalID
-    }
-
-    public func perform() async throws -> some IntentResult {
-        if let uuid = alarmUUID(logicalID) {
-            try? AlarmManager.shared.stop(id: uuid)
-        }
-        return .result()
-    }
 }
 
 /// One-shot countdown from the timer tab; only one runs at a time.
@@ -160,62 +152,5 @@ public enum SunflowerTimer {
         let id = defaults?.string(forKey: cancelledKey) ?? ""
         defaults?.removeObject(forKey: cancelledKey)
         return id
-    }
-}
-
-public struct CancelTimerIntent: LiveActivityIntent {
-    public static var title: LocalizedStringResource {
-        LocalizedStringResource(stringLiteral: Copy.text("取消计时", "Cancel timer"))
-    }
-    public static var openAppWhenRun = false
-
-    @Parameter(title: "Timer")
-    public var timerID: String
-
-    public init() {
-        timerID = ""
-    }
-
-    public init(timerID: String) {
-        self.timerID = timerID
-    }
-
-    public func perform() async throws -> some IntentResult {
-        SunflowerTimer.markCancelled(timerID)
-        await SunflowerTimer.cancel(timerID)
-        return .result()
-    }
-}
-
-public struct SnoozeFlowerIntent: LiveActivityIntent {
-    public static var title: LocalizedStringResource {
-        LocalizedStringResource(stringLiteral: Copy.text("推迟", "Postpone"))
-    }
-    public static var openAppWhenRun = true
-
-    @Parameter(title: "Alarm")
-    public var alarmID: String
-
-    @Parameter(title: "Group")
-    public var logicalID: String
-
-    public init() {
-        alarmID = ""
-        logicalID = ""
-    }
-
-    public init(alarmID: String, logicalID: String) {
-        self.alarmID = alarmID
-        self.logicalID = logicalID
-    }
-
-    public func perform() async throws -> some IntentResult {
-        if !logicalID.isEmpty {
-            SnoozeStore.recordCountdown(alarmId: logicalID)
-        }
-        if let uuid = UUID(uuidString: alarmID) {
-            try? AlarmManager.shared.countdown(id: uuid)
-        }
-        return .result()
     }
 }

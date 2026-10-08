@@ -40,21 +40,31 @@ struct SunflowerAlarmLiveActivity: Widget {
                 .activityBackgroundTint(.clear)
         } dynamicIsland: { context in
             DynamicIsland {
+                DynamicIslandExpandedRegion(.leading) {
+                    FlowerMark(size: 26)
+                        .padding(.leading, 6)
+                }
                 DynamicIslandExpandedRegion(.center) {
-                    VStack(spacing: 4) {
+                    VStack(alignment: .leading, spacing: 4) {
                         alarmTimeText(context)
                             .foregroundStyle(.white)
                         eventList(context.attributes.metadata?.events ?? "", fallback: Copy.text("向日葵闹钟", "Sunflower Alarm"))
                             .foregroundStyle(skyAccent)
+                            .lineLimit(2)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 6)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    HStack(spacing: 12) {
-                        SkyStrip(height: 34)
-                        if isSnoozing(context) {
+                    HStack(spacing: 10) {
+                        SkyStrip(height: 30)
+                        if isSnoozing(context) || isAlerting(context) {
                             cancelSnoozeButton(context)
                         }
                     }
+                    .padding(.horizontal, 14)
+                    .padding(.top, 4)
+                    .padding(.bottom, 12)
                 }
             } compactLeading: {
                 FlowerMark(size: 20)
@@ -142,13 +152,28 @@ struct SunflowerAlarmLiveActivity: Widget {
         }
     }
 
+    private func isAlerting(_ context: ActivityViewContext<AlarmAttributes<SunflowerMetadata>>) -> Bool {
+        if case .alert = context.state.mode {
+            return true
+        }
+        return false
+    }
+
     private func cancelSnoozeButton(_ context: ActivityViewContext<AlarmAttributes<SunflowerMetadata>>) -> some View {
-        Button(intent: CancelSnoozeIntent(logicalID: context.attributes.metadata?.alarmId ?? "")) {
-            Text(Copy.text("取消推迟", "Cancel snooze"))
+        let meta = context.attributes.metadata
+        let intent = CancelSnoozeIntent(
+            logicalID: meta?.alarmId ?? "",
+            kitID: meta?.kitId ?? ""
+        )
+        let label = isSnoozing(context)
+            ? Copy.text("取消推迟", "Cancel snooze")
+            : Copy.text("停止", "Stop")
+        return Button(intent: intent) {
+            Text(label)
                 .font(.headline)
                 .foregroundStyle(ink)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 9)
                 .background(.white.opacity(0.9), in: Capsule())
         }
         .buttonStyle(.plain)
@@ -174,50 +199,56 @@ struct SunflowerAlarmLiveActivity: Widget {
 struct SunflowerTimerLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: SunflowerTimerAttributes.self) { context in
+            // 锁屏横幅最高约 160pt。按钮放在数字右边，整体才装得下；
+            // 之前按钮单独占一行，内容撑爆高度，四周留白就被挤没了。
             VStack(alignment: .leading, spacing: 10) {
-                timerHeadline(context, digits: 34)
+                HStack(alignment: .center, spacing: 12) {
+                    timerHeadline(context, digits: 34)
+                    if !context.isStale {
+                        cancelTimerButton(context.attributes)
+                            .fixedSize()
+                    }
+                }
                 if !context.isStale {
                     timerProgress(context.attributes)
                     Text(timerNote(context.attributes))
                         .font(.caption)
                         .foregroundStyle(ink.opacity(0.6))
                 }
-                HStack(spacing: 10) {
-                    Spacer(minLength: 0)
-                    if !context.isStale {
-                        cancelTimerButton(context.attributes)
-                    }
-                    flowerLink()
-                }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .frame(maxWidth: alarmBannerWidth)
+            .padding(EdgeInsets(top: 16, leading: 20, bottom: 16, trailing: 20))
+            .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundStyle(ink)
             .background(SkyBackground())
-            .frame(maxWidth: .infinity)
-            .widgetURL(flowerURL)
             .activityBackgroundTint(.clear)
         } dynamicIsland: { context in
             DynamicIsland {
+                DynamicIslandExpandedRegion(.leading) {
+                    Text(context.attributes.emoji)
+                        .font(.title2)
+                        .padding(.leading, 10)
+                }
                 DynamicIslandExpandedRegion(.center) {
-                    timerHeadline(context, digits: 30)
+                    timerHeadline(context, digits: 26)
                         .foregroundStyle(.white)
+                        .padding(.horizontal, 8)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     if context.isStale {
                         EmptyView()
                     } else {
-                        VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading, spacing: 10) {
                             timerProgress(context.attributes)
-                            HStack {
+                            HStack(spacing: 0) {
                                 Text(timerNote(context.attributes))
                                     .font(.caption)
                                     .foregroundStyle(skyAccent)
-                                Spacer(minLength: 8)
+                                    .lineLimit(2)
+                                Spacer(minLength: 12)
                                 cancelTimerButton(context.attributes)
                             }
                         }
+                        .padding(EdgeInsets(top: 6, leading: 20, bottom: 16, trailing: 20))
                     }
                 }
             } compactLeading: {
@@ -243,6 +274,7 @@ struct SunflowerTimerLiveActivity: Widget {
                 .tint(skyAccent)
             }
             .keylineTint(skyAccent)
+            .contentMargins(.all, 8, for: .expanded)
         }
     }
 
@@ -301,25 +333,14 @@ struct SunflowerTimerLiveActivity: Widget {
 
     private func cancelTimerButton(_ attributes: SunflowerTimerAttributes) -> some View {
         Button(intent: CancelTimerIntent(timerID: attributes.timerId)) {
-            Text(Copy.text("取消", "Cancel"))
+            Text(Copy.text("取消计时", "Cancel timer"))
                 .font(.headline)
-                .foregroundStyle(softRed)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(.white.opacity(0.9), in: Capsule())
+                .foregroundStyle(ink)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .background(.white.opacity(0.92), in: Capsule())
         }
         .buttonStyle(.plain)
-    }
-
-    private func flowerLink() -> some View {
-        Link(destination: flowerURL) {
-            Text(Copy.text("看花", "See the flower"))
-                .font(.headline)
-                .foregroundStyle(softYellowText)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(softYellow, in: Capsule())
-        }
     }
 }
 

@@ -215,7 +215,7 @@ private func schedule(id: UUID, logicalId: String, hour: Int, minute: Int, label
     let paused = AlarmPresentation.Paused(title: LocalizedStringResource(stringLiteral: Copy.text("已暂停", "Paused")), resumeButton: resume)
     let attributes = AlarmAttributes<SunflowerMetadata>(
         presentation: AlarmPresentation(alert: alert, countdown: countdown, paused: paused),
-        metadata: SunflowerMetadata(alarmId: logicalId, events: events),
+        metadata: SunflowerMetadata(alarmId: logicalId, events: events, kitId: id.uuidString),
         tintColor: Color(red: 127.0 / 255.0, green: 167.0 / 255.0, blue: 198.0 / 255.0)
     )
     let sound = AlertConfiguration.AlertSound.named("sunflower.wav")

@@ -1,0 +1,4 @@
+framework module SunflowerShared {
+  header "SunflowerShared-Swift.h"
+  export *
+}

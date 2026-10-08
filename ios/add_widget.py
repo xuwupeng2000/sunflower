@@ -34,6 +34,7 @@ def main() -> None:
     dest = APP / "Widget"
     dest.mkdir(parents=True, exist_ok=True)
     shutil.copy(WIDGET_SRC / "SunflowerAlarmWidget.swift", dest / "SunflowerAlarmWidget.swift")
+    shutil.copy(WIDGET_SRC / "SunflowerIntents.swift", dest / "SunflowerIntents.swift")
     shutil.copy(WIDGET_SRC / "Info.plist", dest / "Info.plist")
     shutil.copy(WIDGET_SRC / "SunflowerAlarmWidget.entitlements", dest / "SunflowerAlarmWidget.entitlements")
 
@@ -59,10 +60,19 @@ def main() -> None:
         "\t\t\t\tD0BCFE3418AEBDA2004A7AAE /* Sunflower Alarm.app */,\n\t\t\t\tA10000000000000000000004 /* Sunflower Alarm Widget.appex */,\n\t\t\t);",
     )
     text = add_to_main_group(text, "A10000000000000000000050 /* Widget */,")
+    # Live Activity 按钮的 Intent 要编进主 App 才会被系统登记；同一个文件也编进 Widget。
+    text = text.replace(
+        "\t\t\t\t90B4C2B62680C7E90039117A /* dummy.swift */,\n",
+        "\t\t\t\t90B4C2B62680C7E90039117A /* dummy.swift */,\n\t\t\t\tA1000000000000000000001C /* SunflowerIntents.swift in Sources (app) */,\n",
+    )
+    if "A1000000000000000000001C" not in text:
+        raise SystemExit("failed to add SunflowerIntents.swift to the app target")
 
     extra = r"""
 /* Begin widget extension */
 		A10000000000000000000011 /* SunflowerAlarmWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* SunflowerAlarmWidget.swift */; };
+		A1000000000000000000001B /* SunflowerIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* SunflowerIntents.swift */; };
+		A1000000000000000000001C /* SunflowerIntents.swift in Sources (app) */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* SunflowerIntents.swift */; };
 		A10000000000000000000012 /* sunflower.wav in Resources */ = {isa = PBXBuildFile; fileRef = 58938401000000000000000F /* sunflower.wav */; };
 		A10000000000000000000013 /* SunflowerShared.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58938401000000000000000C /* SunflowerShared.xcframework */; };
 		A10000000000000000000014 /* SunflowerShared.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 58938401000000000000000C /* SunflowerShared.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -73,6 +83,7 @@ def main() -> None:
 		A10000000000000000000019 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* WidgetKit.framework */; };
 		A1000000000000000000001A /* Sunflower Alarm Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A10000000000000000000004 /* Sunflower Alarm Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A10000000000000000000001 /* SunflowerAlarmWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunflowerAlarmWidget.swift; sourceTree = "<group>"; };
+		A10000000000000000000006 /* SunflowerIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunflowerIntents.swift; sourceTree = "<group>"; };
 		A10000000000000000000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A10000000000000000000003 /* SunflowerAlarmWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SunflowerAlarmWidget.entitlements; sourceTree = "<group>"; };
 		A10000000000000000000004 /* Sunflower Alarm Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Sunflower Alarm Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +93,7 @@ def main() -> None:
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000011 /* SunflowerAlarmWidget.swift in Sources */,
+				A1000000000000000000001B /* SunflowerIntents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +156,7 @@ def main() -> None:
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000001 /* SunflowerAlarmWidget.swift */,
+				A10000000000000000000006 /* SunflowerIntents.swift */,
 				A10000000000000000000002 /* Info.plist */,
 				A10000000000000000000003 /* SunflowerAlarmWidget.entitlements */,
 			);
