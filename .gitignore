@@ -11,6 +11,7 @@ export_presets.cfg
 .mono/
 mono_crash.*.json
 android/
+build/
 *.apk
 *.aab
 *.ipa
