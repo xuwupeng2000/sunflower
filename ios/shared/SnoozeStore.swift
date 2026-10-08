@@ -4,17 +4,12 @@ public enum SnoozeStore {
     public static let appGroup = "group.com.sunflower.alarm"
     private static let logKey = "snooze.log"
     private static let modeKeyPrefix = "alarm.mode."
+    /// Same postpone countdown is 9 minutes; ignore repeats inside this window.
+    private static let sessionSeconds = 8 * 60
 
     public static func recordCountdown(alarmId: String) {
-        let defaults = UserDefaults(suiteName: appGroup)
-        let day = dayKey(Date())
-        let key = modeKeyPrefix + alarmId
-        let mark = "countdown:" + day
-        if defaults?.string(forKey: key) == mark {
-            return
-        }
-        defaults?.set(mark, forKey: key)
-        append(alarmId: alarmId)
+        append(alarmId: alarmId, kind: "snooze")
+        UserDefaults(suiteName: appGroup)?.set("countdown", forKey: modeKeyPrefix + alarmId)
     }
 
     public static func recordMode(alarmId: String, mode: String) {
@@ -22,7 +17,20 @@ public enum SnoozeStore {
             recordCountdown(alarmId: alarmId)
             return
         }
+        if mode == "scheduled" {
+            recordStop(alarmId: alarmId)
+            return
+        }
         UserDefaults(suiteName: appGroup)?.set(mode, forKey: modeKeyPrefix + alarmId)
+    }
+
+    public static func recordStop(alarmId: String) {
+        let defaults = UserDefaults(suiteName: appGroup)
+        let previous = defaults?.string(forKey: modeKeyPrefix + alarmId) ?? ""
+        if previous == "alerting" {
+            append(alarmId: alarmId, kind: "done")
+        }
+        defaults?.set("scheduled", forKey: modeKeyPrefix + alarmId)
     }
 
     public static func json() -> String {
@@ -34,13 +42,21 @@ public enum SnoozeStore {
         return text
     }
 
-    private static func append(alarmId: String) {
+    private static func append(alarmId: String, kind: String) {
         let defaults = UserDefaults(suiteName: appGroup)
         var events = defaults?.array(forKey: logKey) as? [[String: Any]] ?? []
-        let now = Date()
-        let stamp = Int(now.timeIntervalSince1970)
-        let day = dayKey(now)
-        let event: [String: Any] = ["date": day, "alarm_id": alarmId, "at": stamp]
+        let stamp = Int(Date().timeIntervalSince1970)
+        if let last = events.last(where: {
+            ($0["alarm_id"] as? String) == alarmId && ($0["kind"] as? String ?? "snooze") == kind
+        }), let lastAt = last["at"] as? Int, stamp - lastAt < sessionSeconds {
+            return
+        }
+        let event: [String: Any] = [
+            "date": dayKey(Date()),
+            "alarm_id": alarmId,
+            "at": stamp,
+            "kind": kind,
+        ]
         events.append(event)
         defaults?.set(events, forKey: logKey)
     }

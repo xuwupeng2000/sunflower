@@ -346,39 +346,6 @@ layout_mode = 1
 visible = false
 layout_mode = 1
 
-[node name="研发中" type="PanelContainer" parent="UI/界面" unique_id=1736402915]
-visible = false
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -110.0
-offset_top = -176.0
-offset_right = 110.0
-offset_bottom = -96.0
-grow_horizontal = 2
-grow_vertical = 0
-mouse_filter = 2
-theme_type_variation = &"HoldMenu"
-
-[node name="文字" type="VBoxContainer" parent="UI/界面/研发中" unique_id=1736402916]
-layout_mode = 2
-mouse_filter = 2
-alignment = 1
-
-[node name="标题" type="Label" parent="UI/界面/研发中/文字" unique_id=1736402917]
-layout_mode = 2
-theme_type_variation = &"SectionTitle"
-text = "Work in progress"
-horizontal_alignment = 1
-
-[node name="说明" type="Label" parent="UI/界面/研发中/文字" unique_id=1736402918]
-layout_mode = 2
-text = "在努力研发中"
-horizontal_alignment = 1
-
 [node name="计时教程" type="ColorRect" parent="UI/界面" unique_id=155193069]
 visible = false
 layout_mode = 1

@@ -1,0 +1,2436 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "SunflowerShared",
+    "printedName": "SunflowerShared",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "ActivityKit",
+        "printedName": "ActivityKit",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "Import",
+        "name": "AlarmKit",
+        "printedName": "AlarmKit",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "Import",
+        "name": "AppIntents",
+        "printedName": "AppIntents",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "Import",
+        "name": "UserNotifications",
+        "printedName": "UserNotifications",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "Haptics",
+        "printedName": "Haptics",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "tap",
+            "printedName": "tap(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "FeedbackStyle",
+                "printedName": "UIKit.UIImpactFeedbackGenerator.FeedbackStyle",
+                "hasDefaultArg": true,
+                "usr": "c:@E@UIImpactFeedbackStyle"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared7HapticsO3tapyySo21UIImpactFeedbackStyleVFZ",
+            "mangledName": "$s15SunflowerShared7HapticsO3tapyySo21UIImpactFeedbackStyleVFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "success",
+            "printedName": "success()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared7HapticsO7successyyFZ",
+            "mangledName": "$s15SunflowerShared7HapticsO7successyyFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:15SunflowerShared7HapticsO",
+        "mangledName": "$s15SunflowerShared7HapticsO",
+        "moduleName": "SunflowerShared",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "Copy",
+        "printedName": "Copy",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "chinese",
+            "printedName": "chinese",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared4CopyO7chineseSbvpZ",
+            "mangledName": "$s15SunflowerShared4CopyO7chineseSbvpZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared4CopyO7chineseSbvgZ",
+                "mangledName": "$s15SunflowerShared4CopyO7chineseSbvgZ",
+                "moduleName": "SunflowerShared",
+                "static": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "text",
+            "printedName": "text(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared4CopyO4textyS2S_SStFZ",
+            "mangledName": "$s15SunflowerShared4CopyO4textyS2S_SStFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:15SunflowerShared4CopyO",
+        "mangledName": "$s15SunflowerShared4CopyO",
+        "moduleName": "SunflowerShared",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "SunflowerMetadata",
+        "printedName": "SunflowerMetadata",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "alarmId",
+            "printedName": "alarmId",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared0A8MetadataV7alarmIdSSvp",
+            "mangledName": "$s15SunflowerShared0A8MetadataV7alarmIdSSvp",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared0A8MetadataV7alarmIdSSvg",
+                "mangledName": "$s15SunflowerShared0A8MetadataV7alarmIdSSvg",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "events",
+            "printedName": "events",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared0A8MetadataV6eventsSSvp",
+            "mangledName": "$s15SunflowerShared0A8MetadataV6eventsSSvp",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared0A8MetadataV6eventsSSvg",
+                "mangledName": "$s15SunflowerShared0A8MetadataV6eventsSSvg",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "kitId",
+            "printedName": "kitId",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared0A8MetadataV5kitIdSSvp",
+            "mangledName": "$s15SunflowerShared0A8MetadataV5kitIdSSvp",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared0A8MetadataV5kitIdSSvg",
+                "mangledName": "$s15SunflowerShared0A8MetadataV5kitIdSSvg",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(alarmId:events:kitId:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SunflowerMetadata",
+                "printedName": "SunflowerShared.SunflowerMetadata",
+                "usr": "s:15SunflowerShared0A8MetadataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "hasDefaultArg": true,
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:15SunflowerShared0A8MetadataV7alarmId6events03kitE0ACSS_S2Stcfc",
+            "mangledName": "$s15SunflowerShared0A8MetadataV7alarmId6events03kitE0ACSS_S2Stcfc",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(from:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SunflowerMetadata",
+                "printedName": "SunflowerShared.SunflowerMetadata",
+                "usr": "s:15SunflowerShared0A8MetadataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Decoder",
+                "printedName": "any Swift.Decoder",
+                "usr": "s:s7DecoderP"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:15SunflowerShared0A8MetadataV4fromACs7Decoder_p_tKcfc",
+            "mangledName": "$s15SunflowerShared0A8MetadataV4fromACs7Decoder_p_tKcfc",
+            "moduleName": "SunflowerShared",
+            "implicit": true,
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "encode",
+            "printedName": "encode(to:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Encoder",
+                "printedName": "any Swift.Encoder",
+                "usr": "s:s7EncoderP"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared0A8MetadataV6encode2toys7Encoder_p_tKF",
+            "mangledName": "$s15SunflowerShared0A8MetadataV6encode2toys7Encoder_p_tKF",
+            "moduleName": "SunflowerShared",
+            "implicit": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Var",
+            "name": "hashValue",
+            "printedName": "hashValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared0A8MetadataV9hashValueSivp",
+            "mangledName": "$s15SunflowerShared0A8MetadataV9hashValueSivp",
+            "moduleName": "SunflowerShared",
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared0A8MetadataV9hashValueSivg",
+                "mangledName": "$s15SunflowerShared0A8MetadataV9hashValueSivg",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "hash",
+            "printedName": "hash(into:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Hasher",
+                "printedName": "Swift.Hasher",
+                "paramValueOwnership": "InOut",
+                "usr": "s:s6HasherV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared0A8MetadataV4hash4intoys6HasherVz_tF",
+            "mangledName": "$s15SunflowerShared0A8MetadataV4hash4intoys6HasherVz_tF",
+            "moduleName": "SunflowerShared",
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "SunflowerMetadata",
+                "printedName": "SunflowerShared.SunflowerMetadata",
+                "usr": "s:15SunflowerShared0A8MetadataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "SunflowerMetadata",
+                "printedName": "SunflowerShared.SunflowerMetadata",
+                "usr": "s:15SunflowerShared0A8MetadataV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared0A8MetadataV2eeoiySbAC_ACtFZ",
+            "mangledName": "$s15SunflowerShared0A8MetadataV2eeoiySbAC_ACtFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:15SunflowerShared0A8MetadataV",
+        "mangledName": "$s15SunflowerShared0A8MetadataV",
+        "moduleName": "SunflowerShared",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Decodable",
+            "printedName": "Decodable",
+            "usr": "s:Se",
+            "mangledName": "$sSe"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Encodable",
+            "printedName": "Encodable",
+            "usr": "s:SE",
+            "mangledName": "$sSE"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "AlarmMetadata",
+            "printedName": "AlarmMetadata",
+            "usr": "s:8AlarmKit0A8MetadataP",
+            "mangledName": "$s8AlarmKit0A8MetadataP"
+          }
+        ]
+      },
+      {
+        "kind": "Function",
+        "name": "alarmUUID",
+        "printedName": "alarmUUID(_:)",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Optional",
+            "printedName": "Foundation.UUID?",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UUID",
+                "printedName": "Foundation.UUID",
+                "usr": "s:10Foundation4UUIDV"
+              }
+            ],
+            "usr": "s:Sq"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "String",
+            "printedName": "Swift.String",
+            "usr": "s:SS"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "s:15SunflowerShared9alarmUUIDy10Foundation0D0VSgSSF",
+        "mangledName": "$s15SunflowerShared9alarmUUIDy10Foundation0D0VSgSSF",
+        "moduleName": "SunflowerShared",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "SunflowerTimerAttributes",
+        "printedName": "SunflowerTimerAttributes",
+        "children": [
+          {
+            "kind": "TypeDecl",
+            "name": "ContentState",
+            "printedName": "ContentState",
+            "children": [
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ContentState",
+                    "printedName": "SunflowerShared.SunflowerTimerAttributes.ContentState",
+                    "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateVAEycfc",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV12ContentStateVAEycfc",
+                "moduleName": "SunflowerShared",
+                "declAttributes": [
+                  "AccessControl"
+                ],
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Constructor",
+                "name": "init",
+                "printedName": "init(from:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ContentState",
+                    "printedName": "SunflowerShared.SunflowerTimerAttributes.ContentState",
+                    "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Decoder",
+                    "printedName": "any Swift.Decoder",
+                    "usr": "s:s7DecoderP"
+                  }
+                ],
+                "declKind": "Constructor",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV4fromAEs7Decoder_p_tKcfc",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV12ContentStateV4fromAEs7Decoder_p_tKcfc",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "throwing": true,
+                "init_kind": "Designated"
+              },
+              {
+                "kind": "Function",
+                "name": "encode",
+                "printedName": "encode(to:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Encoder",
+                    "printedName": "any Swift.Encoder",
+                    "usr": "s:s7EncoderP"
+                  }
+                ],
+                "declKind": "Func",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV6encode2toys7Encoder_p_tKF",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV12ContentStateV6encode2toys7Encoder_p_tKF",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "throwing": true,
+                "funcSelfKind": "NonMutating"
+              },
+              {
+                "kind": "Var",
+                "name": "hashValue",
+                "printedName": "hashValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV9hashValueSivp",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV12ContentStateV9hashValueSivp",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV9hashValueSivg",
+                    "mangledName": "$s15SunflowerShared0A15TimerAttributesV12ContentStateV9hashValueSivg",
+                    "moduleName": "SunflowerShared",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Function",
+                "name": "hash",
+                "printedName": "hash(into:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Hasher",
+                    "printedName": "Swift.Hasher",
+                    "paramValueOwnership": "InOut",
+                    "usr": "s:s6HasherV"
+                  }
+                ],
+                "declKind": "Func",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV4hash4intoys6HasherVz_tF",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV12ContentStateV4hash4intoys6HasherVz_tF",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "funcSelfKind": "NonMutating"
+              },
+              {
+                "kind": "Function",
+                "name": "==",
+                "printedName": "==(_:_:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ContentState",
+                    "printedName": "SunflowerShared.SunflowerTimerAttributes.ContentState",
+                    "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ContentState",
+                    "printedName": "SunflowerShared.SunflowerTimerAttributes.ContentState",
+                    "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV"
+                  }
+                ],
+                "declKind": "Func",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV2eeoiySbAE_AEtFZ",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV12ContentStateV2eeoiySbAE_AEtFZ",
+                "moduleName": "SunflowerShared",
+                "static": true,
+                "implicit": true,
+                "funcSelfKind": "NonMutating"
+              }
+            ],
+            "declKind": "Struct",
+            "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV",
+            "mangledName": "$s15SunflowerShared0A15TimerAttributesV12ContentStateV",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Decodable",
+                "printedName": "Decodable",
+                "usr": "s:Se",
+                "mangledName": "$sSe"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Encodable",
+                "printedName": "Encodable",
+                "usr": "s:SE",
+                "mangledName": "$sSE"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Hashable",
+                "printedName": "Hashable",
+                "usr": "s:SH",
+                "mangledName": "$sSH"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Equatable",
+                "printedName": "Equatable",
+                "usr": "s:SQ",
+                "mangledName": "$sSQ"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "timerId",
+            "printedName": "timerId",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared0A15TimerAttributesV7timerIdSSvp",
+            "mangledName": "$s15SunflowerShared0A15TimerAttributesV7timerIdSSvp",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV7timerIdSSvg",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV7timerIdSSvg",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "title",
+            "printedName": "title",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared0A15TimerAttributesV5titleSSvp",
+            "mangledName": "$s15SunflowerShared0A15TimerAttributesV5titleSSvp",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV5titleSSvg",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV5titleSSvg",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "startDate",
+            "printedName": "startDate",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Date",
+                "printedName": "Foundation.Date",
+                "usr": "s:10Foundation4DateV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared0A15TimerAttributesV9startDate10Foundation0F0Vvp",
+            "mangledName": "$s15SunflowerShared0A15TimerAttributesV9startDate10Foundation0F0Vvp",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Date",
+                    "printedName": "Foundation.Date",
+                    "usr": "s:10Foundation4DateV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV9startDate10Foundation0F0Vvg",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV9startDate10Foundation0F0Vvg",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "endDate",
+            "printedName": "endDate",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Date",
+                "printedName": "Foundation.Date",
+                "usr": "s:10Foundation4DateV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared0A15TimerAttributesV7endDate10Foundation0F0Vvp",
+            "mangledName": "$s15SunflowerShared0A15TimerAttributesV7endDate10Foundation0F0Vvp",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Date",
+                    "printedName": "Foundation.Date",
+                    "usr": "s:10Foundation4DateV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV7endDate10Foundation0F0Vvg",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV7endDate10Foundation0F0Vvg",
+                "moduleName": "SunflowerShared",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(timerId:title:startDate:endDate:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SunflowerTimerAttributes",
+                "printedName": "SunflowerShared.SunflowerTimerAttributes",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Date",
+                "printedName": "Foundation.Date",
+                "usr": "s:10Foundation4DateV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Date",
+                "printedName": "Foundation.Date",
+                "usr": "s:10Foundation4DateV"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:15SunflowerShared0A15TimerAttributesV7timerId5title9startDate03endI0ACSS_SS10Foundation0I0VAJtcfc",
+            "mangledName": "$s15SunflowerShared0A15TimerAttributesV7timerId5title9startDate03endI0ACSS_SS10Foundation0I0VAJtcfc",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Var",
+            "name": "emoji",
+            "printedName": "emoji",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared0A15TimerAttributesV5emojiSSvp",
+            "mangledName": "$s15SunflowerShared0A15TimerAttributesV5emojiSSvp",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV5emojiSSvg",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV5emojiSSvg",
+                "moduleName": "SunflowerShared",
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "name",
+            "printedName": "name",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared0A15TimerAttributesV4nameSSvp",
+            "mangledName": "$s15SunflowerShared0A15TimerAttributesV4nameSSvp",
+            "moduleName": "SunflowerShared",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV4nameSSvg",
+                "mangledName": "$s15SunflowerShared0A15TimerAttributesV4nameSSvg",
+                "moduleName": "SunflowerShared",
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(from:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SunflowerTimerAttributes",
+                "printedName": "SunflowerShared.SunflowerTimerAttributes",
+                "usr": "s:15SunflowerShared0A15TimerAttributesV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Decoder",
+                "printedName": "any Swift.Decoder",
+                "usr": "s:s7DecoderP"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:15SunflowerShared0A15TimerAttributesV4fromACs7Decoder_p_tKcfc",
+            "mangledName": "$s15SunflowerShared0A15TimerAttributesV4fromACs7Decoder_p_tKcfc",
+            "moduleName": "SunflowerShared",
+            "implicit": true,
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "encode",
+            "printedName": "encode(to:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Encoder",
+                "printedName": "any Swift.Encoder",
+                "usr": "s:s7EncoderP"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared0A15TimerAttributesV6encode2toys7Encoder_p_tKF",
+            "mangledName": "$s15SunflowerShared0A15TimerAttributesV6encode2toys7Encoder_p_tKF",
+            "moduleName": "SunflowerShared",
+            "implicit": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:15SunflowerShared0A15TimerAttributesV",
+        "mangledName": "$s15SunflowerShared0A15TimerAttributesV",
+        "moduleName": "SunflowerShared",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "ActivityAttributes",
+            "printedName": "ActivityAttributes",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "ContentState",
+                "printedName": "ContentState",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ContentState",
+                    "printedName": "SunflowerShared.SunflowerTimerAttributes.ContentState",
+                    "usr": "s:15SunflowerShared0A15TimerAttributesV12ContentStateV"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:11ActivityKit0A10AttributesP",
+            "mangledName": "$s11ActivityKit0A10AttributesP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Decodable",
+            "printedName": "Decodable",
+            "usr": "s:Se",
+            "mangledName": "$sSe"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Encodable",
+            "printedName": "Encodable",
+            "usr": "s:SE",
+            "mangledName": "$sSE"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "SunflowerTimer",
+        "printedName": "SunflowerTimer",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "notificationID",
+            "printedName": "notificationID(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared0A5TimerO14notificationIDyS2SFZ",
+            "mangledName": "$s15SunflowerShared0A5TimerO14notificationIDyS2SFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "cancel",
+            "printedName": "cancel(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared0A5TimerO6cancelyySSYaFZ",
+            "mangledName": "$s15SunflowerShared0A5TimerO6cancelyySSYaFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "end",
+            "printedName": "end(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared0A5TimerO3endyySSYaFZ",
+            "mangledName": "$s15SunflowerShared0A5TimerO3endyySSYaFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "markCancelled",
+            "printedName": "markCancelled(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared0A5TimerO13markCancelledyySSFZ",
+            "mangledName": "$s15SunflowerShared0A5TimerO13markCancelledyySSFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "takeCancelled",
+            "printedName": "takeCancelled()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared0A5TimerO13takeCancelledSSyFZ",
+            "mangledName": "$s15SunflowerShared0A5TimerO13takeCancelledSSyFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:15SunflowerShared0A5TimerO",
+        "mangledName": "$s15SunflowerShared0A5TimerO",
+        "moduleName": "SunflowerShared",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "SnoozeStore",
+        "printedName": "SnoozeStore",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "appGroup",
+            "printedName": "appGroup",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared11SnoozeStoreO8appGroupSSvpZ",
+            "mangledName": "$s15SunflowerShared11SnoozeStoreO8appGroupSSvpZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared11SnoozeStoreO8appGroupSSvgZ",
+                "mangledName": "$s15SunflowerShared11SnoozeStoreO8appGroupSSvgZ",
+                "moduleName": "SunflowerShared",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "recordCountdown",
+            "printedName": "recordCountdown(alarmId:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared11SnoozeStoreO15recordCountdown7alarmIdySS_tFZ",
+            "mangledName": "$s15SunflowerShared11SnoozeStoreO15recordCountdown7alarmIdySS_tFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "recordMode",
+            "printedName": "recordMode(alarmId:mode:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared11SnoozeStoreO10recordMode7alarmId4modeySS_SStFZ",
+            "mangledName": "$s15SunflowerShared11SnoozeStoreO10recordMode7alarmId4modeySS_SStFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "recordStop",
+            "printedName": "recordStop(alarmId:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared11SnoozeStoreO10recordStop7alarmIdySS_tFZ",
+            "mangledName": "$s15SunflowerShared11SnoozeStoreO10recordStop7alarmIdySS_tFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "json",
+            "printedName": "json()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared11SnoozeStoreO4jsonSSyFZ",
+            "mangledName": "$s15SunflowerShared11SnoozeStoreO4jsonSSyFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:15SunflowerShared11SnoozeStoreO",
+        "mangledName": "$s15SunflowerShared11SnoozeStoreO",
+        "moduleName": "SunflowerShared",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "ActivityKit",
+        "printedName": "ActivityKit",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "Import",
+        "name": "AlarmKit",
+        "printedName": "AlarmKit",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "Import",
+        "name": "AppIntents",
+        "printedName": "AppIntents",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "Import",
+        "name": "UserNotifications",
+        "printedName": "UserNotifications",
+        "declKind": "Import",
+        "moduleName": "SunflowerShared"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "AlarmKitBridge",
+        "printedName": "AlarmKitBridge",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "setSnoozeCallback",
+            "printedName": "setSnoozeCallback(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "(() -> ())?",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "() -> ()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      }
+                    ]
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)setSnoozeCallback:",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC17setSnoozeCallbackyyyyXLSgFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "settingsLanguage",
+            "printedName": "settingsLanguage()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)settingsLanguage",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC16settingsLanguageSSyFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "requestAuthorization",
+            "printedName": "requestAuthorization()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)requestAuthorization",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC20requestAuthorizationyyFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "scheduleWeeklyJSON",
+            "printedName": "scheduleWeeklyJSON(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)scheduleWeeklyJSON:",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC18scheduleWeeklyJSONyySSFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "cancelAlarm",
+            "printedName": "cancelAlarm(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)cancelAlarm:",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC06cancelC0yySSFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "stopAlarm",
+            "printedName": "stopAlarm(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)stopAlarm:",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC04stopC0yySSFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "startTimer",
+            "printedName": "startTimer(_:title:seconds:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)startTimer:title:seconds:",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC10startTimer_5title7secondsySS_SSSitFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "cancelTimer",
+            "printedName": "cancelTimer(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)cancelTimer:",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC11cancelTimeryySSFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "finishTimer",
+            "printedName": "finishTimer(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)finishTimer:",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC11finishTimeryySSFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "takeCancelledTimer",
+            "printedName": "takeCancelledTimer()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)takeCancelledTimer",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC18takeCancelledTimerSSyFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "snoozeLogJSON",
+            "printedName": "snoozeLogJSON()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)snoozeLogJSON",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC13snoozeLogJSONSSyFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "activeAlarmsJSON",
+            "printedName": "activeAlarmsJSON()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)activeAlarmsJSON",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC16activeAlarmsJSONSSyFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "startObserving",
+            "printedName": "startObserving()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(cm)startObserving",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeC14startObservingyyFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl",
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AlarmKitBridge",
+                "printedName": "SunflowerShared.AlarmKitBridge",
+                "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge(im)init",
+            "mangledName": "$s15SunflowerShared14AlarmKitBridgeCACycfc",
+            "moduleName": "SunflowerShared",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@SunflowerShared@objc(cs)AlarmKitBridge",
+        "mangledName": "$s15SunflowerShared14AlarmKitBridgeC",
+        "moduleName": "SunflowerShared",
+        "objc_name": "AlarmKitBridge",
+        "declAttributes": [
+          "AccessControl",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          }
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SunflowerShared.swift",
+      "kind": "StringLiteral",
+      "offset": 1744,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SunflowerShared.swift",
+      "kind": "StringLiteral",
+      "offset": 4101,
+      "length": 27,
+      "value": "\"sunflower_timer_cancelled\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SnoozeStore.swift",
+      "kind": "StringLiteral",
+      "offset": 78,
+      "length": 27,
+      "value": "\"group.com.sunflower.alarm\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SnoozeStore.swift",
+      "kind": "StringLiteral",
+      "offset": 138,
+      "length": 12,
+      "value": "\"snooze.log\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SnoozeStore.swift",
+      "kind": "StringLiteral",
+      "offset": 190,
+      "length": 13,
+      "value": "\"alarm.mode.\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SnoozeStore.swift",
+      "kind": "IntegerLiteral",
+      "offset": 325,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SnoozeStore.swift",
+      "kind": "IntegerLiteral",
+      "offset": 329,
+      "length": 2,
+      "value": "60"
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 8887,
+      "length": 8,
+      "value": "\"停止\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 8897,
+      "length": 6,
+      "value": "\"Stop\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 8943,
+      "length": 13,
+      "value": "\"stop.circle\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9042,
+      "length": 8,
+      "value": "\"推迟\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9052,
+      "length": 10,
+      "value": "\"Postpone\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9102,
+      "length": 5,
+      "value": "\"zzz\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9404,
+      "length": 8,
+      "value": "\"暂停\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9414,
+      "length": 7,
+      "value": "\"Pause\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9461,
+      "length": 12,
+      "value": "\"pause.fill\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9526,
+      "length": 14,
+      "value": "\"即将再响\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9542,
+      "length": 13,
+      "value": "\"Rings again\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9780,
+      "length": 8,
+      "value": "\"继续\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9790,
+      "length": 8,
+      "value": "\"Resume\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9838,
+      "length": 11,
+      "value": "\"play.fill\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9949,
+      "length": 11,
+      "value": "\"已暂停\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 9962,
+      "length": 8,
+      "value": "\"Paused\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "FloatLiteral",
+      "offset": 10271,
+      "length": 5,
+      "value": "127.0"
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "FloatLiteral",
+      "offset": 10279,
+      "length": 5,
+      "value": "255.0"
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "FloatLiteral",
+      "offset": 10293,
+      "length": 5,
+      "value": "167.0"
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "FloatLiteral",
+      "offset": 10301,
+      "length": 5,
+      "value": "255.0"
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "FloatLiteral",
+      "offset": 10314,
+      "length": 5,
+      "value": "198.0"
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "FloatLiteral",
+      "offset": 10322,
+      "length": 5,
+      "value": "255.0"
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 10387,
+      "length": 15,
+      "value": "\"sunflower.wav\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "IntegerLiteral",
+      "offset": 10513,
+      "length": 1,
+      "value": "9"
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "IntegerLiteral",
+      "offset": 10517,
+      "length": 2,
+      "value": "60"
+    }
+  ]
+}

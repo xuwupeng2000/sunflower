@@ -11,6 +11,8 @@ keys,en
 施肥,Fertilize
 浇水不枯萎,Water keeps it from wilting
 施肥会长高,Fertilizer makes it grow taller
+浇浇水，花会重新灿烂,Water it and it will bloom again
+推迟闹铃或完成任务才能拿到肥料,Snooze or finish a task to earn fertilizer
 现在要做,Now
 现在要做\n%s,Now\n%s
 到时间了,It's time
@@ -22,9 +24,13 @@ keys,en
 蜀葵,Hollyhock
 向日葵,Sunflower
 兰花,Orchid
+玫瑰,Rose
 陶盆,Clay pot
 白瓷,White porcelain
 彩釉盆,Glazed pot
+高筒盆,Tall pot
+方盆,Square planter
+碗盆,Bowl
 睡觉,Sleep
 周一,Mon
 周二,Tue
@@ -105,5 +111,4 @@ When it's done you get a notification, no alarm"
 长按标签或星期，可以暂停或删除,Hold a tab or a day to pause or delete
 结束时间要晚于开始时间,End time must be after the start time
 睡觉时间要晚于起床时间,Bedtime must be after wake-up time
-Work in progress,Work in progress
-在努力研发中,We are working hard on it
+取消计时,Cancel timer

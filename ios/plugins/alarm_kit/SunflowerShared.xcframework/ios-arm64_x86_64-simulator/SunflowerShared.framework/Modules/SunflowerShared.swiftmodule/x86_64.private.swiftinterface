@@ -1,0 +1,98 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.4 effective-5.10 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+// swift-module-flags: -target x86_64-apple-ios26.0-simulator -enable-objc-interop -enable-library-evolution -language-mode 5 -O -module-name SunflowerShared
+// swift-module-flags-ignorable:  -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
+import ActivityKit
+import AlarmKit
+import AppIntents
+import Foundation
+import Swift
+import SwiftUI
+import UIKit
+import UserNotifications
+import _AppIntents_SwiftUI
+import _AppIntents_UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import _UserNotifications_AppIntents
+public enum Haptics {
+  public static func tap(_ style: UIKit::UIImpactFeedbackGenerator.UIKit::FeedbackStyle = .medium)
+  public static func success()
+}
+public enum Copy {
+  public static var chinese: Swift::Bool {
+    get
+  }
+  public static func text(_ zh: Swift::String, _ en: Swift::String) -> Swift::String
+}
+public struct SunflowerMetadata : AlarmKit::AlarmMetadata {
+  public let alarmId: Swift::String
+  public let events: Swift::String
+  public let kitId: Swift::String
+  public init(alarmId: Swift::String, events: Swift::String, kitId: Swift::String = "")
+  public static func == (a: SunflowerShared::SunflowerMetadata, b: SunflowerShared::SunflowerMetadata) -> Swift::Bool
+  public func encode(to encoder: any Swift::Encoder) throws
+  public func hash(into hasher: inout Swift::Hasher)
+  public var hashValue: Swift::Int {
+    get
+  }
+  public init(from decoder: any Swift::Decoder) throws
+}
+public func alarmUUID(_ alarmId: Swift::String) -> Foundation::UUID?
+public struct SunflowerTimerAttributes : ActivityKit::ActivityAttributes {
+  public struct ContentState : Swift::Codable, Swift::Hashable {
+    public init()
+    public static func == (a: SunflowerShared::SunflowerTimerAttributes.SunflowerShared::ContentState, b: SunflowerShared::SunflowerTimerAttributes.SunflowerShared::ContentState) -> Swift::Bool
+    public func encode(to encoder: any Swift::Encoder) throws
+    public func hash(into hasher: inout Swift::Hasher)
+    public var hashValue: Swift::Int {
+      get
+    }
+    public init(from decoder: any Swift::Decoder) throws
+  }
+  public let timerId: Swift::String
+  public let title: Swift::String
+  public let startDate: Foundation::Date
+  public let endDate: Foundation::Date
+  public init(timerId: Swift::String, title: Swift::String, startDate: Foundation::Date, endDate: Foundation::Date)
+  public var emoji: Swift::String {
+    get
+  }
+  public var name: Swift::String {
+    get
+  }
+  public func encode(to encoder: any Swift::Encoder) throws
+  public init(from decoder: any Swift::Decoder) throws
+}
+public enum SunflowerTimer {
+  public static func notificationID(_ timerId: Swift::String) -> Swift::String
+  public static func cancel(_ timerId: Swift::String) async
+  public static func end(_ timerId: Swift::String) async
+  public static func markCancelled(_ timerId: Swift::String)
+  public static func takeCancelled() -> Swift::String
+}
+public enum SnoozeStore {
+  public static let appGroup: Swift::String
+  public static func recordCountdown(alarmId: Swift::String)
+  public static func recordMode(alarmId: Swift::String, mode: Swift::String)
+  public static func recordStop(alarmId: Swift::String)
+  public static func json() -> Swift::String
+}
+@_inheritsConvenienceInitializers @objc(AlarmKitBridge) public class AlarmKitBridge : ObjectiveC::NSObject {
+  @objc public static func setSnoozeCallback(_ callback: (@convention(block) () -> Swift::Void)?)
+  @objc public static func settingsLanguage() -> Swift::String
+  @objc public static func requestAuthorization()
+  @objc public static func scheduleWeeklyJSON(_ json: Swift::String)
+  @objc public static func cancelAlarm(_ alarmId: Swift::String)
+  @objc public static func stopAlarm(_ alarmId: Swift::String)
+  @objc public static func startTimer(_ timerId: Swift::String, title: Swift::String, seconds: Swift::Int)
+  @objc public static func cancelTimer(_ timerId: Swift::String)
+  @objc public static func finishTimer(_ timerId: Swift::String)
+  @objc public static func takeCancelledTimer() -> Swift::String
+  @objc public static func snoozeLogJSON() -> Swift::String
+  @objc public static func activeAlarmsJSON() -> Swift::String
+  @objc public static func startObserving()
+  @objc override dynamic public init()
+  @objc deinit
+}

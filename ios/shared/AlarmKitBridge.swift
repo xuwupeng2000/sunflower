@@ -170,8 +170,10 @@ private var snoozeCallback: (() -> Void)?
                     let state = stateName(alarm.state)
                     if state == "countdown" || state == "paused" {
                         SnoozeStore.recordCountdown(alarmId: logical)
+                    } else if state == "alerting" {
+                        SnoozeStore.recordMode(alarmId: logical, mode: "alerting")
                     } else {
-                        SnoozeStore.recordMode(alarmId: logical, mode: state)
+                        SnoozeStore.recordStop(alarmId: logical)
                     }
                 }
                 snoozeCallback?()

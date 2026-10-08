@@ -1,5 +1,8 @@
 @tool
 extends Node3D
+
+signal plant_tapped(screen: Vector2)
+
 const SEGMENT_HEIGHT := 0.8
 const BASE_SEGMENTS := 3
 const MAX_EXTRA := 24
@@ -18,26 +21,6 @@ const ORCHID_BRANCHES := [
 ]
 const FLOWER_KINDS := [
 	{
-		"name": "蜀葵",
-		"mode": "stack",
-		"stem": "res://assets/hollyhock/stem.glb",
-		"flower": "res://assets/hollyhock/flower.glb",
-		"base": "res://assets/hollyhock/base.glb",
-		"height": 0.30,
-		"stem_materials": [
-			"res://assets/hollyhock/stem.tres",
-			"res://assets/hollyhock/leaf.tres",
-			"res://assets/hollyhock/petal.tres",
-			"res://assets/hollyhock/eye.tres",
-		],
-		"flower_materials": ["res://assets/hollyhock/stem.tres", "res://assets/hollyhock/leaf.tres"],
-		"base_materials": ["res://assets/hollyhock/leaf.tres"],
-		"crown": true,
-		"squash": false,
-		"yaw_step": 0.55,
-		"node_bloom": false,
-	},
-	{
 		"name": "向日葵",
 		"mode": "rig",
 		"scene": "res://scenes/sunflower_plant.tscn",
@@ -51,14 +34,12 @@ const FLOWER_KINDS := [
 	},
 	{
 		"name": "兰花",
-		"mode": "spike",
-		"scene": "res://assets/orchid/flower.glb",
-		"petal": "res://assets/orchid/petal.tres",
-		"lip": "res://assets/orchid/lip.tres",
-		"bud": "res://assets/orchid/bud.tres",
-		"leaf": "res://assets/orchid/leaf.tres",
-		"stem": "res://assets/orchid/stem.tres",
+		"mode": "rig",
+		"scene": "res://scenes/orchid_plant.tscn",
+		"height": 1.9,
+		"dry_materials": [],  # 兰花枯萎只低头，不变色
 	},
+	# 蜀葵（stack 模式）和玫瑰（scenes/rose_plant.tscn）先不上架。
 ]
 const POT_KINDS := [
 	{
@@ -75,6 +56,16 @@ const POT_KINDS := [
 		"name": "彩釉盆",
 		"pot": "res://assets/pots/clay.glb",
 		"pot_materials": ["res://assets/pots/glaze.tres", "res://assets/pots/soil.tres"],
+	},
+	{
+		"name": "高筒盆",
+		"pot": "res://assets/pots/tall.glb",
+		"pot_materials": ["res://assets/pots/glaze.tres", "res://assets/pots/soil.tres"],
+	},
+	{
+		"name": "方盆",
+		"pot": "res://assets/pots/square.glb",
+		"pot_materials": ["res://assets/pots/white.tres", "res://assets/pots/soil.tres"],
 	},
 ]
 
@@ -143,7 +134,8 @@ const RIG_GROW_MAX := 6
 const RIG_BEND_FULL := 3.0
 const RIG_GROW_SECONDS := 0.7
 const RIG_POSE_SECONDS := 0.6
-const WILT_DRY := [0.0, 0.2, 0.55, 1.0]
+## 枯萎只是发黄垂头，不烧成焦褐（着色器 dry 过 0.45 才开始转褐）。
+const WILT_DRY := [0.0, 0.12, 0.26, 0.42]
 const GROW_PARAM := &"parameters/生长/blend_position"
 const BEND_PARAM := &"parameters/折弯/add_amount"
 const WILT_PARAM := &"parameters/枯萎程度/blend_position"
@@ -632,6 +624,15 @@ func hits_plant(screen: Vector2) -> bool:
 func _try_shake(screen: Vector2) -> void:
 	if hits_plant(screen):
 		_shake_plant()
+		plant_tapped.emit(screen)
+
+
+## 植株中段在屏幕上的位置，给飘字定位用。
+func plant_screen_position() -> Vector2:
+	if _camera == null or _plant == null:
+		return get_viewport().get_visible_rect().size * 0.5
+	var middle := _plant.global_position + Vector3(0, maxf(_framed_bloom, 1.6) * 0.6, 0)
+	return _camera.unproject_position(middle)
 
 
 func _shake_plant() -> void:
@@ -659,7 +660,7 @@ func apply_wilt(level: int, animate: bool = false) -> void:
 	var wilted := _wilt_level > 0
 	_wilted = wilted
 	if _plant_mode == "rig":
-		_plant.transform = _plant_rest
+		_plant.basis = _plant_rest.basis
 		_pose_rig(animate)
 		return
 	if not animate:
@@ -676,7 +677,8 @@ func apply_wilt(level: int, animate: bool = false) -> void:
 func _apply_wilt_pose() -> void:
 	if _plant == null:
 		return
-	_plant.transform = _plant_rest
+	# 只复位旋转；高度由 _frame_height 定在盆口，整个 transform 复位会把花压回盆里。
+	_plant.basis = _plant_rest.basis
 	if _plant_mode == "rig":
 		return
 	if _wilted:

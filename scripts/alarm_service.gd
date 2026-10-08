@@ -95,7 +95,7 @@ func note_ringing() -> Array:
 		var state := str(item.get("state", ""))
 		var alarm_id := str(item.get("id", ""))
 		if state == "countdown" or state == "paused":
-			store.record_snooze_once(alarm_id)
+			store.record_snooze(alarm_id)
 		if state == "alerting":
 			# 从 app 第一次看到它在响开始算；没人理响满 RING_MAX 就停，不算贪睡。
 			var since: float = _alerting_since.get(alarm_id, now)

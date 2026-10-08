@@ -7,8 +7,6 @@ var _due_label: Label
 var _sunflower: Node3D
 var _flower_page: Control
 var _pot_page: Control
-var _wip_note: Control
-var _wip_tween: Tween
 var _alarm_page: Control
 var _selected_day := 0
 var _current_tab := ""
@@ -134,6 +132,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	_sunflower = $Sunflower
+	_sunflower.plant_tapped.connect(_on_plant_tapped)
 	_bind_nodes()
 	get_tree().node_added.connect(_soften)
 	for node in $UI.find_children("*", "Button", true, false):
@@ -145,6 +144,7 @@ func _ready() -> void:
 	_date_key = AlarmStore.today_key()
 	AlarmStore.changed.connect(_refresh)
 	AlarmService.snoozes_updated.connect(_refresh)
+	_sunflower.apply_style(AlarmStore.flower_kind, AlarmStore.pot_kind)
 	_fill_pot_rows()
 	_select_day(_today_alarm_index(), false)
 	shift_date(0)
@@ -214,7 +214,6 @@ func _bind_nodes() -> void:
 	_water_button.focus_mode = Control.FOCUS_NONE
 	_feed_button.focus_mode = Control.FOCUS_NONE
 	_pot_page = root.get_node("花盆页/花盆")
-	_wip_note = root.get_node("研发中")
 	_alarm_page = root.get_node("定时页/定时")
 	var days := _alarm_page.get_node("边框/内容/行列/星期") as Control
 	days.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -343,11 +342,18 @@ func _fill_pot_rows() -> void:
 	flower_row.set_labels(flower_names, _sunflower.flower_index)
 	pot_row.set_labels(pot_names, _sunflower.pot_index)
 	flower_row.selected.connect(func(index: int) -> void:
-		_sunflower.apply_style(index, pot_row.index)
+		_pick_style(index, pot_row.index)
 	)
 	pot_row.selected.connect(func(index: int) -> void:
-		_sunflower.apply_style(flower_row.index, index)
+		_pick_style(flower_row.index, index)
 	)
+
+
+func _pick_style(flower: int, pot: int) -> void:
+	_buzz(15)
+	_sunflower.apply_style(flower, pot)
+	AlarmStore.set_style(_sunflower.flower_index, _sunflower.pot_index)
+	_refresh()
 
 
 func _close_picker_on_click(event: InputEvent) -> void:
@@ -367,6 +373,7 @@ func _finish_picker() -> void:
 		_open_weekday_apply()
 		return
 	_commit_time()
+	_buzz()
 
 
 func _on_hour_wheel(_number: int) -> void:
@@ -539,10 +546,6 @@ func _today_alarm_index() -> int:
 
 
 func _show_tab(tab: String, pin_today: bool = true) -> void:
-	if tab == "pot":
-		_tab_buttons[TABS.find("pot")].set_pressed_no_signal(false)
-		_show_wip()
-		return
 	if pin_today and tab != "flower" and _current_tab == tab:
 		tab = "flower"
 	_current_tab = tab
@@ -558,19 +561,8 @@ func _show_tab(tab: String, pin_today: bool = true) -> void:
 		_flower_page.get_node("照料").visible = tab == "flower"
 	if tab == "alarm":
 		_show_guide()
-
-
-## 换花换盆是高级功能，还没做好，先只提示一下。
-func _show_wip() -> void:
-	if _wip_tween and _wip_tween.is_valid():
-		_wip_tween.kill()
-	_wip_note.visible = true
-	_wip_note.modulate.a = 0.0
-	_wip_tween = create_tween()
-	_wip_tween.tween_property(_wip_note, "modulate:a", 1.0, 0.15)
-	_wip_tween.tween_interval(1.6)
-	_wip_tween.tween_property(_wip_note, "modulate:a", 0.0, 0.35)
-	_wip_tween.tween_callback(_wip_note.hide)
+	elif tab == "flower":
+		_hint_wilted.call_deferred(Vector2.INF)
 
 
 func _show_guide() -> void:
@@ -786,6 +778,7 @@ func _confirm_weekday_apply() -> void:
 	AlarmStore.set_task_times_on_days(_selected_task, days, _picker_hour, _picker_minute, end)
 	_update_time_label()
 	_schedule_days()
+	_buzz()
 
 
 func _update_time_label() -> void:
@@ -914,6 +907,7 @@ func _confirm_new_task(task_name: String) -> void:
 	_rebuild_task_tabs()
 	_show_custom_task(AlarmStore.task_count() - 1)
 	_schedule_days()
+	_buzz()
 	if not _task_buttons.is_empty():
 		_tab_scroll.ensure_control_visible(_task_buttons[_task_buttons.size() - 1])
 
@@ -1208,8 +1202,14 @@ func _dismiss_ring() -> void:
 	_show_tab("flower", false)
 
 
+## 记下闹钟、贪睡、取消时轻轻震一下。
+func _buzz(ms: int = 30) -> void:
+	Input.vibrate_handheld(ms)
+
+
 func _cancel_current_snooze() -> void:
 	AlarmService.stop(_triggered_id)
+	_buzz()
 	_dismiss_ring()
 
 
@@ -1248,6 +1248,7 @@ func _record_snooze() -> void:
 			alarm_id = id
 			break
 	AlarmService.record_desktop_snooze(alarm_id)
+	_buzz()
 	_show_tab("flower")
 
 
@@ -1255,6 +1256,9 @@ func _on_care_button_down(kind: String) -> void:
 	if not _care_kind.is_empty():
 		return
 	if not _can_drag_care(kind):
+		if kind == "feed" and AlarmStore.fertilizer <= 0 and _date_key == AlarmStore.today_key():
+			var middle := _feed_button.global_position + _feed_button.size * 0.5
+			_float_tip(tr("推迟闹铃或完成任务才能拿到肥料"), middle)
 		return
 	var button := _water_button if kind == "water" else _feed_button
 	_start_care_drag(kind, button)
@@ -1375,6 +1379,21 @@ func _apply_care(kind: String, global_pos: Vector2) -> void:
 		return
 	if AlarmStore.use_fertilizer():
 		_float_tip(tr("施肥会长高"), global_pos)
+
+
+## 花蔫了就提醒浇水。点花时在手指处飘，进看花页时在花上飘。
+func _hint_wilted(global_pos: Vector2) -> void:
+	if _current_tab != "flower" or _date_key != AlarmStore.today_key():
+		return
+	if AlarmStore.wilt_level() <= 0:
+		return
+	if global_pos == Vector2.INF:
+		global_pos = _sunflower.plant_screen_position()
+	_float_tip(tr("浇浇水，花会重新灿烂"), global_pos)
+
+
+func _on_plant_tapped(_screen: Vector2) -> void:
+	_hint_wilted(_flower_page.get_global_mouse_position())
 
 
 func _float_tip(text: String, global_pos: Vector2) -> void:

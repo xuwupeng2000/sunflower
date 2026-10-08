@@ -18,6 +18,9 @@ var sleep_paused := false
 var custom_timers: Array[Dictionary] = []
 ## 正在走的那一个：{id, title, minutes, ends_at}；空字典就是没在计时。
 var active_timer: Dictionary = {}
+## 看花页选的花和盆，对应 Sunflower.FLOWER_KINDS / POT_KINDS 的下标。
+var flower_kind := 0
+var pot_kind := 0
 
 signal changed
 
@@ -85,6 +88,13 @@ func load_data() -> void:
 		scheduled_ids.append(str(item))
 	_load_fertilizer(data)
 	_load_timers(data)
+	flower_kind = int(data.get("flower_kind", 0))
+	pot_kind = int(data.get("pot_kind", 0))
+	# 以前 0 蜀葵 / 1 向日葵 / 2 兰花 / 3 玫瑰，现在只留向日葵和兰花。
+	if int(data.get("flower_kind_v", 1)) < 2:
+		flower_kind = {1: 0, 2: 1}.get(flower_kind, 0)
+	flower_kind = clampi(flower_kind, 0, 1)
+	pot_kind = clampi(pot_kind, 0, 4)
 	changed.emit()
 
 
@@ -109,7 +119,16 @@ func save_data() -> void:
 		"last_watered": last_watered,
 		"custom_timers": custom_timers,
 		"active_timer": active_timer,
+		"flower_kind": flower_kind,
+		"flower_kind_v": 2,
+		"pot_kind": pot_kind,
 	}, "  "))
+
+
+func set_style(flower: int, pot: int) -> void:
+	flower_kind = flower
+	pot_kind = pot
+	save_data()
 
 
 func _load_timers(data: Dictionary) -> void:
@@ -716,12 +735,12 @@ func record_snooze(alarm_id: String, when: int = -1) -> Dictionary:
 		"date": date_key_from_unix(stamp),
 		"alarm_id": alarm_id,
 		"at": stamp,
+		"kind": "snooze",
 	}
-	if _has_snooze(event):
+	if _has_recent_reward(event):
 		return event
 	snoozes.append(event)
-	if _is_sleep_snooze(alarm_id):
-		fertilizer += 1
+	_grant_for(event)
 	save_data()
 	changed.emit()
 	return event
@@ -736,12 +755,14 @@ func merge_snoozes(events: Array) -> int:
 			"date": str(item.get("date", "")),
 			"alarm_id": str(item.get("alarm_id", "")),
 			"at": int(item.get("at", 0)),
+			"kind": str(item.get("kind", "snooze")),
 		}
-		if event["date"].is_empty() or event["at"] <= 0 or _has_snooze(event):
+		if event["date"].is_empty() or event["at"] <= 0:
+			continue
+		if _has_snooze(event) or _has_recent_reward(event):
 			continue
 		snoozes.append(event)
-		if _is_sleep_snooze(event["alarm_id"]):
-			fertilizer += 1
+		_grant_for(event)
 		added += 1
 	if added > 0:
 		save_data()
@@ -881,6 +902,42 @@ func _is_sleep_snooze(alarm_id: String) -> bool:
 	var group := due_group(alarm_id)
 	for event in group.get("events", []):
 		if str(event.get("id", "")).begins_with("sleep-"):
+			return true
+	return false
+
+
+func _group_has_task(alarm_id: String) -> bool:
+	if alarm_id.begins_with("task-"):
+		return true
+	if not alarm_id.begins_with("due-"):
+		return false
+	for event in due_group(alarm_id).get("events", []):
+		if str(event.get("id", "")).begins_with("task-"):
+			return true
+	return false
+
+
+func _grant_for(event: Dictionary) -> void:
+	var kind := str(event.get("kind", "snooze"))
+	if kind == "done" and not _group_has_task(str(event.get("alarm_id", ""))):
+		return
+	fertilizer += 1
+
+
+## 同一次推迟倒计时里系统会连着报好几次，8 分钟内同一闹钟同一类只记一包肥料。
+const REWARD_SESSION := 8 * 60
+
+
+func _has_recent_reward(event: Dictionary) -> bool:
+	var alarm_id := str(event.get("alarm_id", ""))
+	var kind := str(event.get("kind", "snooze"))
+	var stamp := int(event.get("at", 0))
+	for existing in snoozes:
+		if str(existing.get("alarm_id", "")) != alarm_id:
+			continue
+		if str(existing.get("kind", "snooze")) != kind:
+			continue
+		if absi(int(existing.get("at", 0)) - stamp) < REWARD_SESSION:
 			return true
 	return false
 

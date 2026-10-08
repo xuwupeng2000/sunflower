@@ -34,17 +34,6 @@ size_flags_vertical = 3
 script = ExtResource("2_snap")
 index = 1
 
-[node name="蜀葵" type="Label" parent="边框/列表/花" unique_id=1990882959]
-modulate = Color(1, 1, 1, 0.65)
-layout_mode = 0
-offset_left = -57.2968
-offset_top = 2.08
-offset_right = 87.2168
-offset_bottom = 49.92
-text = "蜀葵"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="向日葵" type="Label" parent="边框/列表/花" unique_id=590463493]
 layout_mode = 0
 offset_left = 114.7432
@@ -103,5 +92,27 @@ offset_top = 2.08
 offset_right = 603.3368
 offset_bottom = 49.92
 text = "彩釉盆"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="高筒盆" type="Label" parent="边框/列表/盆" unique_id=1474340874]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 0
+offset_left = 630.8632
+offset_top = 2.08
+offset_right = 775.3768
+offset_bottom = 49.92
+text = "高筒盆"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="方盆" type="Label" parent="边框/列表/盆" unique_id=1474340875]
+modulate = Color(1, 1, 1, 0.4)
+layout_mode = 0
+offset_left = 802.9032
+offset_top = 2.08
+offset_right = 947.4168
+offset_bottom = 49.92
+text = "方盆"
 horizontal_alignment = 1
 vertical_alignment = 1

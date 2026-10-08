@@ -104,11 +104,13 @@ func start_timer(title: String, minutes: int) -> void:
 	if not AlarmStore.active_timer.is_empty():
 		AlarmService.cancel_timer(AlarmStore.active_timer)
 	AlarmService.start_timer(AlarmStore.start_timer(title, minutes))
+	Input.vibrate_handheld(20)
 	_done_left = 0.0
 	_refresh()
 
 
 func cancel_timer() -> void:
+	Input.vibrate_handheld(20)
 	AlarmService.cancel_timer(AlarmStore.active_timer)
 	AlarmStore.clear_timer()
 	_done_left = 0.0
