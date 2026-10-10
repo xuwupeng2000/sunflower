@@ -11,21 +11,21 @@ color = Color(0, 0, 0, 0.45)
 
 [node name="居中" type="CenterContainer" parent="."]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.68
+offset_top = 24.0
 grow_horizontal = 2
-grow_vertical = 2
 mouse_filter = 2
 
 [node name="面板" type="PanelContainer" parent="居中"]
 theme_type_variation = &"Dialog"
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(340, 0)
 layout_mode = 2
 
 [node name="内容" type="VBoxContainer" parent="居中/面板"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 
 [node name="提示" type="Label" parent="居中/面板/内容"]
 layout_mode = 2
@@ -38,22 +38,31 @@ layout_mode = 2
 text = "新的提醒"
 alignment = 1
 
-[node name="健身" type="Button" parent="居中/面板/内容"]
+[node name="快捷" type="VBoxContainer" parent="居中/面板/内容"]
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="健身" type="Button" parent="居中/面板/内容/快捷"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+size_flags_vertical = 3
 text = "💪 健身"
 
-[node name="接娃" type="Button" parent="居中/面板/内容"]
+[node name="接娃" type="Button" parent="居中/面板/内容/快捷"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+size_flags_vertical = 3
 text = "👶 接娃"
 
-[node name="吃药" type="Button" parent="居中/面板/内容"]
+[node name="吃药" type="Button" parent="居中/面板/内容/快捷"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+size_flags_vertical = 3
 text = "💊 吃药"
 
 [node name="完成" type="Button" parent="居中/面板/内容"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+theme_type_variation = &"OkButton"
 text = "完成"

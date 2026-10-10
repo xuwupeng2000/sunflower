@@ -287,9 +287,9 @@ func _bind_nodes() -> void:
 	)
 	_remove_dialog.get_node("居中/面板/内容/按钮/取消").pressed.connect(func() -> void: _remove_dialog.visible = false)
 	_remove_dialog.get_node("居中/面板/内容/按钮/删除").pressed.connect(_confirm_remove_task)
-	_name_dialog.get_node("居中/面板/内容/健身").pressed.connect(_confirm_new_task.bind(tr("💪 健身")))
-	_name_dialog.get_node("居中/面板/内容/接娃").pressed.connect(_confirm_new_task.bind(tr("👶 接娃")))
-	_name_dialog.get_node("居中/面板/内容/吃药").pressed.connect(_confirm_new_task.bind(tr("💊 吃药")))
+	_name_dialog.get_node("居中/面板/内容/快捷/健身").pressed.connect(_confirm_new_task.bind(tr("💪 健身")))
+	_name_dialog.get_node("居中/面板/内容/快捷/接娃").pressed.connect(_confirm_new_task.bind(tr("👶 接娃")))
+	_name_dialog.get_node("居中/面板/内容/快捷/吃药").pressed.connect(_confirm_new_task.bind(tr("💊 吃药")))
 	_name_dialog.get_node("居中/面板/内容/完成").pressed.connect(_confirm_typed_task)
 	_ampm_wheel = _picker.get_node("居中/面板/内容/滚轮区/列/上下午")
 	_hour_wheel = _picker.get_node("居中/面板/内容/滚轮区/列/时")
@@ -662,6 +662,8 @@ func _on_day_menu(_action: String, day: int) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if _name_dialog != null and _name_dialog.visible and _dismiss_name_keyboard(event):
+		return
 	if not _care_kind.is_empty():
 		if event is InputEventMouseMotion or event is InputEventScreenDrag:
 			_drag_care_pointer()
@@ -873,9 +875,50 @@ func _open_rename() -> void:
 
 
 func _close_name_on_click(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		_name_dialog.visible = false
-		_rename_mode = false
+	if not _is_press(event):
+		return
+	if _keyboard_open(_name_field):
+		_hide_keyboard(_name_field)
+		return
+	_name_dialog.visible = false
+	_rename_mode = false
+
+
+func _dismiss_name_keyboard(event: InputEvent) -> bool:
+	if not _is_press(event) or not _keyboard_open(_name_field):
+		return false
+	var at := _pointer_at(event)
+	if _name_field.get_global_rect().has_point(at):
+		return false
+	_hide_keyboard(_name_field)
+	var panel := _name_dialog.get_node("居中/面板") as Control
+	if panel and not panel.get_global_rect().has_point(at):
+		get_viewport().set_input_as_handled()
+	return true
+
+
+func _is_press(event: InputEvent) -> bool:
+	if event is InputEventMouseButton:
+		return event.pressed
+	return event is InputEventScreenTouch and event.pressed
+
+
+func _pointer_at(event: InputEvent) -> Vector2:
+	if event is InputEventMouseButton:
+		return event.position
+	return (event as InputEventScreenTouch).position
+
+
+func _keyboard_open(field: LineEdit) -> bool:
+	if field != null and field.has_focus() and DisplayServer.has_feature(DisplayServer.FEATURE_VIRTUAL_KEYBOARD):
+		return true
+	return DisplayServer.virtual_keyboard_get_height() > 0
+
+
+func _hide_keyboard(field: LineEdit) -> void:
+	if field:
+		field.release_focus()
+	DisplayServer.virtual_keyboard_hide()
 
 
 func _confirm_typed_task() -> void:

@@ -328,9 +328,50 @@ func _on_guide_input(event: InputEvent) -> void:
 	guide.visible = false
 
 
+func _input(event: InputEvent) -> void:
+	if custom_dialog == null or not custom_dialog.visible:
+		return
+	if not _is_press(event) or not _keyboard_open(_name_field):
+		return
+	if _name_field.get_global_rect().has_point(_press_at(event)):
+		return
+	_hide_keyboard(_name_field)
+	var panel := custom_dialog.get_node("居中/面板") as Control
+	if panel and not panel.get_global_rect().has_point(_press_at(event)):
+		get_viewport().set_input_as_handled()
+
+
 func _close_on_click(event: InputEvent, dialog: Control) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		dialog.visible = false
+	if not _is_press(event):
+		return
+	if _keyboard_open(_name_field):
+		_hide_keyboard(_name_field)
+		return
+	dialog.visible = false
+
+
+func _is_press(event: InputEvent) -> bool:
+	if event is InputEventMouseButton:
+		return event.pressed
+	return event is InputEventScreenTouch and event.pressed
+
+
+func _press_at(event: InputEvent) -> Vector2:
+	if event is InputEventMouseButton:
+		return event.position
+	return (event as InputEventScreenTouch).position
+
+
+func _keyboard_open(field: LineEdit) -> bool:
+	if field != null and field.has_focus() and DisplayServer.has_feature(DisplayServer.FEATURE_VIRTUAL_KEYBOARD):
+		return true
+	return DisplayServer.virtual_keyboard_get_height() > 0
+
+
+func _hide_keyboard(field: LineEdit) -> void:
+	if field:
+		field.release_focus()
+	DisplayServer.virtual_keyboard_hide()
 
 
 ## 名字长就把字缩小，按钮不变宽。
