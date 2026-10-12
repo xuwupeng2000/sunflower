@@ -35,7 +35,7 @@ horizontal_alignment = 1
 [node name="名字" type="LineEdit" parent="居中/面板/内容"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-text = "新的提醒"
+placeholder_text = "新的提醒"
 alignment = 1
 
 [node name="快捷" type="VBoxContainer" parent="居中/面板/内容"]

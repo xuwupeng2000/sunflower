@@ -2,24 +2,24 @@ keys,en
 前一天,Previous day
 今天,Today
 后一天,Next day
-今天推迟了 0 次,Postponed 0 times today
-今天推迟了 %d 次,Postponed %d times today
-%s推迟了 %d 次,%s postponed %d times
-今天贪睡了 %d 次,Snoozed %d times today
-%s贪睡了 %d 次,%s snoozed %d times
+今天推迟了 0 次,No snoozes today
+今天推迟了 %d 次,Snoozes today: %d
+%s推迟了 %d 次,Snoozes on %s: %d
+今天贪睡了 %d 次,Snoozes today: %d
+%s贪睡了 %d 次,Snoozes on %s: %d
 浇水,Water
-施肥,Fertilize
-浇水不枯萎,Water keeps it from wilting
-施肥会长高,Fertilizer makes it grow taller
-浇浇水，花会重新灿烂,Water it and it will bloom again
-推迟闹铃或完成任务才能拿到肥料,Snooze or finish a task to earn fertilizer
-现在要做,Now
-现在要做\n%s,Now\n%s
-到时间了,It's time
+施肥,Feed
+浇水不枯萎,Water it so it doesn't wilt
+施肥会长高,Feed it and it'll grow taller
+浇浇水，花会重新灿烂,Water it and it'll perk up
+推迟闹铃或完成任务才能拿到肥料,Snooze an alarm or finish a task to earn plant food
+现在要做,Time for
+现在要做\n%s,Time for\n%s
+到时间了,It's time!
 起床,Wake up
 去改这个提醒,Edit this reminder
 取消推迟,Cancel snooze
-确定,Confirm
+确定,OK
 完成,Done
 蜀葵,Hollyhock
 向日葵,Sunflower
@@ -29,9 +29,9 @@ keys,en
 白瓷,White porcelain
 彩釉盆,Glazed pot
 高筒盆,Tall pot
-方盆,Square planter
-碗盆,Bowl
-睡觉,Sleep
+方盆,Square pot
+碗盆,Bowl pot
+睡觉,Bedtime
 周一,Mon
 周二,Tue
 周三,Wed
@@ -41,85 +41,85 @@ keys,en
 周日,Sun
 新的提醒,New reminder
 ☀️ 起床,☀️ Wake up
-🛏️ 睡觉,🛏️ Sleep
-记一次推迟,Postpone once
-🏖️ 这天不提醒,🏖️ Skip this day
+🛏️ 睡觉,🛏️ Bedtime
+记一次推迟,Log a snooze
+🏖️ 这天不提醒,🏖️ Day off
 🗑️ 删除,🗑️ Delete
-输入提醒名称,Name this reminder
-💪 健身,💪 Workout
-＋ 增加结束时间,＋ Add end time
-＋ 添加结束时间,＋ Add end time
-＋ 添加提醒时间,＋ Add reminder time
-跳过此提醒一次,Skip once
-恢复此提醒,Undo skip
+输入提醒名称,Name your reminder
+💪 健身,💪 Gym
+＋ 增加结束时间,＋ Add an end time
+＋ 添加结束时间,＋ Add an end time
+＋ 添加提醒时间,＋ Add a time
+跳过此提醒一次,Skip this one
+恢复此提醒,Bring it back
 暂停本日提醒,Pause this day
 继续本日提醒,Resume this day
 暂停此提醒,Pause this reminder
 继续此提醒,Resume this reminder
 暂停%s提醒,Pause %s
 继续%s提醒,Resume %s
-15 分钟后结束,End in 15 min
-30 分钟后结束,End in 30 min
-1 小时后结束,End in 1 hour
+15 分钟后结束,Ends 15 min later
+30 分钟后结束,Ends 30 min later
+1 小时后结束,Ends 1 hr later
 没有结束提醒,No end reminder
 开始,Start
 结束,End
-%s结束,%s ends
-👶 接娃,👶 Pick up the kids
-💊 吃药,💊 Take medicine
-暂不提醒,Temporarily off
+%s结束,%s is over
+👶 接娃,👶 Pickup
+💊 吃药,💊 Meds
+暂不提醒,Off for now
 提醒,Reminder
 %d月%d日,%d/%d
-点 + 添加不同的提醒项目,Tap + to add more reminders
-周一到周日 每一天的时间都是独立的,Monday to Sunday each day keeps its own time
-点击时间可以修改,Tap the time to change it
+点 + 添加不同的提醒项目,Tap + to add another reminder
+周一到周日 每一天的时间都是独立的,Every day of the week gets its own time
+点击时间可以修改,Tap a time to change it
 点 + 添加提醒,Tap + to add a reminder
 周一至周五,Weekdays
 每天,Every day
-不重复,Once
-这个时间用在哪几天,Which days should this time apply to
-上午,am
-下午,pm
-选一个任务，开始计时,Pick a task to start the timer
-%s 时间到了,%s · time's up
-时间到了,Time's up
+不重复,Doesn't repeat
+这个时间用在哪几天,Which days should get this time?
+上午,AM
+下午,PM
+选一个任务，开始计时,Pick something to start a timer
+%s 时间到了,%s · time's up!
+时间到了,Time's up!
 共 %s · %s 到,%s · done at %s
 %d 分钟,%d min
-%d 小时,%d h
-%d 小时 %d 分钟,%d h %d min
+%d 小时,%d hr
+%d 小时 %d 分钟,%d hr %d min
 删除「%s」？,Delete “%s”?
 ⏳ 计时,⏳ Timer
-🍝 煮面,🍝 Noodles
+🍝 煮面,🍝 Pasta
 🍅 番茄钟,🍅 Pomodoro
 ☕ 休息,☕ Break
 自定计时,Custom timer
-写个名字，比如 🧺 洗衣服,"Name it, e.g. 🧺 Laundry"
+写个名字，比如 🧺 洗衣服,"Give it a name, like 🧺 Laundry"
 开始计时,Start timer
-小时,h
+小时,hr
 分钟,min
 取消,Cancel
 删除,Delete
 "＋ 自定
 选时长","＋ Custom
-pick a length"
+pick a time"
 开始「%s」？,Start “%s”?
 %s · %s 到,%s · done at %s
-会停掉正在走的「%s」,This stops “%s”
+会停掉正在走的「%s」,This'll stop “%s”
 "点一下就开始计时
-到点只发一条提醒，不会响闹钟","Tap to start the timer
-When it's done you get a notification, no alarm"
-自己加的计时 长按可以删除,Long-press your own timers to delete them
-点 ＋ 自定 写个名字、选个时长,"Tap ＋ Custom to pick a name and a length"
+到点只发一条提醒，不会响闹钟","Tap to start a timer
+When it's up you'll get a heads-up, not an alarm"
+自己加的计时 长按可以删除,Press and hold your own timers to delete them
+点 ＋ 自定 写个名字、选个时长,Tap ＋ Custom to name it and pick a time
 暂停提醒,Pause
 继续提醒,Resume
 暂停这天,Pause this day
 继续这天,Resume this day
 暂停,Paused
-暂停中 · 长按星期可以继续,Paused · hold the day to resume
-此次提醒已被跳过，本周不会提醒，下周会继续提醒。点击下面的按钮可以恢复,"Skipped this time. It won't ring this week and will be back next week. Tap the button below to undo"
-整个提醒已暂停 · 长按标签可以继续,Reminder paused · hold the tab to resume
-长按项目，可以暂停或删除,Hold a project to pause or delete
-长按日期，可以暂停当日提醒,Hold a day to skip that day's reminder
-结束时间要晚于开始时间,End time must be after the start time
-睡觉时间要晚于起床时间,Bedtime must be after wake-up time
+暂停中 · 长按星期可以继续,Paused · press and hold the day to turn it back on
+此次提醒已被跳过，本周不会提醒，下周会继续提醒。点击下面的按钮可以恢复,"Skipped! No alarm this week, it'll be back next week. Changed your mind? Tap the button below"
+整个提醒已暂停 · 长按标签可以继续,This reminder's paused · press and hold the tab to turn it back on
+长按项目，可以暂停或删除,Press and hold a reminder to pause or delete it
+长按日期，可以暂停当日提醒,Press and hold a day to pause that day
+结束时间要晚于开始时间,End time has to be after the start time
+睡觉时间要晚于起床时间,Bedtime has to be after wake-up time
 取消计时,Cancel timer

@@ -253,7 +253,7 @@ private func schedule(id: UUID, logicalId: String, when: Alarm.Schedule, label: 
     typealias Config = AlarmManager.AlarmConfiguration<SunflowerMetadata>
 
     let stop = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("停止", "Stop")), textColor: .white, systemImageName: "stop.circle")
-    let snooze = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("推迟", "Postpone")), textColor: .white, systemImageName: "zzz")
+    let snooze = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("推迟", "Snooze")), textColor: .white, systemImageName: "zzz")
     let alert = AlarmPresentation.Alert(
         title: LocalizedStringResource(stringLiteral: label),
         stopButton: stop,
@@ -261,7 +261,7 @@ private func schedule(id: UUID, logicalId: String, when: Alarm.Schedule, label: 
         secondaryButtonBehavior: .countdown
     )
     let pause = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("暂停", "Pause")), textColor: .white, systemImageName: "pause.fill")
-    let countdownTitle = label.isEmpty ? Copy.text("即将再响", "Rings again") : label
+    let countdownTitle = label.isEmpty ? Copy.text("即将再响", "Snoozing") : label
     let countdown = AlarmPresentation.Countdown(title: LocalizedStringResource(stringLiteral: countdownTitle), pauseButton: pause)
     let resume = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("继续", "Resume")), textColor: .white, systemImageName: "play.fill")
     let paused = AlarmPresentation.Paused(title: LocalizedStringResource(stringLiteral: Copy.text("已暂停", "Paused")), resumeButton: resume)

@@ -85,7 +85,7 @@ struct SunflowerAlarmLiveActivity: Widget {
                 FlowerMark(size: 28)
                 VStack(alignment: .leading, spacing: 2) {
                     alarmTimeText(context)
-                    eventList(context.attributes.metadata?.events ?? "", fallback: Copy.text("推迟倒计时", "Postpone"))
+                    eventList(context.attributes.metadata?.events ?? "", fallback: Copy.text("推迟倒计时", "Snoozing"))
                         .font(.caption)
                 }
                 Spacer(minLength: 8)
@@ -181,7 +181,7 @@ struct SunflowerAlarmLiveActivity: Widget {
 
     private func flowerLink() -> some View {
         Link(destination: flowerURL) {
-            Text(Copy.text("看花", "See the flower"))
+            Text(Copy.text("看花", "See your flower"))
                 .font(.headline)
                 .foregroundStyle(softYellowText)
                 .padding(.horizontal, 12)
@@ -320,9 +320,9 @@ struct SunflowerTimerLiveActivity: Widget {
         if minutes < 60 {
             length = Copy.text("\(minutes) 分钟", "\(minutes) min")
         } else if minutes % 60 == 0 {
-            length = Copy.text("\(minutes / 60) 小时", "\(minutes / 60) h")
+            length = Copy.text("\(minutes / 60) 小时", "\(minutes / 60) hr")
         } else {
-            length = Copy.text("\(minutes / 60) 小时 \(minutes % 60) 分钟", "\(minutes / 60) h \(minutes % 60) min")
+            length = Copy.text("\(minutes / 60) 小时 \(minutes % 60) 分钟", "\(minutes / 60) hr \(minutes % 60) min")
         }
         let clock = String(format: "%d:%02d", shown, minute)
         return Copy.text(

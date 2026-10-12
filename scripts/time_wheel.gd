@@ -7,7 +7,7 @@ signal settled(value: int)
 @export_range(0.5, 6.0, 0.1) var sensitivity := 1.0
 @export var coast := false
 ## 不为空时按下标画这些字（会过翻译表），比如上午/下午；为空画两位数字。
-@export var labels: PackedStringArray = []
+@export var labels := PackedStringArray()
 ## 关掉后到头就停，不会从 12 绕回 1。
 @export var wrap := true
 @export var wheel_width := 96.0

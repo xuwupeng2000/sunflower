@@ -54,6 +54,10 @@ func open(target: Control, pause_text: String, can_delete: bool, on_choose: Call
 		Input.vibrate_handheld(15)
 
 
+func menu_rect() -> Rect2:
+	return _menu.get_global_rect()
+
+
 func close() -> void:
 	if _target != null and is_instance_valid(_target):
 		_target.z_index = 0

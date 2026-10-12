@@ -383,7 +383,7 @@ func _fit_font(button: Button) -> void:
 	button.remove_theme_font_size_override("font_size")
 	var largest := button.get_theme_font_size("font_size")
 	var widest := 0.0
-	for line in button.text.split("\n"):
+	for line in button.atr(button.text).split("\n"):
 		widest = maxf(widest, font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, largest).x)
 	if widest > room:
 		var fitted := maxi(SMALLEST_FONT, int(floor(largest * room / widest)))

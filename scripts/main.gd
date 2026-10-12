@@ -186,6 +186,9 @@ func _notification(what: int) -> void:
 	if what != NOTIFICATION_APPLICATION_FOCUS_IN:
 		return
 	if _date_label != null and AlarmStore.apply_system_setting():
+		_style_tab(_sleep_tab, _sleep_tab.text)
+		for button in _task_buttons:
+			_style_tab(button, button.text)
 		_refresh()
 		_update_time_label()
 		_apply_task_chrome()
@@ -536,7 +539,8 @@ func _fit_font(button: Button, largest: int) -> void:
 	if room <= 0.0:
 		return
 	var font_size := largest
-	while font_size > SMALLEST_FONT and font.get_string_size(button.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > room:
+	var shown := button.atr(button.text)
+	while font_size > SMALLEST_FONT and font.get_string_size(shown, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > room:
 		font_size -= 1
 	button.add_theme_font_size_override("font_size", font_size)
 
@@ -652,11 +656,22 @@ func _preview_guide_menu() -> void:
 		var tab := _guide_tab_target()
 		var can_delete := _selected_task >= 0
 		_hold_menu.open(tab, tr("暂停提醒"), can_delete, Callable(), true)
+		_note_below_menu(_guide.get_node("长按说明"))
 		return
 	if _guide_step == 3:
 		_hold_menu.open(_guide_day_target(), tr("暂停这天"), false, Callable(), true)
+		_note_below_menu(_guide.get_node("日期说明"))
 		return
 	_hold_menu.close()
+
+
+## 演示菜单盖住说明字的话，把字挪到菜单下面。
+func _note_below_menu(note: Control) -> void:
+	var menu: Rect2 = _hold_menu.menu_rect()
+	var left := note.global_position.x
+	var overlaps_x := left < menu.end.x and left + note.size.x > menu.position.x
+	if overlaps_x and note.global_position.y < menu.end.y:
+		note.global_position.y = menu.end.y + GUIDE_PAD + 10.0
 
 
 func _ring_target(ring: Control, target: Control) -> void:
@@ -985,7 +1000,7 @@ func _on_task_name_input(event: InputEvent) -> void:
 
 func _open_task_name() -> void:
 	_rename_mode = false
-	_name_field.text = tr("新的提醒")
+	_name_field.text = ""
 	_name_dialog.visible = true
 
 
@@ -1541,8 +1556,8 @@ func _on_feed_landed(global_pos: Vector2) -> void:
 func _apply_care(kind: String, global_pos: Vector2) -> void:
 	if kind == "water":
 		_float_tip(tr("浇水不枯萎"), global_pos)
-		if AlarmStore.record_water():
-			_sunflower.water()
+		AlarmStore.record_water()
+		_sunflower.water()
 		return
 	if AlarmStore.use_fertilizer():
 		_float_tip(tr("施肥会长高"), global_pos)
@@ -1608,7 +1623,7 @@ func _refresh_care() -> void:
 	if _water_button == null or _feed_button == null:
 		return
 	var today := _date_key == AlarmStore.today_key()
-	_water_button.modulate.a = 1.0 if today and not AlarmStore.watered_today() else 0.35
+	_water_button.modulate.a = 1.0 if today else 0.35
 	var packs := AlarmStore.fertilizer
 	_feed_button.modulate.a = 1.0 if today and packs > 0 else 0.35
 	if _feed_count:
