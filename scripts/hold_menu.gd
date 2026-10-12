@@ -11,6 +11,7 @@ const EDGE := 16.0
 
 var _target: Control
 var _on_choose: Callable
+var _preview := false
 
 
 func _ready() -> void:
@@ -22,8 +23,10 @@ func _ready() -> void:
 
 ## pause_text 为空就不显示暂停那一行；can_delete 为假就不显示删除。
 ## 选了之后调 on_choose("pause") 或 on_choose("delete")。
-func open(target: Control, pause_text: String, can_delete: bool, on_choose: Callable) -> void:
+## preview 只给人看，点不到，教程黑屏自己收。
+func open(target: Control, pause_text: String, can_delete: bool, on_choose: Callable, preview := false) -> void:
 	close()
+	_preview = preview
 	_target = target
 	_on_choose = on_choose
 	_pause.visible = not pause_text.is_empty()
@@ -32,6 +35,12 @@ func open(target: Control, pause_text: String, can_delete: bool, on_choose: Call
 	_line.visible = _pause.visible and _delete.visible
 	# 按住的那个浮在遮罩上面，看着像被拎起来。
 	_target.z_index = 1
+	mouse_filter = Control.MOUSE_FILTER_IGNORE if preview else Control.MOUSE_FILTER_STOP
+	_pause.mouse_filter = Control.MOUSE_FILTER_IGNORE if preview else Control.MOUSE_FILTER_STOP
+	_delete.mouse_filter = Control.MOUSE_FILTER_IGNORE if preview else Control.MOUSE_FILTER_STOP
+	_menu.mouse_filter = Control.MOUSE_FILTER_IGNORE if preview else Control.MOUSE_FILTER_STOP
+	($遮罩 as CanvasItem).visible = not preview
+	z_index = 10 if preview else 0
 	visible = true
 	_menu.reset_size()
 	var rect := target.get_global_rect()
@@ -41,13 +50,22 @@ func open(target: Control, pause_text: String, can_delete: bool, on_choose: Call
 	if y + _menu.size.y > screen.end.y - EDGE:
 		y = rect.position.y - GAP - _menu.size.y
 	_menu.global_position = Vector2(x, y)
-	Input.vibrate_handheld(15)
+	if not preview:
+		Input.vibrate_handheld(15)
 
 
 func close() -> void:
 	if _target != null and is_instance_valid(_target):
 		_target.z_index = 0
 	_target = null
+	_on_choose = Callable()
+	_preview = false
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	_pause.mouse_filter = Control.MOUSE_FILTER_STOP
+	_delete.mouse_filter = Control.MOUSE_FILTER_STOP
+	_menu.mouse_filter = Control.MOUSE_FILTER_STOP
+	($遮罩 as CanvasItem).visible = true
+	z_index = 0
 	visible = false
 
 

@@ -2,7 +2,7 @@ extends Control
 ## 计时页：点一个任务就开始倒计时，一次只走一个；到点发通知（在前台就直接响一声）。
 
 const TimerButtonScene := preload("res://scenes/timer_button.tscn")
-const HOLD_SECONDS := 0.8
+const HOLD_SECONDS := 0.4
 const DONE_SHOW := 5.0
 ## 打开 app 时已经过点好一阵的计时，只收掉，不再响。
 const LATE_SILENT := 3.0

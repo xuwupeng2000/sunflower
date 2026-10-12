@@ -342,10 +342,6 @@ layout_mode = 1
 visible = false
 layout_mode = 1
 
-[node name="长按菜单" parent="UI/界面" unique_id=927533231 instance=ExtResource("20_hold_menu")]
-visible = false
-layout_mode = 1
-
 [node name="计时教程" type="ColorRect" parent="UI/界面" unique_id=155193069]
 visible = false
 layout_mode = 1
@@ -447,9 +443,25 @@ theme_type_variation = &"GuideRing"
 [node name="长按说明" type="Label" parent="UI/界面/教程" unique_id=1607395790]
 layout_mode = 0
 theme_type_variation = &"GuideText"
-text = "长按标签或星期，可以暂停或删除"
+text = "长按项目，可以暂停或删除"
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="日期框" type="Panel" parent="UI/界面/教程" unique_id=1166780786]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideRing"
+
+[node name="日期说明" type="Label" parent="UI/界面/教程" unique_id=1607395791]
+layout_mode = 0
+theme_type_variation = &"GuideText"
+text = "长按日期，可以暂停当日提醒"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="长按菜单" parent="UI/界面" unique_id=927533231 instance=ExtResource("20_hold_menu")]
+visible = false
+layout_mode = 1
 
 [node name="到点弹窗" type="ColorRect" parent="UI/界面" unique_id=1692891024]
 visible = false

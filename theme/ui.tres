@@ -526,6 +526,7 @@ ClockOff/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
 ClockOff/font_sizes/font_size = 20
 ClockOff/fonts/font = ExtResource("2_ios_bold")
 DayButton/base_type = &"Button"
+DayButton/font_sizes/font_size = 16
 DayButton/styles/disabled = SubResource("StyleBoxFlat_disabled")
 DayButton/styles/focus = SubResource("StyleBoxEmpty_flat")
 DayButton/styles/hover = SubResource("StyleBoxFlat_day")

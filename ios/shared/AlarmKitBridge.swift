@@ -51,29 +51,42 @@ private var snoozeCallback: (() -> Void)?
         let label = raw["label"] as? String ?? Copy.text("起床", "Wake up")
         let weekdayNumbers = raw["weekdays"] as? [Int] ?? [1, 2, 3, 4, 5]
         let eventRows = raw["events"] as? [[String: Any]] ?? []
-        let eventLabels = eventRows.compactMap { $0["label"] as? String }.filter { !$0.isEmpty }
-        let events = eventLabels.isEmpty ? label : eventLabels.joined(separator: "\n")
-        let title = eventLabels.isEmpty ? label : eventLabels.joined(separator: Copy.text("、", ", "))
-        Task {
-            try? await schedule(id: id, logicalId: idText, hour: hour, minute: minute, label: title, events: events, weekdayNumbers: weekdayNumbers)
+        let (title, events) = titleAndEvents(eventRows, fallback: label)
+        let dateRows = raw["dates"] as? [[String: Any]]
+        enqueue {
+            await cancelLogical(idText)
+            guard let dateRows else {
+                let time = Alarm.Schedule.Relative.Time(hour: hour, minute: minute)
+                let weekly = Alarm.Schedule.Relative(time: time, repeats: .weekly(weekdayNumbers.compactMap(localeWeekday)))
+                try? await schedule(id: id, logicalId: idText, when: .relative(weekly), label: title, events: events)
+                return
+            }
+            // A skipped day is left out of the list; every other week rings once on its own date.
+            for row in dateRows {
+                guard let dateText = row["date"] as? String,
+                      let when = fixedDate(dateText, hour: hour, minute: minute),
+                      when > Date(),
+                      let dayId = alarmUUID("\(idText)@\(dateText)") else {
+                    continue
+                }
+                let (dayTitle, dayEvents) = titleAndEvents(row["events"] as? [[String: Any]] ?? [], fallback: label)
+                try? await schedule(id: dayId, logicalId: idText, when: .fixed(when), label: dayTitle, events: dayEvents)
+            }
         }
     }
 
     @objc public static func cancelAlarm(_ alarmId: String) {
-        guard let id = alarmUUID(alarmId) else {
-            return
-        }
-        Task {
-            try? await AlarmManager.shared.cancel(id: id)
+        enqueue {
+            await cancelLogical(alarmId)
         }
     }
 
     /// Stops the ring or postpone countdown now; a weekly alarm stays scheduled.
     @objc public static func stopAlarm(_ alarmId: String) {
-        guard let id = alarmUUID(alarmId) else {
-            return
+        let alarms = (try? AlarmManager.shared.alarms) ?? []
+        for alarm in alarms where logicalID(alarm) == alarmId && stateName(alarm.state) != "scheduled" {
+            try? AlarmManager.shared.stop(id: alarm.id)
         }
-        try? AlarmManager.shared.stop(id: id)
     }
 
     /// Replaces any running timer: a notification at the end plus a Live Activity counting down.
@@ -195,12 +208,49 @@ private func skyAttachment(_ timerId: String) -> UNNotificationAttachment? {
     return try? UNNotificationAttachment(identifier: "sky", url: copy)
 }
 
-private func schedule(id: UUID, logicalId: String, hour: Int, minute: Int, label: String, events: String, weekdayNumbers: [Int]) async throws {
+private let queueLock = NSLock()
+nonisolated(unsafe) private var queueTail: Task<Void, Never>?
+
+/// Cancel-then-schedule must not interleave, or a late cancel wipes the alarms just scheduled.
+private func enqueue(_ work: @escaping @Sendable () async -> Void) {
+    queueLock.lock()
+    defer { queueLock.unlock() }
+    let previous = queueTail
+    queueTail = Task {
+        await previous?.value
+        await work()
+    }
+}
+
+/// One logical slot may be a weekly alarm or several dated ones; drop them all.
+private func cancelLogical(_ logicalId: String) async {
+    let alarms = (try? AlarmManager.shared.alarms) ?? []
+    for alarm in alarms where logicalID(alarm) == logicalId {
+        try? await AlarmManager.shared.cancel(id: alarm.id)
+    }
+    if let id = alarmUUID(logicalId) {
+        try? await AlarmManager.shared.cancel(id: id)
+    }
+}
+
+private func titleAndEvents(_ rows: [[String: Any]], fallback: String) -> (String, String) {
+    let labels = rows.compactMap { $0["label"] as? String }.filter { !$0.isEmpty }
+    if labels.isEmpty {
+        return (fallback, fallback)
+    }
+    return (labels.joined(separator: Copy.text("、", ", ")), labels.joined(separator: "\n"))
+}
+
+private func fixedDate(_ text: String, hour: Int, minute: Int) -> Date? {
+    let parts = text.split(separator: "-").compactMap { Int($0) }
+    guard parts.count == 3 else {
+        return nil
+    }
+    return Calendar.current.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2], hour: hour, minute: minute))
+}
+
+private func schedule(id: UUID, logicalId: String, when: Alarm.Schedule, label: String, events: String) async throws {
     typealias Config = AlarmManager.AlarmConfiguration<SunflowerMetadata>
-    let weekdays = weekdayNumbers.compactMap(localeWeekday)
-    let time = Alarm.Schedule.Relative.Time(hour: hour, minute: minute)
-    let recurrence = Alarm.Schedule.Relative.Recurrence.weekly(weekdays)
-    let relative = Alarm.Schedule.Relative(time: time, repeats: recurrence)
 
     let stop = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("停止", "Stop")), textColor: .white, systemImageName: "stop.circle")
     let snooze = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("推迟", "Postpone")), textColor: .white, systemImageName: "zzz")
@@ -223,7 +273,7 @@ private func schedule(id: UUID, logicalId: String, hour: Int, minute: Int, label
     let sound = AlertConfiguration.AlertSound.named("sunflower.wav")
     let configuration = Config(
         countdownDuration: Alarm.CountdownDuration(preAlert: nil, postAlert: 9 * 60),
-        schedule: .relative(relative),
+        schedule: when,
         attributes: attributes,
         stopIntent: nil,
         secondaryIntent: nil,
@@ -232,36 +282,37 @@ private func schedule(id: UUID, logicalId: String, hour: Int, minute: Int, label
     try await AlarmManager.shared.schedule(id: id, configuration: configuration)
 }
 
+/// Weekday (1 = Monday), hour and minute, whether the alarm repeats weekly or rings on one date.
+private func slot(_ alarm: Alarm) -> (weekday: Int, hour: Int, minute: Int)? {
+    if case .relative(let relative) = alarm.schedule,
+       case .weekly(let days) = relative.repeats,
+       let day = days.first {
+        return (weekdayNumber(day), relative.time.hour, relative.time.minute)
+    }
+    if case .fixed(let date) = alarm.schedule {
+        let parts = Calendar.current.dateComponents([.weekday, .hour, .minute], from: date)
+        return (((parts.weekday ?? 2) + 5) % 7 + 1, parts.hour ?? 0, parts.minute ?? 0)
+    }
+    return nil
+}
+
 private func logicalID(_ alarm: Alarm) -> String? {
-    guard case .relative(let relative) = alarm.schedule,
-          case .weekly(let days) = relative.repeats,
-          let day = days.first else {
+    guard let slot = slot(alarm) else {
         return nil
     }
-    return "due-\(weekdayNumber(day))-\(relative.time.hour)-\(relative.time.minute)"
+    return "due-\(slot.weekday)-\(slot.hour)-\(slot.minute)"
 }
 
 private func hour(_ alarm: Alarm) -> Int {
-    guard case .relative(let relative) = alarm.schedule else {
-        return 0
-    }
-    return relative.time.hour
+    slot(alarm)?.hour ?? 0
 }
 
 private func minute(_ alarm: Alarm) -> Int {
-    guard case .relative(let relative) = alarm.schedule else {
-        return 0
-    }
-    return relative.time.minute
+    slot(alarm)?.minute ?? 0
 }
 
 private func weekday(_ alarm: Alarm) -> Int {
-    guard case .relative(let relative) = alarm.schedule,
-          case .weekly(let days) = relative.repeats,
-          let day = days.first else {
-        return 1
-    }
-    return weekdayNumber(day)
+    slot(alarm)?.weekday ?? 1
 }
 
 private func stateName(_ state: Alarm.State) -> String {

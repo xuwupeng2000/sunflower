@@ -49,7 +49,7 @@ const NO_SQUISH := [&"TabIcon", &"CareButton", &"ClockButton"]
 const SMALLEST_FONT := 11
 const HOLD_SECONDS := 0.28
 ## 长按标签或星期多久弹出菜单；弹出后手指挪开这么远就当成拖动排序。
-const MENU_HOLD := 0.8
+const MENU_HOLD := 0.4
 const DRAG_SLOP := 12.0
 var _editing_kind := "wake"
 var _picker_hour := 7
@@ -82,7 +82,10 @@ var _menu_task := -1
 var _press_at := Vector2.ZERO
 var _day_hold := 0
 var _start_title: Label
+var _add_time_row: Button
 var _add_end_row: Button
+var _skip_today_button: Button
+var _pause_day_button: Button
 var _end_row: Control
 var _end_button: Button
 var _picker_tabs: Control
@@ -113,6 +116,7 @@ const GUIDE_STEPS := [
 	["加号框", "加号说明"],
 	["星期框", "星期说明", "时间框", "时间说明"],
 	["长按框", "长按说明"],
+	["日期框", "日期说明"],
 ]
 
 
@@ -186,6 +190,9 @@ func _notification(what: int) -> void:
 		_update_time_label()
 		_apply_task_chrome()
 		_schedule_days()
+	if AlarmStore.prune_skips():
+		AlarmService.resync_alarms()
+		_update_time_label()
 	if _ring_popup != null:
 		_catch_ringing()
 
@@ -230,10 +237,12 @@ func _bind_nodes() -> void:
 	_sleep_row = _times.get_node("睡觉")
 	_task_row = _times.get_node("任务时间")
 	_start_title = _task_row.get_node("标题")
+	_add_time_row = _task_row.get_node("添加时间")
 	_add_end_row = _task_row.get_node("添加结束")
 	_end_row = _times.get_node("结束")
 	_end_button = _end_row.get_node("钟点")
 	_end_button.pressed.connect(_open_time_picker.bind("task", "end"))
+	_add_time_row.pressed.connect(_open_time_picker.bind("task"))
 	_add_end_row.pressed.connect(func() -> void:
 		_open_time_picker("task")
 		_add_picker_end()
@@ -262,6 +271,11 @@ func _bind_nodes() -> void:
 	var debug_snooze := _alarm_page.get_node("边框/内容/操作/按钮/记一次贪睡") as Button
 	debug_snooze.visible = OS.has_feature("editor")
 	debug_snooze.pressed.connect(_record_snooze)
+	_skip_today_button = _alarm_page.get_node("边框/内容/操作/按钮/当日/跳过一次")
+	_pause_day_button = _alarm_page.get_node("边框/内容/操作/按钮/当日/暂停本日")
+	_skip_today_button.pressed.connect(_toggle_skip_once)
+	_pause_day_button.pressed.connect(_toggle_this_reminder)
+	_update_action_buttons()
 	_ring_popup = root.get_node("到点弹窗")
 	_ring_names = _ring_popup.get_node("居中/面板/内容/名单")
 	_ring_popup.get_node("居中/面板/内容/去改").pressed.connect(_open_triggered_alarm)
@@ -561,8 +575,13 @@ func _show_tab(tab: String, pin_today: bool = true) -> void:
 		_flower_page.get_node("照料").visible = tab == "flower"
 	if tab == "alarm":
 		_show_guide()
-	elif tab == "flower":
-		_hint_wilted.call_deferred(Vector2.INF)
+	else:
+		if _guide != null and _guide.visible:
+			_guide.visible = false
+		if _hold_menu:
+			_hold_menu.close()
+		if tab == "flower":
+			_hint_wilted.call_deferred(Vector2.INF)
 
 
 func _show_guide() -> void:
@@ -577,21 +596,24 @@ func _show_guide() -> void:
 		return
 	var plus := _alarm_page.get_node("边框/内容/标签行/加号") as Control
 	var days := _alarm_page.get_node("边框/内容/行列/星期") as Control
-	var actions := _tab_scroll as Control
+	var tab_target := _guide_tab_target()
+	var day_target := _guide_day_target()
 	_ring_target(_guide.get_node("加号框"), plus)
 	_ring_target(_guide.get_node("星期框"), days)
 	_ring_target(_guide.get_node("时间框"), _times)
-	_ring_target(_guide.get_node("长按框"), actions)
+	_ring_target(_guide.get_node("长按框"), tab_target)
+	_ring_target(_guide.get_node("日期框"), day_target)
 	var plus_rect := plus.get_global_rect()
 	var days_rect := days.get_global_rect()
 	var times_rect := _times.get_global_rect()
-	var actions_rect := actions.get_global_rect()
 	var column_x := times_rect.position.x
 	var column_w := times_rect.size.x
 	_place_note(_guide.get_node("加号说明"), plus_rect.end.x - 240.0, plus_rect.end.y + GUIDE_PAD + 10.0, 240.0)
 	_place_note(_guide.get_node("星期说明"), column_x, days_rect.position.y + 8.0, column_w)
 	_place_note(_guide.get_node("时间说明"), column_x, times_rect.end.y + GUIDE_PAD + 12.0, column_w)
-	_place_note(_guide.get_node("长按说明"), actions_rect.position.x, actions_rect.end.y + GUIDE_PAD + 10.0, actions_rect.size.x)
+	var tab_rect := tab_target.get_global_rect()
+	_place_note(_guide.get_node("长按说明"), column_x, tab_rect.end.y + GUIDE_PAD + 10.0, column_w)
+	_place_note(_guide.get_node("日期说明"), column_x, days_rect.position.y + 8.0, column_w)
 	_guide_step = 0
 	_apply_guide_step()
 	_guide.visible = true
@@ -603,6 +625,38 @@ func _apply_guide_step() -> void:
 		for node_name in GUIDE_STEPS[index]:
 			var part := _guide.get_node(node_name) as Control
 			part.visible = index == _guide_step
+	_preview_guide_menu()
+
+
+func _guide_tab_target() -> Control:
+	if _selected_task >= 0 and _selected_task < _task_buttons.size():
+		return _task_buttons[_selected_task]
+	return _sleep_tab
+
+
+func _guide_day_target() -> Control:
+	var day := _selected_day
+	if not _day_reminds(day):
+		day = 0
+		while day < _day_buttons.size() and not _day_reminds(day):
+			day += 1
+	if day >= 0 and day < _day_buttons.size():
+		return _day_buttons[day]
+	return _alarm_page.get_node("边框/内容/行列/星期") as Control
+
+
+func _preview_guide_menu() -> void:
+	if _hold_menu == null:
+		return
+	if _guide_step == 2:
+		var tab := _guide_tab_target()
+		var can_delete := _selected_task >= 0
+		_hold_menu.open(tab, tr("暂停提醒"), can_delete, Callable(), true)
+		return
+	if _guide_step == 3:
+		_hold_menu.open(_guide_day_target(), tr("暂停这天"), false, Callable(), true)
+		return
+	_hold_menu.close()
 
 
 func _ring_target(ring: Control, target: Control) -> void:
@@ -625,6 +679,8 @@ func _on_guide_input(event: InputEvent) -> void:
 		_apply_guide_step()
 		return
 	_guide.visible = false
+	if _hold_menu:
+		_hold_menu.close()
 
 
 func _on_week_gesture(event: InputEvent, days: Control) -> void:
@@ -658,7 +714,66 @@ func _on_day_menu(_action: String, day: int) -> void:
 	else:
 		AlarmStore.set_task_day_paused(_selected_task, day, paused)
 	_update_time_label()
-	_schedule_days()
+	AlarmService.resync_alarms()
+
+
+func _event_skip_key() -> String:
+	if _selected_task < 0:
+		return AlarmStore.skip_key()
+	return AlarmStore.skip_key(str(AlarmStore.task_at(_selected_task).get("id", "")))
+
+
+## 选中的那个星期几下一次要响的日期；睡觉看睡觉钟点，自己的提醒看开始钟点。
+func _selected_skip_date() -> String:
+	if _selected_task < 0:
+		var slot: Dictionary = AlarmStore.day_slot(_selected_day)
+		return AlarmStore.next_date(_selected_day, int(slot["sleep_hour"]), int(slot["sleep_minute"]))
+	var times: Array = AlarmStore.task_at(_selected_task).get("times", [])
+	if _selected_day < 0 or _selected_day >= times.size():
+		return ""
+	var moment: Dictionary = times[_selected_day]
+	return AlarmStore.next_date(_selected_day, int(moment["hour"]), int(moment["minute"]))
+
+
+func _selected_skipped() -> bool:
+	var date_key := _selected_skip_date()
+	return not date_key.is_empty() and AlarmStore.is_skipped(date_key, _event_skip_key())
+
+
+func _toggle_skip_once() -> void:
+	var date_key := _selected_skip_date()
+	if date_key.is_empty():
+		return
+	AlarmStore.set_skipped(date_key, _event_skip_key(), not _selected_skipped())
+	AlarmService.resync_alarms()
+	_update_time_label()
+	_buzz()
+
+
+func _toggle_this_reminder() -> void:
+	_on_day_menu("", _selected_day)
+	_buzz()
+
+
+func _update_action_buttons() -> void:
+	if _skip_today_button == null or _pause_day_button == null:
+		return
+	var skipped := _selected_skipped()
+	var day_paused := _day_paused(_selected_day)
+	_skip_today_button.visible = true
+	_pause_day_button.visible = true
+	_skip_today_button.disabled = day_paused or _whole_paused() or not _day_reminds(_selected_day)
+	_skip_today_button.text = tr("恢复此提醒") if skipped else tr("跳过此提醒一次")
+	var weekday := tr("周" + AlarmStore.WEEKDAY_NAMES[clampi(_selected_day, 0, 6)])
+	_pause_day_button.text = (tr("继续%s提醒") if day_paused else tr("暂停%s提醒")) % weekday
+	_fit_font(_skip_today_button, 16)
+	_fit_font(_pause_day_button, 16)
+	var row := _skip_today_button.get_parent() as Control
+	if row:
+		row.visible = true
+	var bar := _alarm_page.get_node("边框/内容/操作") as Control
+	if bar:
+		bar.visible = true
 
 
 func _input(event: InputEvent) -> void:
@@ -788,6 +903,7 @@ func _update_time_label() -> void:
 		return
 	var all_paused := _whole_paused()
 	var day_paused := _day_paused(_selected_day)
+	var skipped := _selected_skipped()
 	if _selected_task < 0:
 		var slot: Dictionary = AlarmStore.day_slot(_selected_day)
 		_show_clock(_wake_button, int(slot["wake_hour"]), int(slot["wake_minute"]), true)
@@ -804,17 +920,25 @@ func _update_time_label() -> void:
 				_show_clock(_end_button, int(moment["end_hour"]), int(moment["end_minute"]), reminding)
 			_start_title.visible = has_end
 			_end_row.visible = has_end
-			_add_end_row.visible = reminding and not has_end and not all_paused and not day_paused
-	var faint := all_paused or day_paused
+			if _add_time_row:
+				_add_time_row.visible = not reminding and not all_paused
+			_add_end_row.visible = reminding and not has_end and not all_paused and not day_paused and not skipped
+	var faint := all_paused or day_paused or skipped
 	for button in [_wake_button, _sleep_button, _task_button, _end_button]:
 		if button != null:
 			button.get_node("读数").modulate.a = 0.35 if faint else 1.0
 	_pause_note.visible = faint
-	_pause_note.text = tr("整个提醒已暂停 · 长按标签可以继续") if all_paused else tr("暂停中 · 长按星期可以继续")
+	if all_paused:
+		_pause_note.text = tr("整个提醒已暂停 · 长按标签可以继续")
+	elif day_paused:
+		_pause_note.text = tr("暂停中 · 长按星期可以继续")
+	else:
+		_pause_note.text = tr("此次提醒已被跳过，本周不会提醒，下周会继续提醒。点击下面的按钮可以恢复")
 	for index in _day_buttons.size():
 		var off := all_paused or _day_paused(index)
-		_day_buttons[index].theme_type_variation = &"PausedButton" if off else &""
+		_day_buttons[index].theme_type_variation = &"PausedButton" if off else &"DayButton"
 		_day_buttons[index].get_node("暂停").visible = off and not all_paused
+	_update_action_buttons()
 
 
 func _whole_paused() -> bool:
@@ -962,7 +1086,7 @@ func _show_clock(button: Button, hour: int, minute: int, enabled: bool) -> void:
 	if not enabled:
 		meridiem.visible = false
 		digits.theme_type_variation = &"ClockOff"
-		digits.text = tr("不提醒")
+		digits.text = tr("暂不提醒")
 		return
 	meridiem.visible = true
 	meridiem.text = tr("上午") if hour < 12 else tr("下午")

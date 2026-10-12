@@ -49,6 +49,15 @@ keys,en
 💪 健身,💪 Workout
 ＋ 增加结束时间,＋ Add end time
 ＋ 添加结束时间,＋ Add end time
+＋ 添加提醒时间,＋ Add reminder time
+跳过此提醒一次,Skip once
+恢复此提醒,Undo skip
+暂停本日提醒,Pause this day
+继续本日提醒,Resume this day
+暂停此提醒,Pause this reminder
+继续此提醒,Resume this reminder
+暂停%s提醒,Pause %s
+继续%s提醒,Resume %s
 15 分钟后结束,End in 15 min
 30 分钟后结束,End in 30 min
 1 小时后结束,End in 1 hour
@@ -58,7 +67,7 @@ keys,en
 %s结束,%s ends
 👶 接娃,👶 Pick up the kids
 💊 吃药,💊 Take medicine
-不提醒,Off
+暂不提醒,Temporarily off
 提醒,Reminder
 %d月%d日,%d/%d
 点 + 添加不同的提醒项目,Tap + to add more reminders
@@ -107,8 +116,10 @@ When it's done you get a notification, no alarm"
 继续这天,Resume this day
 暂停,Paused
 暂停中 · 长按星期可以继续,Paused · hold the day to resume
+此次提醒已被跳过，本周不会提醒，下周会继续提醒。点击下面的按钮可以恢复,"Skipped this time. It won't ring this week and will be back next week. Tap the button below to undo"
 整个提醒已暂停 · 长按标签可以继续,Reminder paused · hold the tab to resume
-长按标签或星期，可以暂停或删除,Hold a tab or a day to pause or delete
+长按项目，可以暂停或删除,Hold a project to pause or delete
+长按日期，可以暂停当日提醒,Hold a day to skip that day's reminder
 结束时间要晚于开始时间,End time must be after the start time
 睡觉时间要晚于起床时间,Bedtime must be after wake-up time
 取消计时,Cancel timer

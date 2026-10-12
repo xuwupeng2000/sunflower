@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" path="res://scenes/task_tab.tscn" id="3_tab"]
 [ext_resource type="Script" uid="uid://cy76wc2byt741" path="res://scripts/tab_scroll.gd" id="4_scroll"]
-
 [node name="定时" type="Control" unique_id=943383272]
 clip_contents = true
 layout_mode = 3
@@ -74,11 +73,12 @@ theme_override_constants/separation = 36
 [node name="星期" type="VBoxContainer" parent="边框/内容/行列" unique_id=838523199]
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_constants/separation = 18
+theme_override_constants/separation = 22
 
 [node name="周一" type="Button" parent="边框/内容/行列/星期" unique_id=1657271076]
-custom_minimum_size = Vector2(108, 52)
+custom_minimum_size = Vector2(80, 40)
 layout_mode = 2
+theme_type_variation = &"DayButton"
 text = "周一"
 
 [node name="暂停" type="Label" parent="边框/内容/行列/星期/周一" unique_id=1657271200]
@@ -97,8 +97,9 @@ text = "暂停"
 horizontal_alignment = 1
 
 [node name="周二" type="Button" parent="边框/内容/行列/星期" unique_id=1945075868]
-custom_minimum_size = Vector2(108, 52)
+custom_minimum_size = Vector2(80, 40)
 layout_mode = 2
+theme_type_variation = &"DayButton"
 text = "周二"
 
 [node name="暂停" type="Label" parent="边框/内容/行列/星期/周二" unique_id=1657271201]
@@ -117,8 +118,9 @@ text = "暂停"
 horizontal_alignment = 1
 
 [node name="周三" type="Button" parent="边框/内容/行列/星期" unique_id=558481070]
-custom_minimum_size = Vector2(108, 52)
+custom_minimum_size = Vector2(80, 40)
 layout_mode = 2
+theme_type_variation = &"DayButton"
 text = "周三"
 
 [node name="暂停" type="Label" parent="边框/内容/行列/星期/周三" unique_id=1657271202]
@@ -137,8 +139,9 @@ text = "暂停"
 horizontal_alignment = 1
 
 [node name="周四" type="Button" parent="边框/内容/行列/星期" unique_id=189999311]
-custom_minimum_size = Vector2(108, 52)
+custom_minimum_size = Vector2(80, 40)
 layout_mode = 2
+theme_type_variation = &"DayButton"
 text = "周四"
 
 [node name="暂停" type="Label" parent="边框/内容/行列/星期/周四" unique_id=1657271203]
@@ -157,8 +160,9 @@ text = "暂停"
 horizontal_alignment = 1
 
 [node name="周五" type="Button" parent="边框/内容/行列/星期" unique_id=1499202470]
-custom_minimum_size = Vector2(108, 52)
+custom_minimum_size = Vector2(80, 40)
 layout_mode = 2
+theme_type_variation = &"DayButton"
 text = "周五"
 
 [node name="暂停" type="Label" parent="边框/内容/行列/星期/周五" unique_id=1657271204]
@@ -177,8 +181,9 @@ text = "暂停"
 horizontal_alignment = 1
 
 [node name="周六" type="Button" parent="边框/内容/行列/星期" unique_id=1935499810]
-custom_minimum_size = Vector2(108, 52)
+custom_minimum_size = Vector2(80, 40)
 layout_mode = 2
+theme_type_variation = &"DayButton"
 text = "周六"
 
 [node name="暂停" type="Label" parent="边框/内容/行列/星期/周六" unique_id=1657271205]
@@ -197,8 +202,9 @@ text = "暂停"
 horizontal_alignment = 1
 
 [node name="周日" type="Button" parent="边框/内容/行列/星期" unique_id=1657953572]
-custom_minimum_size = Vector2(108, 52)
+custom_minimum_size = Vector2(80, 40)
 layout_mode = 2
+theme_type_variation = &"DayButton"
 text = "周日"
 
 [node name="暂停" type="Label" parent="边框/内容/行列/星期/周日" unique_id=1657271206]
@@ -359,6 +365,14 @@ theme_type_variation = &"ClockDigits"
 text = "09:00"
 vertical_alignment = 1
 
+[node name="添加时间" type="Button" parent="边框/内容/行列/时间/任务时间" unique_id=976268567]
+visible = false
+custom_minimum_size = Vector2(180, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"ActionButton"
+text = "＋ 添加提醒时间"
+
 [node name="添加结束" type="Button" parent="边框/内容/行列/时间/任务时间" unique_id=976268566]
 custom_minimum_size = Vector2(180, 44)
 layout_mode = 2
@@ -428,8 +442,27 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
 [node name="记一次贪睡" type="Button" parent="边框/内容/操作/按钮" unique_id=1051232717]
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"ActionButton"
+theme_type_variation = &"DayButton"
 text = "记一次推迟"
+
+[node name="当日" type="HBoxContainer" parent="边框/内容/操作/按钮" unique_id=1051232720]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="暂停本日" type="Button" parent="边框/内容/操作/按钮/当日" unique_id=1051232719]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"DayButton"
+text = "暂停周一提醒"
+
+[node name="跳过一次" type="Button" parent="边框/内容/操作/按钮/当日" unique_id=1051232718]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"DayButton"
+text = "跳过此提醒一次"

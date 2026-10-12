@@ -45,6 +45,9 @@ func _translated(alarm: Dictionary) -> Dictionary:
 	for event in shown.get("events", []):
 		if typeof(event) == TYPE_DICTIONARY:
 			event["label"] = tr(str(event.get("label", "")))
+	for occurrence in shown.get("dates", []):
+		for event in occurrence.get("events", []):
+			event["label"] = tr(str(event.get("label", "")))
 	return shown
 
 
@@ -115,6 +118,17 @@ func note_ringing() -> Array:
 func cancel(alarm_id: String) -> void:
 	if using_native:
 		native.cancel(alarm_id)
+
+
+## 跳过或暂停某一天后，同一时刻可能还剩别的提醒，旧的 due 组要拆掉再排。
+func resync_alarms() -> void:
+	var previous: Array[String] = []
+	previous.assign(store.scheduled_ids)
+	for alarm_id in previous:
+		stop(alarm_id)
+		cancel(alarm_id)
+	store.replace_scheduled_ids([])
+	sync_alarms()
 
 
 # 只结束这一次响铃或推迟倒计时，每周闹钟照常。

@@ -80,8 +80,9 @@ func load_data() -> void:
 	# 睡觉不能删了；以前删掉的接回来，但先暂停，免得突然响。
 	sleep_present = true
 	sleep_paused = bool(data.get("sleep_paused", false)) or not bool(data.get("sleep_present", true))
+	_load_skips(data.get("skips", []))
 	_load_days(data.get("days", []))
-	tutorial_seen = bool(data.get("tutorial_seen", false))
+	tutorial_seen = bool(data.get("tutorial_seen", false)) and int(data.get("tutorial_v", 1)) >= 4
 	timer_tutorial_seen = bool(data.get("timer_tutorial_seen", false))
 	scheduled_ids.clear()
 	for item in data.get("scheduled_ids", []):
@@ -109,8 +110,10 @@ func save_data() -> void:
 		"care": care,
 		"days": days,
 		"tasks": tasks,
+		"skips": skips,
 		"scheduled_ids": scheduled_ids,
 		"tutorial_seen": tutorial_seen,
+		"tutorial_v": 4,
 		"timer_tutorial_seen": timer_tutorial_seen,
 		"sleep_present": sleep_present,
 		"sleep_paused": sleep_paused,
@@ -249,6 +252,8 @@ func _system_language() -> String:
 var days: Array[Dictionary] = []
 var tasks: Array[Dictionary] = []
 var scheduled_ids: Array[String] = []
+## 某一天临时取消的提醒：{date, key}，key 是 sleep 或 task-<id>。过了那天就失效。
+var skips: Array[Dictionary] = []
 
 
 func day_count() -> int:
@@ -552,8 +557,9 @@ func _sync_day_alarms() -> void:
 		var slot := days[index]
 		var weekday := index + 1
 		if sleep_present and not sleep_paused and bool(slot.get("enabled", true)):
-			kept.append(_day_alarm("wake-%d" % weekday, int(slot["wake_hour"]), int(slot["wake_minute"]), weekday, "起床"))
-			kept.append(_day_alarm("sleep-%d" % weekday, int(slot["sleep_hour"]), int(slot["sleep_minute"]), weekday, "睡觉"))
+			var sleep_skips := skipped_dates(index, skip_key())
+			kept.append(_day_alarm("wake-%d" % weekday, int(slot["wake_hour"]), int(slot["wake_minute"]), weekday, "起床", sleep_skips))
+			kept.append(_day_alarm("sleep-%d" % weekday, int(slot["sleep_hour"]), int(slot["sleep_minute"]), weekday, "睡觉", sleep_skips))
 	for task in tasks:
 		if bool(task.get("paused", false)):
 			continue
@@ -565,9 +571,14 @@ func _sync_day_alarms() -> void:
 			if not bool(moment.get("enabled", true)) or bool(moment.get("paused", false)):
 				continue
 			var task_weekday := day_index + 1
-			kept.append(_day_alarm(task_alarm_id(task_id, task_weekday), int(moment["hour"]), int(moment["minute"]), task_weekday, label))
+			var task_skips := skipped_dates(day_index, skip_key(task_id))
+			kept.append(_day_alarm(task_alarm_id(task_id, task_weekday), int(moment["hour"]), int(moment["minute"]), task_weekday, label, task_skips))
 			if moment.has("end_hour"):
-				kept.append(_day_alarm(task_end_alarm_id(task_id, task_weekday), int(moment["end_hour"]), int(moment["end_minute"]), _end_weekday(moment, day_index), label))
+				var end_weekday := _end_weekday(moment, day_index)
+				var end_skips: Array = []
+				for date_key in task_skips:
+					end_skips.append(shift_date(date_key, posmod(end_weekday - task_weekday, 7)))
+				kept.append(_day_alarm(task_end_alarm_id(task_id, task_weekday), int(moment["end_hour"]), int(moment["end_minute"]), end_weekday, label, end_skips))
 	alarms = kept
 
 
@@ -598,18 +609,42 @@ func due_groups() -> Array[Dictionary]:
 			events.append({
 				"id": alarm_id,
 				"label": event_label,
+				"skip_dates": alarm.get("skip_dates", []),
 			})
 	var groups: Array[Dictionary] = []
 	for key in buckets:
 		var group: Dictionary = buckets[key]
 		var names := PackedStringArray()
+		var has_skip := false
 		for event in group["events"]:
 			var event_label := str(event.get("label", ""))
 			if not event_label.is_empty():
 				names.append(event_label)
+			if not (event["skip_dates"] as Array).is_empty():
+				has_skip = true
 		group["label"] = "、".join(names)
+		if has_skip:
+			group["dates"] = _dated_occurrences(group)
 		groups.append(group)
 	return groups
+
+
+## 有跳过的那组不交给系统每周重复，改成往后 WEEKS_AHEAD 周逐日排好，跳过的那天不排；
+## 这样不打开 app 也照常响到那几周排完。
+func _dated_occurrences(group: Dictionary) -> Array:
+	var hour := int(group.get("hour", 0))
+	var minute := int(group.get("minute", 0))
+	var first := next_date(int(group["weekdays"][0]) - 1, hour, minute)
+	var occurrences: Array = []
+	for week in WEEKS_AHEAD:
+		var date_key := shift_date(first, week * 7)
+		var events: Array = []
+		for event in group["events"]:
+			if not (event["skip_dates"] as Array).has(date_key):
+				events.append({"id": event["id"], "label": event["label"]})
+		if not events.is_empty():
+			occurrences.append({"date": date_key, "events": events})
+	return occurrences
 
 
 func current_due_labels() -> PackedStringArray:
@@ -642,7 +677,7 @@ func replace_scheduled_ids(next_ids: Array) -> void:
 	save_data()
 
 
-func _day_alarm(alarm_id: String, hour: int, minute: int, weekday: int, label: String) -> Dictionary:
+func _day_alarm(alarm_id: String, hour: int, minute: int, weekday: int, label: String, skip_dates: Array = []) -> Dictionary:
 	return {
 		"id": alarm_id,
 		"hour": hour,
@@ -650,6 +685,7 @@ func _day_alarm(alarm_id: String, hour: int, minute: int, weekday: int, label: S
 		"weekdays": [weekday],
 		"label": label,
 		"enabled": true,
+		"skip_dates": skip_dates,
 	}
 
 
@@ -926,6 +962,7 @@ func _grant_for(event: Dictionary) -> void:
 
 ## 同一次推迟倒计时里系统会连着报好几次，8 分钟内同一闹钟同一类只记一包肥料。
 const REWARD_SESSION := 8 * 60
+const WEEKS_AHEAD := 8
 
 
 func _has_recent_reward(event: Dictionary) -> bool:
@@ -940,6 +977,112 @@ func _has_recent_reward(event: Dictionary) -> bool:
 		if absi(int(existing.get("at", 0)) - stamp) < REWARD_SESSION:
 			return true
 	return false
+
+
+func today_weekday_index() -> int:
+	var godot_day := int(Time.get_datetime_dict_from_system().get("weekday", 0))
+	return 6 if godot_day == 0 else godot_day - 1
+
+
+## 这个星期几下一次到点是哪天；今天已经过了那个钟点就算下周。
+func next_date(day_index: int, hour: int, minute: int) -> String:
+	var ahead := posmod(day_index - today_weekday_index(), 7)
+	if ahead == 0:
+		var now := Time.get_time_dict_from_system()
+		if int(now["hour"]) * 60 + int(now["minute"]) >= hour * 60 + minute:
+			ahead = 7
+	return shift_date(local_today_key(), ahead)
+
+
+## 闹钟按手机本地日期响，跳过的日期也用本地日期。
+func local_today_key() -> String:
+	var parts := Time.get_date_dict_from_system()
+	return "%04d-%02d-%02d" % [int(parts.year), int(parts.month), int(parts.day)]
+
+
+func date_weekday_index(date_key: String) -> int:
+	var parts := date_key.split("-")
+	if parts.size() != 3:
+		return -1
+	var stamp := int(Time.get_unix_time_from_datetime_dict({
+		"year": int(parts[0]),
+		"month": int(parts[1]),
+		"day": int(parts[2]),
+		"hour": 12,
+	}))
+	var godot_day := int(Time.get_datetime_dict_from_unix_time(stamp).get("weekday", 0))
+	return 6 if godot_day == 0 else godot_day - 1
+
+
+func skipped_dates(day_index: int, key: String) -> Array:
+	var dates: Array = []
+	for item in skips:
+		var date_key := str(item.get("date", ""))
+		if str(item.get("key", "")) == key and date_weekday_index(date_key) == day_index:
+			dates.append(date_key)
+	return dates
+
+
+func skip_key(task_id: String = "") -> String:
+	return "sleep" if task_id.is_empty() else "task-%s" % task_id
+
+
+func is_skipped(date_key: String, key: String) -> bool:
+	for item in skips:
+		if str(item.get("date", "")) == date_key and str(item.get("key", "")) == key:
+			return true
+	return false
+
+
+func set_skipped(date_key: String, key: String, skipped: bool) -> void:
+	_prune_skips()
+	var found := -1
+	for index in skips.size():
+		if str(skips[index].get("date", "")) == date_key and str(skips[index].get("key", "")) == key:
+			found = index
+			break
+	if skipped and found < 0:
+		skips.append({"date": date_key, "key": key})
+	elif not skipped and found >= 0:
+		skips.remove_at(found)
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
+
+
+func prune_skips() -> bool:
+	if not _prune_skips():
+		return false
+	_sync_day_alarms()
+	save_data()
+	return true
+
+
+func _load_skips(raw: Variant) -> void:
+	skips.clear()
+	if typeof(raw) != TYPE_ARRAY:
+		return
+	for item in raw:
+		if typeof(item) != TYPE_DICTIONARY:
+			continue
+		var date_key := str(item.get("date", ""))
+		var key := str(item.get("key", ""))
+		if date_key.is_empty() or key.is_empty():
+			continue
+		skips.append({"date": date_key, "key": key})
+	_prune_skips()
+
+
+func _prune_skips() -> bool:
+	var today := local_today_key()
+	var kept: Array[Dictionary] = []
+	for item in skips:
+		if str(item.get("date", "")) >= today:
+			kept.append(item)
+	if kept.size() == skips.size():
+		return false
+	skips = kept
+	return true
 
 
 func today_key() -> String:
