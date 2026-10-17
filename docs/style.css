@@ -1,0 +1,85 @@
+:root {
+  --sky: #a7d3f5;
+  --sky-soft: #e8f4fd;
+  --sun: #ffd23f;
+  --sun-soft: #fff6d6;
+  --navy: #22384a;
+  --muted: #5a6f80;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, var(--sky) 0, var(--sky-soft) 260px, #fff 520px);
+  color: var(--navy);
+  font: 16px/1.7 -apple-system, BlinkMacSystemFont, "PingFang SC", "PingFang TC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px 20px 48px;
+}
+
+.lang {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.lang a, .lang strong {
+  padding: 4px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.lang a { color: var(--navy); background: rgba(255, 255, 255, 0.6); }
+.lang strong { background: var(--sun); }
+
+header { text-align: center; padding: 28px 0 12px; }
+header .flower { font-size: 56px; line-height: 1; }
+h1 { margin: 12px 0 4px; font-size: 30px; }
+header p { margin: 0; color: var(--muted); }
+
+h2 {
+  margin: 36px 0 12px;
+  font-size: 21px;
+  padding-left: 12px;
+  border-left: 5px solid var(--sun);
+}
+
+h3 { margin: 0 0 6px; font-size: 17px; }
+
+.card {
+  background: #fff;
+  border: 1px solid #dceaf5;
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin: 12px 0;
+  box-shadow: 0 2px 8px rgba(34, 56, 74, 0.06);
+}
+
+.card p { margin: 0; }
+.card p + p, .card ul { margin-top: 8px; }
+
+.contact {
+  background: var(--sun-soft);
+  border-color: #f3e2a0;
+  text-align: center;
+}
+
+ul { padding-left: 22px; }
+a { color: #1f6fb2; }
+
+footer {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+}
