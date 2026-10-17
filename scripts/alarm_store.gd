@@ -32,12 +32,24 @@ func _ready() -> void:
 	load_data()
 
 
+var _translations: Array[Translation] = []
+
+
 func _install_locale() -> void:
 	for path in LANGUAGE_FILES:
 		var packed := load(path)
 		if packed is Translation:
-			TranslationServer.add_translation(packed)
+			_translations.append(packed)
 	language = _settings_language()
+	_apply_locale()
+
+
+## Godot 会把 "zh" 模糊匹配到 "zh_TW"，所以选简体时要把繁体翻译摘掉，只留跟当前语言一致的那份。
+func _apply_locale() -> void:
+	for translation in _translations:
+		TranslationServer.remove_translation(translation)
+		if translation.locale == language:
+			TranslationServer.add_translation(translation)
 	TranslationServer.set_locale(language)
 
 
@@ -233,7 +245,7 @@ func apply_system_setting() -> bool:
 	if next == language:
 		return false
 	language = next
-	TranslationServer.set_locale(language)
+	_apply_locale()
 	return true
 
 
