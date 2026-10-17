@@ -16,13 +16,15 @@
 			<key>Titles</key>
 			<array>
 				<string>System</string>
-				<string>Chinese</string>
+				<string>Simplified Chinese</string>
+				<string>Traditional Chinese</string>
 				<string>English</string>
 			</array>
 			<key>Values</key>
 			<array>
 				<string>system</string>
 				<string>zh</string>
+				<string>zh_TW</string>
 				<string>en</string>
 			</array>
 		</dict>

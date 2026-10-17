@@ -1,7 +1,7 @@
 import Foundation
 
 public enum SnoozeStore {
-    public static let appGroup = "group.com.sunflower.alarm"
+    public static let appGroup = "group.com.xinli.sunflower"
     private static let logKey = "snooze.log"
     private static let modeKeyPrefix = "alarm.mode."
     /// Same postpone countdown is 9 minutes; ignore repeats inside this window.

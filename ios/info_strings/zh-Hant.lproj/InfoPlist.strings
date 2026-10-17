@@ -1,0 +1,2 @@
+CFBundleDisplayName = "小小花鬧鐘";
+NSAlarmKitUsageDescription = "小小花鬧鐘會在你設定的時間叫醒你。";

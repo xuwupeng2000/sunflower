@@ -20,25 +20,34 @@ public enum Haptics {
 }
 
 public enum Copy {
-    public static var chinese: Bool {
-        systemLanguage().hasPrefix("zh")
-    }
+    /// "zh" Simplified, "zh_TW" Traditional, "en" English — the same codes the Godot side uses.
+    public static let languages = ["zh", "zh_TW", "en"]
 
     /// The in-app choice lives in the shared app group. Otherwise use the phone language,
     /// because Locale.current follows this bundle, which only ships English.
-    private static func systemLanguage() -> String {
-        if let chosen = UserDefaults(suiteName: "group.com.sunflower.alarm")?.string(forKey: "sunflower_language"),
-           chosen == "zh" || chosen == "en" {
+    public static var language: String {
+        if let chosen = UserDefaults(suiteName: "group.com.xinli.sunflower")?.string(forKey: "sunflower_language"),
+           languages.contains(chosen) {
             return chosen
         }
-        let global = UserDefaults.standard.persistentDomain(forName: UserDefaults.globalDomain)
-        let languages = global?["AppleLanguages"] as? [String]
-        let first = languages?.first ?? Locale.preferredLanguages.first ?? ""
-        return first.lowercased()
+        return phoneLanguage()
     }
 
-    public static func text(_ zh: String, _ en: String) -> String {
-        chinese ? zh : en
+    public static func phoneLanguage() -> String {
+        let global = UserDefaults.standard.persistentDomain(forName: UserDefaults.globalDomain)
+        let preferred = global?["AppleLanguages"] as? [String]
+        let first = (preferred?.first ?? Locale.preferredLanguages.first ?? "").lowercased()
+        guard first.hasPrefix("zh") else { return "en" }
+        let traditional = ["hant", "-tw", "-hk", "-mo"].contains { first.contains($0) }
+        return traditional ? "zh_TW" : "zh"
+    }
+
+    public static func text(_ zh: String, _ en: String, hant: String) -> String {
+        switch language {
+        case "zh": return zh
+        case "zh_TW": return hant
+        default: return en
+        }
     }
 }
 
@@ -144,11 +153,11 @@ public enum SunflowerTimer {
 
     /// The app reads this on focus so a cancel from the Lock Screen also clears the timer tab.
     public static func markCancelled(_ timerId: String) {
-        UserDefaults(suiteName: "group.com.sunflower.alarm")?.set(timerId, forKey: cancelledKey)
+        UserDefaults(suiteName: "group.com.xinli.sunflower")?.set(timerId, forKey: cancelledKey)
     }
 
     public static func takeCancelled() -> String {
-        let defaults = UserDefaults(suiteName: "group.com.sunflower.alarm")
+        let defaults = UserDefaults(suiteName: "group.com.xinli.sunflower")
         let id = defaults?.string(forKey: cancelledKey) ?? ""
         defaults?.removeObject(forKey: cancelledKey)
         return id

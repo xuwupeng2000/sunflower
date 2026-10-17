@@ -14,4 +14,4 @@ files=["sunflower.wav", "notify_sky.png"]
 
 [plist]
 
-NSAlarmKitUsageDescription="用向日葵闹钟在你设定的时间叫醒你。"
+NSAlarmKitUsageDescription="小小花闹钟会在你设定的时间叫醒你。"

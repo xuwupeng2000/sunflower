@@ -75,7 +75,6 @@ def main() -> None:
 		A1000000000000000000001C /* SunflowerIntents.swift in Sources (app) */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* SunflowerIntents.swift */; };
 		A10000000000000000000012 /* sunflower.wav in Resources */ = {isa = PBXBuildFile; fileRef = 58938401000000000000000F /* sunflower.wav */; };
 		A10000000000000000000013 /* SunflowerShared.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58938401000000000000000C /* SunflowerShared.xcframework */; };
-		A10000000000000000000014 /* SunflowerShared.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 58938401000000000000000C /* SunflowerShared.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A10000000000000000000015 /* AlarmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 589384010000000000000004 /* AlarmKit.framework */; };
 		A10000000000000000000016 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 589384010000000000000006 /* ActivityKit.framework */; };
 		A10000000000000000000017 /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 589384010000000000000008 /* AppIntents.framework */; };
@@ -124,7 +123,6 @@ def main() -> None:
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A10000000000000000000014 /* SunflowerShared.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -191,7 +189,7 @@ def main() -> None:
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Sunflower Alarm/Widget/Info.plist";
 				CURRENT_PROJECT_VERSION = 1.0.0;
-				INFOPLIST_KEY_CFBundleDisplayName = "向日葵闹钟";
+				INFOPLIST_KEY_CFBundleDisplayName = "小小花闹钟";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -199,7 +197,7 @@ def main() -> None:
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sunflower.alarm.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xinli.sunflower.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -217,7 +215,7 @@ def main() -> None:
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Sunflower Alarm/Widget/Info.plist";
 				CURRENT_PROJECT_VERSION = 1.0.0;
-				INFOPLIST_KEY_CFBundleDisplayName = "向日葵闹钟";
+				INFOPLIST_KEY_CFBundleDisplayName = "小小花闹钟";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -225,7 +223,7 @@ def main() -> None:
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sunflower.alarm.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xinli.sunflower.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;

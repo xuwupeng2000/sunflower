@@ -21,10 +21,12 @@ public enum Haptics {
   public static func success()
 }
 public enum Copy {
-  public static var chinese: Swift::Bool {
+  public static let languages: [Swift::String]
+  public static var language: Swift::String {
     get
   }
-  public static func text(_ zh: Swift::String, _ en: Swift::String) -> Swift::String
+  public static func phoneLanguage() -> Swift::String
+  public static func text(_ zh: Swift::String, _ en: Swift::String, hant: Swift::String) -> Swift::String
 }
 public struct SunflowerMetadata : AlarmKit::AlarmMetadata {
   public let alarmId: Swift::String

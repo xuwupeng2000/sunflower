@@ -13,24 +13,17 @@ private var snoozeCallback: (() -> Void)?
     }
 
     /// Empty means the user has not chosen a language, so the app follows the phone.
-    /// "zh" and "en" are explicit choices from Settings.
+    /// "zh", "zh_TW" and "en" are explicit choices from Settings.
     @objc public static func settingsLanguage() -> String {
         let key = "sunflower_ui_language"
         UserDefaults.standard.synchronize()
         CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication)
         let stored = (CFPreferencesCopyAppValue(key as CFString, kCFPreferencesCurrentApplication) as? String)
             ?? UserDefaults.standard.string(forKey: key)
-        let explicit = (stored == "zh" || stored == "en") ? stored! : ""
-        let resolved = explicit.isEmpty ? phoneLanguage() : explicit
-        UserDefaults(suiteName: "group.com.sunflower.alarm")?.set(resolved, forKey: "sunflower_language")
+        let explicit = stored.flatMap { Copy.languages.contains($0) ? $0 : nil } ?? ""
+        let resolved = explicit.isEmpty ? Copy.phoneLanguage() : explicit
+        UserDefaults(suiteName: "group.com.xinli.sunflower")?.set(resolved, forKey: "sunflower_language")
         return explicit
-    }
-
-    private static func phoneLanguage() -> String {
-        let global = UserDefaults.standard.persistentDomain(forName: UserDefaults.globalDomain)
-        let languages = global?["AppleLanguages"] as? [String]
-        let first = (languages?.first ?? Locale.preferredLanguages.first ?? "").lowercased()
-        return first.hasPrefix("zh") ? "zh" : "en"
     }
 
     @objc public static func requestAuthorization() {
@@ -48,7 +41,7 @@ private var snoozeCallback: (() -> Void)?
         }
         let hour = raw["hour"] as? Int ?? 7
         let minute = raw["minute"] as? Int ?? 0
-        let label = raw["label"] as? String ?? Copy.text("起床", "Wake up")
+        let label = raw["label"] as? String ?? Copy.text("起床", "Wake up", hant: "起床")
         let weekdayNumbers = raw["weekdays"] as? [Int] ?? [1, 2, 3, 4, 5]
         let eventRows = raw["events"] as? [[String: Any]] ?? []
         let (title, events) = titleAndEvents(eventRows, fallback: label)
@@ -103,7 +96,7 @@ private var snoozeCallback: (() -> Void)?
             _ = try? await center.requestAuthorization(options: [.alert, .sound])
             let content = UNMutableNotificationContent()
             content.title = title
-            content.body = Copy.text("时间到啦 ☁️", "Time's up ☁️")
+            content.body = Copy.text("时间到啦 ☁️", "Time's up ☁️", hant: "時間到囉 ☁️")
             content.sound = UNNotificationSound(named: UNNotificationSoundName("sunflower.wav"))
             if let sky = skyAttachment(timerId) {
                 content.attachments = [sky]
@@ -238,7 +231,7 @@ private func titleAndEvents(_ rows: [[String: Any]], fallback: String) -> (Strin
     if labels.isEmpty {
         return (fallback, fallback)
     }
-    return (labels.joined(separator: Copy.text("、", ", ")), labels.joined(separator: "\n"))
+    return (labels.joined(separator: Copy.text("、", ", ", hant: "、")), labels.joined(separator: "\n"))
 }
 
 private func fixedDate(_ text: String, hour: Int, minute: Int) -> Date? {
@@ -252,19 +245,19 @@ private func fixedDate(_ text: String, hour: Int, minute: Int) -> Date? {
 private func schedule(id: UUID, logicalId: String, when: Alarm.Schedule, label: String, events: String) async throws {
     typealias Config = AlarmManager.AlarmConfiguration<SunflowerMetadata>
 
-    let stop = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("停止", "Stop")), textColor: .white, systemImageName: "stop.circle")
-    let snooze = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("推迟", "Snooze")), textColor: .white, systemImageName: "zzz")
+    let stop = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("停止", "Stop", hant: "停止")), textColor: .white, systemImageName: "stop.circle")
+    let snooze = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("推迟", "Snooze", hant: "延後")), textColor: .white, systemImageName: "zzz")
     let alert = AlarmPresentation.Alert(
         title: LocalizedStringResource(stringLiteral: label),
         stopButton: stop,
         secondaryButton: snooze,
         secondaryButtonBehavior: .countdown
     )
-    let pause = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("暂停", "Pause")), textColor: .white, systemImageName: "pause.fill")
-    let countdownTitle = label.isEmpty ? Copy.text("即将再响", "Snoozing") : label
+    let pause = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("暂停", "Pause", hant: "暫停")), textColor: .white, systemImageName: "pause.fill")
+    let countdownTitle = label.isEmpty ? Copy.text("即将再响", "Snoozing", hant: "即將再響") : label
     let countdown = AlarmPresentation.Countdown(title: LocalizedStringResource(stringLiteral: countdownTitle), pauseButton: pause)
-    let resume = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("继续", "Resume")), textColor: .white, systemImageName: "play.fill")
-    let paused = AlarmPresentation.Paused(title: LocalizedStringResource(stringLiteral: Copy.text("已暂停", "Paused")), resumeButton: resume)
+    let resume = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("继续", "Resume", hant: "繼續")), textColor: .white, systemImageName: "play.fill")
+    let paused = AlarmPresentation.Paused(title: LocalizedStringResource(stringLiteral: Copy.text("已暂停", "Paused", hant: "已暫停")), resumeButton: resume)
     let attributes = AlarmAttributes<SunflowerMetadata>(
         presentation: AlarmPresentation(alert: alert, countdown: countdown, paused: paused),
         metadata: SunflowerMetadata(alarmId: logicalId, events: events, kitId: id.uuidString),

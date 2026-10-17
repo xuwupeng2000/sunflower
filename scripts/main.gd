@@ -107,6 +107,8 @@ var _care_ghost: TextureRect
 var _care_spout: Marker2D
 var _care_mouth: Marker2D
 var _feeding := false
+var _shown_packs := -1
+var _feed_shake: Tween
 var _care_kind := ""
 var _care_home := Vector2.ZERO
 var _care_poured := false
@@ -1162,6 +1164,8 @@ func _paint_paused_tab(button: Button, paused: bool) -> void:
 func _style_tab(button: Button, full: String) -> void:
 	button.text = full
 	button.clip_text = true
+	# 复制来的按钮还带着样例的宽度；裁字后实际只有最小宽度。
+	button.size.x = button.custom_minimum_size.x
 	_fit_font(button, 18)
 
 
@@ -1628,7 +1632,23 @@ func _refresh_care() -> void:
 	_feed_button.modulate.a = 1.0 if today and packs > 0 else 0.35
 	if _feed_count:
 		_feed_count.text = "× %d" % packs
+	if _shown_packs >= 0 and packs > _shown_packs:
+		_shake_feed_button()
+	_shown_packs = packs
 	_flower_page.get_node("照料").visible = _current_tab == "flower" or _current_tab == ""
+
+
+## 拿到新肥料时袋子左右晃 1 秒，提醒可以去施肥了。
+func _shake_feed_button() -> void:
+	if _feed_shake and _feed_shake.is_valid():
+		_feed_shake.kill()
+	_feed_button.pivot_offset = _feed_button.size * 0.5
+	_feed_shake = create_tween()
+	for swing in 5:
+		var angle := 0.28 * (1.0 - float(swing) / 5.0)
+		_feed_shake.tween_property(_feed_button, "rotation", angle, 0.1).set_trans(Tween.TRANS_SINE)
+		_feed_shake.tween_property(_feed_button, "rotation", -angle, 0.1).set_trans(Tween.TRANS_SINE)
+	_feed_shake.tween_property(_feed_button, "rotation", 0.0, 0.05)
 
 
 func _show_due_list() -> void:

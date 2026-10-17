@@ -48,7 +48,7 @@ struct SunflowerAlarmLiveActivity: Widget {
                     VStack(alignment: .leading, spacing: 4) {
                         alarmTimeText(context)
                             .foregroundStyle(.white)
-                        eventList(context.attributes.metadata?.events ?? "", fallback: Copy.text("向日葵闹钟", "Sunflower Alarm"))
+                        eventList(context.attributes.metadata?.events ?? "", fallback: Copy.text("小小花闹钟", "Little Flower", hant: "小小花鬧鐘"))
                             .foregroundStyle(skyAccent)
                             .lineLimit(2)
                     }
@@ -85,7 +85,7 @@ struct SunflowerAlarmLiveActivity: Widget {
                 FlowerMark(size: 28)
                 VStack(alignment: .leading, spacing: 2) {
                     alarmTimeText(context)
-                    eventList(context.attributes.metadata?.events ?? "", fallback: Copy.text("推迟倒计时", "Snoozing"))
+                    eventList(context.attributes.metadata?.events ?? "", fallback: Copy.text("推迟倒计时", "Snoozing", hant: "延後倒數"))
                         .font(.caption)
                 }
                 Spacer(minLength: 8)
@@ -101,7 +101,7 @@ struct SunflowerAlarmLiveActivity: Widget {
                 FlowerMark(size: 28)
                 VStack(alignment: .leading, spacing: 2) {
                     alarmTimeText(context)
-                    Text(Copy.text("已暂停", "Paused"))
+                    Text(Copy.text("已暂停", "Paused", hant: "已暫停"))
                         .font(.caption)
                 }
                 Spacer(minLength: 8)
@@ -112,7 +112,7 @@ struct SunflowerAlarmLiveActivity: Widget {
         default:
             VStack(alignment: .leading, spacing: 8) {
                 alarmTimeText(context)
-                eventList(context.attributes.metadata?.events ?? "", fallback: Copy.text("向日葵闹钟", "Sunflower Alarm"))
+                eventList(context.attributes.metadata?.events ?? "", fallback: Copy.text("小小花闹钟", "Little Flower", hant: "小小花鬧鐘"))
                 HStack {
                     Spacer(minLength: 0)
                     flowerLink()
@@ -166,8 +166,8 @@ struct SunflowerAlarmLiveActivity: Widget {
             kitID: meta?.kitId ?? ""
         )
         let label = isSnoozing(context)
-            ? Copy.text("取消推迟", "Cancel snooze")
-            : Copy.text("停止", "Stop")
+            ? Copy.text("取消推迟", "Cancel snooze", hant: "取消延後")
+            : Copy.text("停止", "Stop", hant: "停止")
         return Button(intent: intent) {
             Text(label)
                 .font(.headline)
@@ -181,7 +181,7 @@ struct SunflowerAlarmLiveActivity: Widget {
 
     private func flowerLink() -> some View {
         Link(destination: flowerURL) {
-            Text(Copy.text("看花", "See your flower"))
+            Text(Copy.text("看花", "See your flower", hant: "看花"))
                 .font(.headline)
                 .foregroundStyle(softYellowText)
                 .padding(.horizontal, 12)
@@ -255,7 +255,7 @@ struct SunflowerTimerLiveActivity: Widget {
                 Text(context.attributes.emoji)
             } compactTrailing: {
                 if context.isStale {
-                    Text(Copy.text("到了", "Done"))
+                    Text(Copy.text("到了", "Done", hant: "到了"))
                         .foregroundStyle(skyAccent)
                 } else {
                     Text(timerInterval: context.attributes.startDate...context.attributes.endDate, countsDown: true)
@@ -286,7 +286,7 @@ struct SunflowerTimerLiveActivity: Widget {
                 .font(.headline)
                 .lineLimit(1)
             if context.isStale {
-                Text(Copy.text("时间到了", "Time's up"))
+                Text(Copy.text("时间到了", "Time's up", hant: "時間到了"))
                     .font(.system(size: digits, weight: .bold))
             } else {
                 Text(timerInterval: attributes.startDate...attributes.endDate, countsDown: true)
@@ -318,22 +318,23 @@ struct SunflowerTimerLiveActivity: Widget {
         let shown = hour % 12 == 0 ? 12 : hour % 12
         let length: String
         if minutes < 60 {
-            length = Copy.text("\(minutes) 分钟", "\(minutes) min")
+            length = Copy.text("\(minutes) 分钟", "\(minutes) min", hant: "\(minutes) 分鐘")
         } else if minutes % 60 == 0 {
-            length = Copy.text("\(minutes / 60) 小时", "\(minutes / 60) hr")
+            length = Copy.text("\(minutes / 60) 小时", "\(minutes / 60) hr", hant: "\(minutes / 60) 小時")
         } else {
-            length = Copy.text("\(minutes / 60) 小时 \(minutes % 60) 分钟", "\(minutes / 60) hr \(minutes % 60) min")
+            length = Copy.text("\(minutes / 60) 小时 \(minutes % 60) 分钟", "\(minutes / 60) hr \(minutes % 60) min", hant: "\(minutes / 60) 小時 \(minutes % 60) 分鐘")
         }
         let clock = String(format: "%d:%02d", shown, minute)
         return Copy.text(
             "共 \(length) · \(hour < 12 ? "上午" : "下午") \(clock) 到",
-            "\(length) · done at \(clock) \(hour < 12 ? "am" : "pm")"
+            "\(length) · done at \(clock) \(hour < 12 ? "am" : "pm")",
+            hant: "共 \(length) · \(hour < 12 ? "上午" : "下午") \(clock) 到"
         )
     }
 
     private func cancelTimerButton(_ attributes: SunflowerTimerAttributes) -> some View {
         Button(intent: CancelTimerIntent(timerID: attributes.timerId)) {
-            Text(Copy.text("取消计时", "Cancel timer"))
+            Text(Copy.text("取消计时", "Cancel timer", hant: "取消計時"))
                 .font(.headline)
                 .foregroundStyle(ink)
                 .padding(.horizontal, 16)

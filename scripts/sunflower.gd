@@ -131,6 +131,8 @@ const TAP_MS := 300
 const WILT_LEAN := 0.32
 ## 骨骼向日葵：施肥 0 小苗、1 花苞、2 开花、到 6 长到最高；当天贪睡 3 次弯到底；缺水分三档。
 const RIG_GROW_MAX := 6
+## 开花后每包肥料把每节茎再拉长这么多倍（0.3 = 加长 30%），四包下来茎是原来的 2.2 倍。
+const STEM_STRETCH_PER_FEED := 0.3
 const RIG_BEND_FULL := 3.0
 const RIG_GROW_SECONDS := 0.7
 const RIG_POSE_SECONDS := 0.6
@@ -140,6 +142,7 @@ const GROW_PARAM := &"parameters/生长/blend_position"
 const BEND_PARAM := &"parameters/折弯/add_amount"
 const WILT_PARAM := &"parameters/枯萎程度/blend_position"
 var _pose: AnimationTree
+var _stretch: SkeletonModifier3D
 var _rig_height := 1.9
 var _dry_materials: Array[Material] = []
 var _growth_shown := 0.0
@@ -292,6 +295,7 @@ func _mount_rig() -> void:
 	var rig := packed.instantiate() as Node3D
 	_plant.add_child(rig)
 	_pose = rig.get_node_or_null("姿态") as AnimationTree
+	_stretch = rig.find_child("拔高", true, false) as SkeletonModifier3D
 
 
 func _grow_rig(token: int) -> void:
@@ -316,16 +320,21 @@ func _grow_rig(token: int) -> void:
 func _rig_scale(growth: float) -> float:
 	if growth <= 1.0:
 		return lerpf(0.36, 0.72, growth)
-	if growth <= 2.0:
-		return lerpf(0.72, 1.0, growth - 1.0)
-	return lerpf(1.0, 1.3, (growth - 2.0) / float(RIG_GROW_MAX - 2))
+	return lerpf(0.72, 1.0, minf(growth, 2.0) - 1.0)
 
 
+## 0–2 包肥料是小苗→花苞→开花；再往后花头不变，只把茎一节一节往上拔，镜头跟着退。
 func _set_growth(growth: float) -> void:
 	_growth_shown = growth
 	if _pose:
-		_pose.set(GROW_PARAM, growth)
-	_frame_height(_rig_height * maxf(_rig_scale(growth), 1.0), _rig_height)
+		_pose.set(GROW_PARAM, minf(growth, 2.0))
+	var stretch := maxf(growth - 2.0, 0.0) * STEM_STRETCH_PER_FEED
+	var lifted := 0.0
+	if _stretch:
+		_stretch.stretch = stretch
+		lifted = _stretch.stem_length() * stretch
+	var height := _rig_height * _rig_scale(growth) + lifted
+	_frame_height(maxf(height, _rig_height), _rig_height)
 
 
 ## 当天贪睡几次，花就低头几分；3 次弯到底。

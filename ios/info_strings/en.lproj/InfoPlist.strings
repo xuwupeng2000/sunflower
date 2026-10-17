@@ -1,0 +1,2 @@
+CFBundleDisplayName = "Little Flower";
+NSAlarmKitUsageDescription = "Little Flower uses alarms to wake you up at the times you set.";

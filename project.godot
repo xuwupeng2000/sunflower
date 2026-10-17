@@ -51,13 +51,13 @@ theme/custom_font="res://theme/font_ios.tres"
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://locale/ui.en.translation")
+locale/translations=PackedStringArray("res://locale/ui.en.translation", "res://locale/ui.zh_TW.translation")
 locale/fallback="zh"
 
 [ios]
 
 plugins/AlarmKit="res://ios/plugins/alarm_kit/alarm_kit.gdip"
-plugins_plist/NSAlarmKitUsageDescription="用向日葵闹钟在你设定的时间叫醒你。"
+plugins_plist/NSAlarmKitUsageDescription="小小花闹钟会在你设定的时间叫醒你。"
 
 [rendering]
 

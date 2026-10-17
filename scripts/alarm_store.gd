@@ -10,6 +10,8 @@ var fertilizer := 0
 var fertilizer_used := 0
 var last_watered := ""
 var language := "zh"
+const LANGUAGES := ["zh", "zh_TW", "en"]
+const LANGUAGE_FILES := ["res://locale/ui.en.translation", "res://locale/ui.zh_TW.translation"]
 var tutorial_seen := false
 var timer_tutorial_seen := false
 var sleep_present := true
@@ -31,9 +33,10 @@ func _ready() -> void:
 
 
 func _install_locale() -> void:
-	var packed := load("res://locale/ui.en.translation")
-	if packed is Translation:
-		TranslationServer.add_translation(packed)
+	for path in LANGUAGE_FILES:
+		var packed := load(path)
+		if packed is Translation:
+			TranslationServer.add_translation(packed)
 	language = _settings_language()
 	TranslationServer.set_locale(language)
 
@@ -239,14 +242,20 @@ func _settings_language() -> String:
 		var native := Engine.get_singleton("AlarmKit")
 		if native.has_method("settings_language"):
 			var chosen := str(native.settings_language())
-			if chosen == "zh" or chosen == "en":
+			if chosen in LANGUAGES:
 				return chosen
 	return _system_language()
 
 
+## 简体是原文 "zh"；台湾、香港、澳门和写明 Hant 的都用繁体 "zh_TW"。
 func _system_language() -> String:
-	var preferred := OS.get_locale().substr(0, 2).to_lower()
-	return "zh" if preferred == "zh" else "en"
+	var preferred := OS.get_locale().to_lower().replace("-", "_")
+	if not preferred.begins_with("zh"):
+		return "en"
+	for mark in ["hant", "_tw", "_hk", "_mo"]:
+		if preferred.contains(mark):
+			return "zh_TW"
+	return "zh"
 
 
 var days: Array[Dictionary] = []
@@ -765,7 +774,7 @@ func task_index_for_alarm(alarm_id: String, weekday: int) -> int:
 	return -1
 
 
-func record_snooze(alarm_id: String, when: int = -1) -> Dictionary:
+func record_snooze(alarm_id: String, when: int = -1, dedupe: bool = true) -> Dictionary:
 	var stamp := int(Time.get_unix_time_from_system()) if when < 0 else when
 	var event := {
 		"date": date_key_from_unix(stamp),
@@ -773,7 +782,7 @@ func record_snooze(alarm_id: String, when: int = -1) -> Dictionary:
 		"at": stamp,
 		"kind": "snooze",
 	}
-	if _has_recent_reward(event):
+	if dedupe and _has_recent_reward(event):
 		return event
 	snoozes.append(event)
 	_grant_for(event)

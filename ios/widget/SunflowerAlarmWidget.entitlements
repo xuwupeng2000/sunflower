@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.sunflower.alarm</string>
+		<string>group.com.xinli.sunflower</string>
 	</array>
 </dict>
 </plist>

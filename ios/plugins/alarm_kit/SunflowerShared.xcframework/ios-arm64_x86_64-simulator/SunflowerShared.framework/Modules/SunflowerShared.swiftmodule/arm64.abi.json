@@ -132,23 +132,88 @@
         "children": [
           {
             "kind": "Var",
-            "name": "chinese",
-            "printedName": "chinese",
+            "name": "languages",
+            "printedName": "languages",
             "children": [
               {
                 "kind": "TypeNominal",
-                "name": "Bool",
-                "printedName": "Swift.Bool",
-                "usr": "s:Sb"
+                "name": "Array",
+                "printedName": "[Swift.String]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sa"
               }
             ],
             "declKind": "Var",
-            "usr": "s:15SunflowerShared4CopyO7chineseSbvpZ",
-            "mangledName": "$s15SunflowerShared4CopyO7chineseSbvpZ",
+            "usr": "s:15SunflowerShared4CopyO9languagesSaySSGvpZ",
+            "mangledName": "$s15SunflowerShared4CopyO9languagesSaySSGvpZ",
             "moduleName": "SunflowerShared",
             "static": true,
             "declAttributes": [
-              "AccessControl"
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Array",
+                    "printedName": "[Swift.String]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sa"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:15SunflowerShared4CopyO9languagesSaySSGvgZ",
+                "mangledName": "$s15SunflowerShared4CopyO9languagesSaySSGvgZ",
+                "moduleName": "SunflowerShared",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "language",
+            "printedName": "language",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:15SunflowerShared4CopyO8languageSSvpZ",
+            "mangledName": "$s15SunflowerShared4CopyO8languageSSvpZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
             ],
             "accessors": [
               {
@@ -158,14 +223,14 @@
                 "children": [
                   {
                     "kind": "TypeNominal",
-                    "name": "Bool",
-                    "printedName": "Swift.Bool",
-                    "usr": "s:Sb"
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
                   }
                 ],
                 "declKind": "Accessor",
-                "usr": "s:15SunflowerShared4CopyO7chineseSbvgZ",
-                "mangledName": "$s15SunflowerShared4CopyO7chineseSbvgZ",
+                "usr": "s:15SunflowerShared4CopyO8languageSSvgZ",
+                "mangledName": "$s15SunflowerShared4CopyO8languageSSvgZ",
                 "moduleName": "SunflowerShared",
                 "static": true,
                 "accessorKind": "get"
@@ -174,9 +239,37 @@
           },
           {
             "kind": "Function",
-            "name": "text",
-            "printedName": "text(_:_:)",
+            "name": "phoneLanguage",
+            "printedName": "phoneLanguage()",
             "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15SunflowerShared4CopyO13phoneLanguageSSyFZ",
+            "mangledName": "$s15SunflowerShared4CopyO13phoneLanguageSSyFZ",
+            "moduleName": "SunflowerShared",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "text",
+            "printedName": "text(_:_:hant:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
               {
                 "kind": "TypeNominal",
                 "name": "String",
@@ -197,8 +290,8 @@
               }
             ],
             "declKind": "Func",
-            "usr": "s:15SunflowerShared4CopyO4textyS2S_SStFZ",
-            "mangledName": "$s15SunflowerShared4CopyO4textyS2S_SStFZ",
+            "usr": "s:15SunflowerShared4CopyO4text__4hantS2S_S2StFZ",
+            "mangledName": "$s15SunflowerShared4CopyO4text__4hantS2S_S2StFZ",
             "moduleName": "SunflowerShared",
             "static": true,
             "declAttributes": [
@@ -2210,15 +2303,22 @@
   "ConstValues": [
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SunflowerShared.swift",
+      "kind": "Array",
+      "offset": 683,
+      "length": 21,
+      "value": "[\"zh\", \"zh_TW\", \"en\"]"
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SunflowerShared.swift",
       "kind": "StringLiteral",
-      "offset": 1744,
+      "offset": 2169,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SunflowerShared.swift",
       "kind": "StringLiteral",
-      "offset": 4101,
+      "offset": 4526,
       "length": 27,
       "value": "\"sunflower_timer_cancelled\""
     },
@@ -2227,7 +2327,7 @@
       "kind": "StringLiteral",
       "offset": 78,
       "length": 27,
-      "value": "\"group.com.sunflower.alarm\""
+      "value": "\"group.com.xinli.sunflower\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SnoozeStore.swift",
@@ -2260,175 +2360,217 @@
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 10946,
+      "offset": 10670,
       "length": 8,
       "value": "\"停止\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 10956,
+      "offset": 10680,
       "length": 6,
       "value": "\"Stop\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11002,
+      "offset": 10694,
+      "length": 8,
+      "value": "\"停止\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 10742,
       "length": 13,
       "value": "\"stop.circle\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11101,
+      "offset": 10841,
       "length": 8,
       "value": "\"推迟\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11111,
+      "offset": 10851,
       "length": 8,
       "value": "\"Snooze\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11159,
+      "offset": 10867,
+      "length": 8,
+      "value": "\"延後\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 10915,
       "length": 5,
       "value": "\"zzz\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11461,
+      "offset": 11217,
       "length": 8,
       "value": "\"暂停\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11471,
+      "offset": 11227,
       "length": 7,
       "value": "\"Pause\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11518,
+      "offset": 11242,
+      "length": 8,
+      "value": "\"暫停\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 11290,
       "length": 12,
       "value": "\"pause.fill\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11583,
+      "offset": 11355,
       "length": 14,
       "value": "\"即将再响\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11599,
+      "offset": 11371,
       "length": 10,
       "value": "\"Snoozing\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11834,
+      "offset": 11389,
+      "length": 14,
+      "value": "\"即將再響\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 11628,
       "length": 8,
       "value": "\"继续\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11844,
+      "offset": 11638,
       "length": 8,
       "value": "\"Resume\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11892,
+      "offset": 11654,
+      "length": 8,
+      "value": "\"繼續\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 11702,
       "length": 11,
       "value": "\"play.fill\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 12003,
+      "offset": 11813,
       "length": 11,
       "value": "\"已暂停\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 12016,
+      "offset": 11826,
       "length": 8,
       "value": "\"Paused\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
+      "kind": "StringLiteral",
+      "offset": 11842,
+      "length": 11,
+      "value": "\"已暫停\""
+    },
+    {
+      "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12325,
+      "offset": 12154,
       "length": 5,
       "value": "127.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12333,
+      "offset": 12162,
       "length": 5,
       "value": "255.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12347,
+      "offset": 12176,
       "length": 5,
       "value": "167.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12355,
+      "offset": 12184,
       "length": 5,
       "value": "255.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12368,
+      "offset": 12197,
       "length": 5,
       "value": "198.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12376,
+      "offset": 12205,
       "length": 5,
       "value": "255.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 12441,
+      "offset": 12270,
       "length": 15,
       "value": "\"sunflower.wav\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "IntegerLiteral",
-      "offset": 12567,
+      "offset": 12396,
       "length": 1,
       "value": "9"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "IntegerLiteral",
-      "offset": 12571,
+      "offset": 12400,
       "length": 2,
       "value": "60"
     }

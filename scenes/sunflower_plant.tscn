@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" uid="uid://cyrkxqh6wxxu2" path="res://assets/sunflower/sunflower.glb" id="1_model"]
+[ext_resource type="Script" path="res://scripts/stem_stretch.gd" id="2_stretch"]
 
 [sub_resource type="AnimationNodeAnimation" id="grow_sprout"]
 animation = &"小苗"
@@ -77,6 +78,9 @@ node_connections = [&"output", 0, &"枯萎", &"折弯", 0, &"生长", &"折弯",
 
 [node name="模型" parent="." instance=ExtResource("1_model")]
 
+[node name="拔高" type="SkeletonModifier3D" parent="模型/太阳花/Skeleton3D"]
+script = ExtResource("2_stretch")
+
 [node name="姿态" type="AnimationTree" parent="."]
 root_node = NodePath("../模型")
 tree_root = SubResource("pose_tree")
@@ -85,3 +89,5 @@ anim_player = NodePath("../模型/AnimationPlayer")
 "parameters/折弯/add_amount" = 0.0
 "parameters/枯萎程度/blend_position" = 0.0
 "parameters/枯萎/add_amount" = 1.0
+
+[editable path="模型"]
