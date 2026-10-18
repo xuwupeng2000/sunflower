@@ -73,6 +73,9 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready():
+		_relabel()
+		return
 	if what != NOTIFICATION_APPLICATION_FOCUS_IN or not is_node_ready():
 		return
 	var cancelled := AlarmService.take_cancelled_timer()
@@ -159,9 +162,11 @@ func _refresh() -> void:
 
 
 func _wire(button: Button, title: String, minutes: int, custom_index: int) -> void:
-	button.text = "%s\n%s" % [tr(title), _length_text(minutes)]
+	button.set_meta("timer_title", title)
+	button.set_meta("timer_minutes", minutes)
+	_label(button)
 	button.resized.connect(_fit_font.bind(button))
-	button.pressed.connect(_on_timer_pressed.bind(button, tr(title), minutes))
+	button.pressed.connect(func() -> void: _on_timer_pressed(button, tr(title), minutes))
 	if custom_index >= 0:
 		button.set_meta("custom_index", custom_index)
 		button.button_down.connect(func() -> void:
@@ -172,6 +177,19 @@ func _wire(button: Button, title: String, minutes: int, custom_index: int) -> vo
 			if _hold_button == button:
 				_hold_button = null
 		)
+
+
+func _label(button: Button) -> void:
+	button.text = "%s\n%s" % [tr(str(button.get_meta("timer_title"))), _length_text(int(button.get_meta("timer_minutes")))]
+
+
+## 在设置里换了语言回到 app 时，模板按钮和空闲提示要按新语言重写一遍。
+func _relabel() -> void:
+	for child in _grid.get_children():
+		if child.has_meta("timer_title"):
+			_label(child as Button)
+			_fit_font(child as Button)
+	_refresh()
 
 
 func _on_timer_pressed(button: Button, title: String, minutes: int) -> void:

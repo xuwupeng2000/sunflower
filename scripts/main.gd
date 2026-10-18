@@ -198,6 +198,8 @@ func _notification(what: int) -> void:
 	if AlarmStore.prune_skips():
 		AlarmService.resync_alarms()
 		_update_time_label()
+	if _date_label != null and AlarmStore.settle_dry():
+		_refresh()
 	if _ring_popup != null:
 		_catch_ringing()
 
@@ -1606,6 +1608,7 @@ func _float_tip(text: String, global_pos: Vector2) -> void:
 
 func _refresh() -> void:
 	var count := AlarmStore.sleep_snooze_on(_date_key)
+	AlarmStore.settle_dry()
 	var growth := AlarmStore.growth_on(_date_key)
 	var when := AlarmStore.format_date(_date_key)
 	_date_label.text = when

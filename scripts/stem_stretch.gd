@@ -1,5 +1,5 @@
 extends SkeletonModifier3D
-## 施肥只拔高茎：每节「茎N」和「头」沿茎的方向往上推，花头、叶子大小不变。
+## 施肥只拔高茎：每节「茎N」沿茎的方向往上推，「头」跟着最后一节走，花头、叶子大小不变。
 ## stretch = 0 原长；= 1 每节茎变成两倍长。跑在动画之后，不会和动画打架。
 
 @export_range(0.0, 6.0, 0.01) var stretch := 0.0:
@@ -27,9 +27,11 @@ func _collect() -> void:
 		var parent := skeleton.get_bone_parent(bone)
 		if parent < 0 or not skeleton.get_bone_name(parent).begins_with("茎"):
 			continue
+		# 茎顶那一小段是最后一节茎骨带着的，不会跟着拉长；头离它的距离要保持原样，不然花头会飘起来。
+		if skeleton.get_bone_name(bone) == "头":
+			continue
 		_targets.append(bone)
-		var bone_name := skeleton.get_bone_name(bone)
-		if bone_name.begins_with("茎") or bone_name == "头":
+		if skeleton.get_bone_name(bone).begins_with("茎"):
 			_rest_total += skeleton.get_bone_rest(bone).origin.y
 
 

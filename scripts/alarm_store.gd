@@ -8,6 +8,7 @@ var snoozes: Array[Dictionary] = []
 var care: Array[Dictionary] = []
 var fertilizer := 0
 var fertilizer_used := 0
+const BLOOM_GROWTH := 2
 var last_watered := ""
 var language := "zh"
 const LANGUAGES := ["zh", "zh_TW", "en"]
@@ -176,7 +177,9 @@ func start_timer(title: String, minutes: int) -> Dictionary:
 		"minutes": maxi(1, minutes),
 		"ends_at": now + maxi(1, minutes) * 60.0,
 	}
+	fertilizer += 1
 	save_data()
+	changed.emit()
 	return active_timer
 
 
@@ -408,6 +411,7 @@ func task_end_alarm_id(task_id: String, weekday: int) -> String:
 func add_task(task_name: String = "新的提醒") -> Dictionary:
 	var task := _normalize_task({"id": _new_task_id(), "name": task_name})
 	tasks.append(task)
+	fertilizer += 1
 	_sync_day_alarms()
 	save_data()
 	changed.emit()
@@ -851,6 +855,15 @@ func care_on(date_key: String) -> int:
 
 func growth_on(_date_key: String) -> int:
 	return fertilizer_used
+
+
+## 干枯（7 天没浇水）后退回刚开花的高度，不会退成小苗；浇水后从这里重新长。
+func settle_dry() -> bool:
+	if wilt_level() < 3 or fertilizer_used <= BLOOM_GROWTH:
+		return false
+	fertilizer_used = BLOOM_GROWTH
+	save_data()
+	return true
 
 
 func use_fertilizer() -> bool:

@@ -5,7 +5,6 @@ signal plant_tapped(screen: Vector2)
 
 const SEGMENT_HEIGHT := 0.8
 const BASE_SEGMENTS := 3
-const MAX_EXTRA := 24
 
 const SPIKE_LIFT := 0.34
 const ORCHID_SINK := 0.70
@@ -129,8 +128,7 @@ var pot_index := 0
 const TAP_MOVE := 12.0
 const TAP_MS := 300
 const WILT_LEAN := 0.32
-## 骨骼向日葵：施肥 0 小苗、1 花苞、2 开花、到 6 长到最高；当天贪睡 3 次弯到底；缺水分三档。
-const RIG_GROW_MAX := 6
+## 骨骼向日葵：施肥 0 小苗、1 花苞、2 开花，之后没有上限一直长；当天贪睡 3 次弯到底；缺水分三档。
 ## 开花后每包肥料把每节茎再拉长这么多倍（0.3 = 加长 30%），四包下来茎是原来的 2.2 倍。
 const STEM_STRETCH_PER_FEED := 0.3
 const RIG_BEND_FULL := 3.0
@@ -195,7 +193,7 @@ func _halt() -> void:
 func _present(extra: int) -> void:
 	if _plant_mode == "rig":
 		_mount_rig()
-		_set_growth(float(clampi(extra, 0, RIG_GROW_MAX)))
+		_set_growth(float(maxi(extra, 0)))
 		_pose_rig(false)
 	elif _plant_mode == "spike":
 		_mount_orchid()
@@ -209,7 +207,7 @@ func _present(extra: int) -> void:
 func play_count(count: int) -> void:
 	_halt()
 	var token := _token
-	_growth_extra = clampi(count, 0, MAX_EXTRA)
+	_growth_extra = maxi(count, 0)
 	if _plant_mode == "rig":
 		await _grow_rig(token)
 	elif _plant_mode == "spike":
@@ -302,7 +300,7 @@ func _grow_rig(token: int) -> void:
 	if _pose == null or not is_instance_valid(_pose):
 		_mount_rig()
 		_pose_rig(false)
-	var goal := float(clampi(_growth_extra, 0, RIG_GROW_MAX))
+	var goal := float(maxi(_growth_extra, 0))
 	var start := 0.0 if goal > 0.0 and _growth_shown >= goal else _growth_shown
 	if is_equal_approx(start, goal):
 		_set_growth(goal)
