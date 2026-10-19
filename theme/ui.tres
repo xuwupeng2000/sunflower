@@ -473,6 +473,34 @@ shadow_color = Color(0.62, 0.45, 0.1, 0.25)
 shadow_size = 3
 shadow_offset = Vector2(0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_this"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+bg_color = Color(0.62, 0.78, 0.9, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_next"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+bg_color = Color(0.76, 0.86, 0.94, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_after"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+bg_color = Color(0.88, 0.93, 0.97, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_later"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+bg_color = Color(0.97, 0.985, 1, 1)
+
 [resource]
 default_font = ExtResource("1_ios")
 default_font_size = 18
@@ -664,6 +692,18 @@ RoundButton/styles/normal = SubResource("StyleBoxFlat_round")
 RoundButton/styles/pressed = SubResource("StyleBoxFlat_round_pressed")
 SectionTitle/base_type = &"Label"
 SectionTitle/font_sizes/font_size = 20
+WeekThis/base_type = &"PanelContainer"
+WeekThis/styles/panel = SubResource("StyleBoxFlat_week_this")
+WeekNext/base_type = &"PanelContainer"
+WeekNext/styles/panel = SubResource("StyleBoxFlat_week_next")
+WeekAfter/base_type = &"PanelContainer"
+WeekAfter/styles/panel = SubResource("StyleBoxFlat_week_after")
+WeekLater/base_type = &"PanelContainer"
+WeekLater/styles/panel = SubResource("StyleBoxFlat_week_later")
+DayTitle/base_type = &"Label"
+DayTitle/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
+DayTitle/font_sizes/font_size = 16
+DayTitle/fonts/font = ExtResource("2_ios_bold")
 ClockHeading/base_type = &"Label"
 ClockHeading/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
 ClockHeading/font_sizes/font_size = 34

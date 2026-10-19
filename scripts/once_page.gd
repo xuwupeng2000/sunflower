@@ -14,10 +14,10 @@ const GUIDE_STEPS := [
 	["颜色框蓝", "颜色框黄", "颜色说明"],
 	["跳转框", "跳转说明"],
 	["添加框", "添加说明"],
-	["编辑框", "编辑说明"],
 	["删除框", "删除说明"],
 ]
 const OnceRow := preload("res://scenes/once_row.tscn")
+const WEEKDAY_KEYS := ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
 
 @export var hold_menu: Control
 @export var guide: Control
@@ -25,10 +25,16 @@ const OnceRow := preload("res://scenes/once_row.tscn")
 @onready var _scroll: ScrollContainer = $边框/内容/滚动
 @onready var _list: VBoxContainer = $边框/内容/滚动/边距/列表
 @onready var _empty: Label = $边框/内容/滚动/边距/列表/空提示
-@onready var _add_button: Button = $边框/内容/操作/按钮/动作/添加
-@onready var _delete_button: Button = $边框/内容/操作/按钮/动作/删除
-@onready var _undo_button: Button = $边框/内容/操作/按钮/动作/撤销
+@onready var _this_days: VBoxContainer = $边框/内容/滚动/边距/列表/本周条/内容/本周天
+@onready var _next_days: VBoxContainer = $边框/内容/滚动/边距/列表/下周条/内容/下周天
+@onready var _after_rows: VBoxContainer = $边框/内容/滚动/边距/列表/下下周条/内容/条目
+@onready var _later_rows: VBoxContainer = $边框/内容/滚动/边距/列表/更远条/内容/条目
+@onready var _hide_button: Button = $边框/内容/添加行/隐藏
+@onready var _add_button: Button = $边框/内容/添加行/动作/添加
+@onready var _delete_button: Button = $边框/内容/添加行/动作/删除
+@onready var _undo_button: Button = $边框/内容/添加行/动作/撤销
 
+var _hide_weekly := false
 var _selected_id := ""
 var _undo: Dictionary = {}
 var _undo_left := 0.0
@@ -43,6 +49,7 @@ var _guide_running := false
 
 
 func _ready() -> void:
+	_hide_button.pressed.connect(_toggle_weekly)
 	_add_button.pressed.connect(func() -> void:
 		_clear_select()
 		add_once.emit()
@@ -50,13 +57,13 @@ func _ready() -> void:
 	_delete_button.visible = false
 	_undo_button.pressed.connect(_undo_delete)
 	_headers = {
-		"this": $边框/内容/滚动/边距/列表/本周,
-		"next": $边框/内容/滚动/边距/列表/下周,
-		"after": $边框/内容/滚动/边距/列表/下下周,
-		"later": $边框/内容/滚动/边距/列表/更远,
+		"this": $边框/内容/滚动/边距/列表/本周条/内容/本周,
+		"next": $边框/内容/滚动/边距/列表/下周条/内容/下周,
+		"after": $边框/内容/滚动/边距/列表/下下周条/内容/下下周,
+		"later": $边框/内容/滚动/边距/列表/更远条/内容/更远,
 		"done": $边框/内容/滚动/边距/列表/已完成,
 	}
-	_later_note = $边框/内容/滚动/边距/列表/更远说明
+	_later_note = $边框/内容/滚动/边距/列表/更远条/内容/更远说明
 	AlarmStore.changed.connect(refresh)
 	_scroll.gui_input.connect(_on_scroll_input)
 	if guide != null:
@@ -118,9 +125,8 @@ func leave() -> void:
 
 
 func refresh() -> void:
-	for child in _list.get_children():
-		if child is Button:
-			child.free()
+	for row in _all_rows():
+		row.free()
 	var groups := {
 		"this": [],
 		"next": [],
@@ -135,61 +141,207 @@ func refresh() -> void:
 		if bucket == "later" and str(item.get("kind", "")) != "once":
 			continue
 		groups[bucket].append(item)
-	_empty.visible = AlarmStore.agenda().is_empty()
+	for key in groups:
+		groups[key] = _fold_sleep(groups[key])
+		if _hide_weekly:
+			var kept: Array = []
+			for item in groups[key]:
+				if str(item.get("kind", "")) == "weekly":
+					continue
+				kept.append(item)
+			groups[key] = kept
+	_empty.visible = false
+	_show_header("this", true)
+	_show_header("next", true)
+	_this_days.visible = true
+	_next_days.visible = true
 	var selected_found := false
-	var insert_at := 1
-	for key in ["this", "next", "after", "later", "done"]:
-		var header := _headers[key] as Label
-		var rows: Array = groups[key]
-		header.visible = not rows.is_empty()
-		_list.move_child(header, insert_at)
+	selected_found = _fill_days(_this_days, 0, groups["this"]) or selected_found
+	selected_found = _fill_days(_next_days, 7, groups["next"]) or selected_found
+	_show_header("after", not (groups["after"] as Array).is_empty())
+	selected_found = _fill_bucket(_after_rows, groups["after"]) or selected_found
+	_show_header("later", not (groups["later"] as Array).is_empty())
+	_later_note.visible = true
+	selected_found = _fill_bucket(_later_rows, groups["later"]) or selected_found
+	_show_header("done", not (groups["done"] as Array).is_empty())
+	var insert_at := _list_index_after(_headers["done"])
+	for item in groups["done"]:
+		var row := _make_row(item, false)
+		_list.add_child(row)
+		_pad_row(row, str(item.get("kind", "")) == "weekly")
+		_list.move_child(row, insert_at)
 		insert_at += 1
-		if key == "later":
-			_later_note.visible = header.visible
-			_list.move_child(_later_note, insert_at)
-			insert_at += 1
-		for item in rows:
-			var row := OnceRow.instantiate() as Button
-			row.set_meta("soft", true)
-			row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			_paint_row(row, item)
-			_list.add_child(row)
-			_pad_row(row, str(item.get("kind", "")) == "weekly")
-			_list.move_child(row, insert_at)
-			insert_at += 1
-			if str(item.get("id", "")) == _selected_id and str(item.get("kind", "")) == "once" and not bool(item.get("done", false)):
-				selected_found = true
+		if _row_selected(item):
+			selected_found = true
 	if not selected_found:
 		_selected_id = ""
 	_relabel_actions()
 	_refresh_actions()
 
 
-func _paint_row(row: Button, item: Dictionary) -> void:
+func _show_header(key: String, show: bool) -> void:
+	_section_of(_headers[key]).visible = show
+
+
+func _section_of(header: Node) -> Node:
+	var top := header
+	while top.get_parent() != null and top.get_parent() != _list:
+		top = top.get_parent()
+	return top
+
+
+func _list_index_after(header: Node) -> int:
+	return _section_of(header).get_index() + 1
+
+
+func _fill_bucket(box: VBoxContainer, items: Array) -> bool:
+	var selected_found := false
+	for item in items:
+		var row := _make_row(item, false)
+		box.add_child(row)
+		_pad_row(row, str(item.get("kind", "")) == "weekly")
+		if _row_selected(item):
+			selected_found = true
+	return selected_found
+
+
+func _fill_days(box: VBoxContainer, week_offset: int, items: Array) -> bool:
+	var note := box.get_parent().get_node("无提醒") as Label
+	note.text = tr("此周无提醒")
+	note.visible = items.is_empty()
+	box.visible = not items.is_empty()
+	if items.is_empty():
+		return false
+	var monday := AlarmStore.monday_of(AlarmStore.local_today_key())
+	var by_date := {}
+	for item in items:
+		var date := str(item.get("date", ""))
+		var bucket: Array = by_date.get(date, [])
+		bucket.append(item)
+		by_date[date] = bucket
+	var selected_found := false
+	for index in 7:
+		var day := box.get_child(index) as VBoxContainer
+		var date_key := AlarmStore.shift_date(monday, week_offset + index)
+		var title := day.get_node("标题") as Label
+		var empty := day.get_node("空") as Label
+		var name := tr(WEEKDAY_KEYS[index])
+		title.text = "%s · %s" % [name, tr("今天")] if date_key == AlarmStore.local_today_key() else name
+		empty.text = tr("没有行程")
+		var day_items: Array = by_date.get(date_key, [])
+		empty.visible = day_items.is_empty()
+		for item in day_items:
+			var row := _make_row(item, true)
+			day.add_child(row)
+			_pad_row(row, str(item.get("kind", "")) == "weekly")
+			day.move_child(row, empty.get_index())
+			if _row_selected(item):
+				selected_found = true
+	return selected_found
+
+
+func _make_row(item: Dictionary, in_day: bool) -> Button:
+	var row := OnceRow.instantiate() as Button
+	row.set_meta("soft", true)
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_paint_row(row, item, in_day)
+	return row
+
+
+func _row_selected(item: Dictionary) -> bool:
+	return str(item.get("id", "")) == _selected_id and str(item.get("kind", "")) == "once" and not bool(item.get("done", false))
+
+
+## 同一天的起床和睡觉合成一行。长按仍打开那天的闹钟页。
+func _fold_sleep(rows: Array) -> Array:
+	var wake_by_date := {}
+	var sleep_by_date := {}
+	for item in rows:
+		var alarm_id := str(item.get("alarm_id", ""))
+		var date := str(item.get("date", ""))
+		if alarm_id.begins_with("wake-"):
+			wake_by_date[date] = item
+		elif alarm_id.begins_with("sleep-"):
+			sleep_by_date[date] = item
+	var folded: Array = []
+	var used := {}
+	for item in rows:
+		var alarm_id := str(item.get("alarm_id", ""))
+		if not alarm_id.begins_with("wake-") and not alarm_id.begins_with("sleep-"):
+			folded.append(item)
+			continue
+		var date := str(item.get("date", ""))
+		if used.has(date):
+			continue
+		used[date] = true
+		var wake: Dictionary = wake_by_date.get(date, {})
+		var sleep: Dictionary = sleep_by_date.get(date, {})
+		var base: Dictionary = wake if not wake.is_empty() else sleep
+		var pair := base.duplicate()
+		pair["pair"] = true
+		if not wake.is_empty():
+			pair["wake_time"] = AlarmStore.format_time(int(wake.get("hour", 0)), int(wake.get("minute", 0)))
+			pair["alarm_id"] = str(wake.get("alarm_id", ""))
+		if not sleep.is_empty():
+			pair["sleep_time"] = AlarmStore.format_time(int(sleep.get("hour", 0)), int(sleep.get("minute", 0)))
+			if wake.is_empty():
+				pair["alarm_id"] = str(sleep.get("alarm_id", ""))
+		folded.append(pair)
+	return folded
+
+
+func _all_rows() -> Array[Button]:
+	var rows: Array[Button] = []
+	_gather_rows(_list, rows)
+	return rows
+
+
+func _gather_rows(node: Node, rows: Array[Button]) -> void:
+	for child in node.get_children():
+		var row := child as Button
+		if row != null:
+			rows.append(row)
+		elif child.get_child_count() > 0:
+			_gather_rows(child, rows)
+
+
+func _paint_row(row: Button, item: Dictionary, in_day: bool = false) -> void:
+	if bool(item.get("pair", false)):
+		var bits: PackedStringArray = []
+		if item.has("wake_time"):
+			bits.append("%s %s" % [tr("起床"), str(item["wake_time"])])
+		if item.has("sleep_time"):
+			bits.append("%s %s" % [tr("睡觉"), str(item["sleep_time"])])
+		var line := "🛏️ " + " · ".join(bits)
+		row.text = line if in_day else "%s · %s" % [AlarmStore.agenda_when(str(item.get("date", ""))), line]
+		row.theme_type_variation = "DayButton"
+		row.autowrap_mode = TextServer.AUTOWRAP_OFF
+		row.clip_text = true
+		row.add_theme_font_size_override("font_size", 13)
+		row.custom_minimum_size.y = 36
+		_finish_row(row, item)
+		return
 	var label := str(item.get("label", ""))
 	var lead := int(item.get("lead_minutes", 0))
 	var ring := AlarmStore.format_time(int(item.get("hour", 0)), int(item.get("minute", 0)))
 	var event := AlarmStore.format_time(int(item.get("event_hour", item.get("hour", 0))), int(item.get("event_minute", item.get("minute", 0))))
 	var once := str(item.get("kind", "")) == "once"
-	var when := "%s · %s" % [AlarmStore.agenda_when(str(item.get("date", ""))), ring]
+	var when := ring
 	if once and lead > 0:
-		when = "%s · %s · %s" % [
-			AlarmStore.agenda_when(str(item.get("date", ""))),
-			tr("%s 到") % event,
-			tr("%s 响") % ring,
-		]
+		when = "%s · %s" % [tr("%s 到") % event, tr("%s 响") % ring]
 	elif item.has("end_hour"):
-		var span := tr("开始 %s · 结束 %s") % [event, AlarmStore.format_time(int(item["end_hour"]), int(item["end_minute"]))]
-		when = "%s · %s" % [AlarmStore.agenda_when(str(item.get("date", ""))), span]
+		when = tr("开始 %s · 结束 %s") % [event, AlarmStore.format_time(int(item["end_hour"]), int(item["end_minute"]))]
 		if lead > 0:
 			when = "%s · %s" % [when, tr("%s 响") % ring]
 	elif lead > 0:
 		label = "%s · %s" % [label, tr("%s 到") % event]
-		when = "%s · %s" % [AlarmStore.agenda_when(str(item.get("date", ""))), tr("%s 响") % ring]
+		when = tr("%s 响") % ring
+	if not in_day:
+		when = "%s · %s" % [AlarmStore.agenda_when(str(item.get("date", ""))), when]
 	if bool(item.get("done", false)):
 		row.text = "%s\n%s · %s" % [label, when, tr("已完成")]
 		row.theme_type_variation = "PausedButton"
-	elif str(item.get("kind", "")) == "once":
+	elif once:
 		row.text = "%s\n%s" % [label, when]
 		row.theme_type_variation = "SkipButton"
 	else:
@@ -199,6 +351,10 @@ func _paint_row(row: Button, item: Dictionary) -> void:
 		row.clip_text = true
 		row.add_theme_font_size_override("font_size", 13)
 		row.custom_minimum_size.y = 36
+	_finish_row(row, item)
+
+
+func _finish_row(row: Button, item: Dictionary) -> void:
 	row.toggle_mode = false
 	row.focus_mode = Control.FOCUS_NONE
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -221,9 +377,8 @@ func _pad_row(row: Button, slim: bool = false) -> void:
 
 
 func _row_at(global_pos: Vector2) -> Button:
-	for child in _list.get_children():
-		var row := child as Button
-		if row != null and row.visible and row.get_global_rect().has_point(global_pos):
+	for row in _all_rows():
+		if row.visible and row.get_global_rect().has_point(global_pos):
 			return row
 	return null
 
@@ -279,6 +434,11 @@ func _clear_select() -> void:
 	_refresh_actions()
 
 
+func _toggle_weekly() -> void:
+	_hide_weekly = not _hide_weekly
+	refresh()
+
+
 func _refresh_actions() -> void:
 	var undoing := _undo_left > 0.0 and not _undo.is_empty()
 	_undo_button.visible = undoing
@@ -287,6 +447,7 @@ func _refresh_actions() -> void:
 
 
 func _relabel_actions() -> void:
+	_hide_button.text = tr("显示每周日常提醒") if _hide_weekly else tr("隐藏每周日常提醒")
 	_add_button.text = tr("+ 添加")
 	_delete_button.text = tr("删除")
 	_undo_button.text = tr("撤销")
@@ -324,9 +485,8 @@ func _guide_rows() -> Dictionary:
 	var yellow: Button
 	var before: Button
 	var after: Button
-	for child in _list.get_children():
-		var row := child as Button
-		if row == null or not row.visible:
+	for row in _all_rows():
+		if not row.visible:
 			continue
 		var item: Dictionary = row.get_meta("item", {})
 		if str(item.get("id", "")) == AlarmStore.SAMPLE_ONCE_ID:
@@ -381,9 +541,8 @@ func _apply_guide_step() -> void:
 	if yellow:
 		_ring_target(guide.get_node("颜色框黄"), yellow)
 		_ring_target(guide.get_node("删除框"), yellow)
-		_note_under(guide.get_node("删除说明"), yellow.get_global_rect())
 	_ring_target(guide.get_node("添加框"), _add_button)
-	_note_above(guide.get_node("添加说明"), _add_button.get_global_rect())
+	_note_above(guide.get_node("添加说明"), _hide_button.get_global_rect().merge(_add_button.get_global_rect()))
 	var color_anchor: Control = yellow if yellow else blue
 	if color_anchor:
 		var color_rect := color_anchor.get_global_rect()
@@ -391,45 +550,17 @@ func _apply_guide_step() -> void:
 			color_rect = color_rect.merge(blue.get_global_rect())
 		_note_under(guide.get_node("颜色说明"), color_rect)
 	if _guide_step == 1 and blue != null and hold_menu:
-		guide_close_edit.emit()
 		hold_menu.open(blue, "", false, Callable(), true, false, true)
 		_note_under(guide.get_node("跳转说明"), blue.get_global_rect())
 		_note_below_menu(guide.get_node("跳转说明"))
 		return
-	if _guide_step == 3:
-		if hold_menu:
-			hold_menu.close()
-		guide_preview_edit.emit(AlarmStore.SAMPLE_ONCE_ID)
-		await get_tree().process_frame
-		await get_tree().process_frame
-		var panel := get_node_or_null("../../单次日期/居中/面板") as Control
-		if panel:
-			_ring_target(guide.get_node("编辑框"), panel)
-		_place_edit_note(guide.get_node("编辑说明"))
-		return
-	guide_close_edit.emit()
-	if _guide_step == 4 and yellow != null and hold_menu:
+	if _guide_step == 3 and yellow != null and hold_menu:
 		hold_menu.open(yellow, "", true, Callable(), true, true)
+		_note_under(guide.get_node("删除说明"), yellow.get_global_rect())
 		_note_below_menu(guide.get_node("删除说明"))
 		return
 	if hold_menu:
 		hold_menu.close()
-
-
-func _place_edit_note(note: Label) -> void:
-	var width := guide.size.x - 32.0
-	note.size = Vector2(width, 0.0)
-	var height := _note_height(note)
-	var panel := get_node_or_null("../../单次日期/居中/面板") as Control
-	var x := guide.global_position.x + 16.0
-	var y := guide.global_position.y + 12.0
-	if panel != null and panel.is_visible_in_tree():
-		var rect := panel.get_global_rect()
-		if rect.position.y - height - 12.0 > guide.global_position.y:
-			y = rect.position.y - height - 12.0
-		else:
-			y = minf(rect.end.y + 12.0, guide.get_global_rect().end.y - height - 12.0)
-	note.global_position = Vector2(x, y)
 
 
 func _note_height(note: Control) -> float:

@@ -41,7 +41,7 @@ autowrap_mode = 3
 
 [node name="日期" type="Label" parent="居中/面板/内容"]
 layout_mode = 2
-text = "那天：下周三 10/21"
+text = "哪天：下周三 10/21"
 horizontal_alignment = 1
 autowrap_mode = 3
 

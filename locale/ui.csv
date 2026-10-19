@@ -22,7 +22,7 @@ keys,en,zh_TW
 请确认,Please confirm,請確認
 返回编辑,Back to edit,返回編輯
 事情：%s,What: %s,事情：%s
-那天：%s,Day: %s,那天：%s
+哪天：%s,Which day: %s,哪天：%s
 几点闹钟：%s,Alarm set for %s,幾點鬧鐘：%s
 几点会响：%s,Rings at %s,幾點會響：%s
 蜀葵,Hollyhock,蜀葵
@@ -44,8 +44,6 @@ keys,en,zh_TW
 周六,Sat,週六
 周日,Sun,週日
 新的提醒,New reminder,新的提醒
-☀️ 起床,☀️ Wake up,☀️ 起床
-🛏️ 睡觉,🛏️ Bedtime,🛏️ 睡覺
 🏖️ 这天不提醒,🏖️ Day off,🏖️ 這天不提醒
 🗑️ 删除,🗑️ Delete,🗑️ 刪除
 输入提醒名称,Name your reminder,輸入提醒名稱
@@ -87,7 +85,7 @@ keys,en,zh_TW
 周一至周五,Weekdays,週一至週五
 每天,Every day,每天
 不重复,Doesn't repeat,不重複
-这个时间用在哪几天,Which days should get this time?,這個時間用在哪幾天
+这个时间用在哪几天？,Which days should get this time?,這個時間用在哪幾天？
 上午,AM,上午
 %s 到 %s,%s to %s,%s 到 %s
 到,to,到
@@ -150,6 +148,8 @@ When it's up you'll get a heads-up, not an alarm","點一下就開始計時
 + 添加,+ Add,+ 新增
 撤销,Undo,撤銷
 还没有行程。点 + 加一个只响一次的提醒。,Nothing planned yet. Tap + to add a one-time reminder.,還沒有行程。點 + 加一個只響一次的提醒。
+没有行程,Nothing planned,沒有行程
+此周无提醒,Nothing this week,此週無提醒
 下%s %s,Next %s %s,下%s %s
 下下%s %s,%s the week after %s,下下%s %s
 %d年%d月%d日 %s,%d-%d-%d %s,%d年%d月%d日 %s
@@ -166,5 +166,6 @@ When it's up you'll get a heads-up, not an alarm","點一下就開始計時
 蓝色的是在闹钟页面设的，每个星期都响。黄色的只响一次。,"Blue ones are set on the alarm page and ring every week. Yellow ones ring just once.","藍色的是在鬧鐘頁面設的，每個星期都響。黃色的只響一次。"
 长按蓝色的，点「详情」，就能去闹钟页面改它。,"Press and hold a blue one, then tap Detail to change it on the alarm page.","長按藍色的，點「詳情」，就能去鬧鐘頁面改它。"
 想加一个只响一次的，点下面的加号。,Want one that rings just once? Tap the plus button below.,想加一個只響一次的，點下面的加號。
-这是在改这条黄色的。名字、哪一天、几点，都能改。,"This is where you change the yellow one. You can change the name, the day, and the time.","這是在改這條黃色的。名字、哪一天、幾點，都能改。"
-这条黄色的是例子。长按它可以删掉。,This yellow one is just an example. Press and hold it to delete it.,這條黃色的是例子。長按它可以刪掉。
+隐藏每周日常提醒,Hide weekly reminders,隱藏每週日常提醒
+显示每周日常提醒,Show weekly reminders,顯示每週日常提醒
+长按黄色的，可以改一改，也可以删掉。,"Press and hold a yellow one. You can change it, or delete it.","長按黃色的，可以改一改，也可以刪掉。"

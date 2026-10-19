@@ -30,7 +30,7 @@ theme_override_constants/separation = 12
 
 [node name="提示" type="Label" parent="居中/面板/内容"]
 layout_mode = 2
-text = "这个时间用在哪几天"
+text = "这个时间用在哪几天？"
 horizontal_alignment = 1
 autowrap_mode = 3
 

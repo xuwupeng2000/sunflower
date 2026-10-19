@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[node name="日" type="VBoxContainer"]
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="标题" type="Label" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"DayTitle"
+text = "周一"
+
+[node name="空" type="Label" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"PauseNote"
+theme_override_font_sizes/font_size = 13
+text = "没有行程"

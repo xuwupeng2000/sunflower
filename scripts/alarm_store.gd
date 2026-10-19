@@ -107,7 +107,7 @@ func load_data() -> void:
 	_load_days(data.get("days", []))
 	tutorial_seen = bool(data.get("tutorial_seen", false)) and int(data.get("tutorial_v", 1)) >= 4
 	timer_tutorial_seen = bool(data.get("timer_tutorial_seen", false))
-	once_tutorial_seen = bool(data.get("once_tutorial_seen", false)) and int(data.get("once_tutorial_v", 1)) >= 2
+	once_tutorial_seen = bool(data.get("once_tutorial_seen", false)) and int(data.get("once_tutorial_v", 1)) >= 3
 	scheduled_ids.clear()
 	for item in data.get("scheduled_ids", []):
 		scheduled_ids.append(str(item))
@@ -143,7 +143,7 @@ func save_data() -> void:
 		"tutorial_v": 4,
 		"timer_tutorial_seen": timer_tutorial_seen,
 		"once_tutorial_seen": once_tutorial_seen,
-		"once_tutorial_v": 2,
+		"once_tutorial_v": 3,
 		"sleep_present": sleep_present,
 		"sleep_paused": sleep_paused,
 		"fertilizer": fertilizer,

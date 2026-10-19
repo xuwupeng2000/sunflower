@@ -551,19 +551,6 @@ text = "长按蓝色的，点「详情」，就能去闹钟页面改它。"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="编辑框" type="Panel" parent="UI/界面/行程教程"]
-layout_mode = 0
-mouse_filter = 2
-theme_type_variation = &"GuideRing"
-
-[node name="编辑说明" type="Label" parent="UI/界面/行程教程"]
-layout_mode = 0
-mouse_filter = 2
-theme_type_variation = &"GuideText"
-text = "这是在改这条黄色的。名字、哪一天、几点，都能改。"
-horizontal_alignment = 1
-autowrap_mode = 3
-
 [node name="删除框" type="Panel" parent="UI/界面/行程教程"]
 layout_mode = 0
 mouse_filter = 2
@@ -573,7 +560,7 @@ theme_type_variation = &"GuideRing"
 layout_mode = 0
 mouse_filter = 2
 theme_type_variation = &"GuideText"
-text = "这条黄色的是例子。长按它可以删掉。"
+text = "长按黄色的，可以改一改，也可以删掉。"
 horizontal_alignment = 1
 autowrap_mode = 3
 

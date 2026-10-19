@@ -273,7 +273,7 @@ private func schedule(id: UUID, logicalId: String, when: Alarm.Schedule, label: 
     typealias Config = AlarmManager.AlarmConfiguration<SunflowerMetadata>
 
     let stop = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("停止", "Stop", hant: "停止")), textColor: .white, systemImageName: "stop.circle")
-    let snooze = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("推迟", "Snooze", hant: "延後")), textColor: .white, systemImageName: "zzz")
+    let snooze = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("推迟 9 分钟", "Snooze 9 min", hant: "延後 9 分鐘")), textColor: .white, systemImageName: "zzz")
     let alert = AlarmPresentation.Alert(
         title: LocalizedStringResource(stringLiteral: label),
         stopButton: stop,
@@ -281,14 +281,16 @@ private func schedule(id: UUID, logicalId: String, when: Alarm.Schedule, label: 
         secondaryButtonBehavior: .countdown
     )
     let pause = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("暂停", "Pause", hant: "暫停")), textColor: .white, systemImageName: "pause.fill")
-    let countdownTitle = label.isEmpty ? Copy.text("即将再响", "Snoozing", hant: "即將再響") : label
+    let again = Copy.text("9 分钟后再响", "Again in 9 min", hant: "9 分鐘後再響")
+    let countdownTitle = label.isEmpty ? again : "\(label) · \(again)"
     let countdown = AlarmPresentation.Countdown(title: LocalizedStringResource(stringLiteral: countdownTitle), pauseButton: pause)
     let resume = AlarmButton(text: LocalizedStringResource(stringLiteral: Copy.text("继续", "Resume", hant: "繼續")), textColor: .white, systemImageName: "play.fill")
     let paused = AlarmPresentation.Paused(title: LocalizedStringResource(stringLiteral: Copy.text("已暂停", "Paused", hant: "已暫停")), resumeButton: resume)
+    // 全屏底色是系统的，改不了。tint 只染按钮。
     let attributes = AlarmAttributes<SunflowerMetadata>(
         presentation: AlarmPresentation(alert: alert, countdown: countdown, paused: paused),
         metadata: SunflowerMetadata(alarmId: logicalId, events: events, kitId: id.uuidString),
-        tintColor: Color(red: 127.0 / 255.0, green: 167.0 / 255.0, blue: 198.0 / 255.0)
+        tintColor: Color(red: 150.0 / 255.0, green: 204.0 / 255.0, blue: 244.0 / 255.0)
     )
     let sound = AlertConfiguration.AlertSound.named("sunflower.wav")
     let configuration = Config(

@@ -1249,7 +1249,7 @@ func _show_once_summary() -> void:
 		ring_when = "%s %s" % [AlarmStore.agenda_when(AlarmStore.shift_date(_once_date, int(ring["day"]))), ring_when]
 	var body := _once_summary.get_node("居中/面板/内容")
 	body.get_node("事情").text = tr("事情：%s") % _once_name
-	body.get_node("日期").text = tr("那天：%s") % AlarmStore.agenda_when(_once_date)
+	body.get_node("日期").text = tr("哪天：%s") % AlarmStore.agenda_when(_once_date)
 	body.get_node("闹钟").text = tr("几点闹钟：%s") % _clock_text(_picker_hour, _picker_minute)
 	body.get_node("响铃").text = tr("几点会响：%s") % ring_when
 	_once_summary.visible = true

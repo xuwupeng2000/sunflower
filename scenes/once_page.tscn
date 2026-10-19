@@ -1,6 +1,16 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/once_page.gd" id="1_page"]
+[ext_resource type="PackedScene" path="res://scenes/once_day.tscn" id="2_day"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_agenda_frame"]
+bg_color = Color(1, 1, 1, 1)
+border_color = Color(0.372549, 0.576471, 0.721569, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 5
 
 [node name="行程" type="Control"]
 clip_contents = true
@@ -22,14 +32,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"AlarmFrame"
+theme_override_styles/panel = SubResource("StyleBoxFlat_agenda_frame")
 
-[node name="内容" type="VBoxContainer" parent="边框"]
+[node name="内容" type="Control" parent="边框"]
 layout_mode = 2
-theme_override_constants/separation = 16
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="滚动" type="ScrollContainer" parent="边框/内容"]
-layout_mode = 2
-size_flags_vertical = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
 
@@ -37,16 +54,15 @@ vertical_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 72
+mouse_filter = 2
+theme_override_constants/margin_bottom = 116
 
 [node name="列表" type="VBoxContainer" parent="边框/内容/滚动/边距"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 mouse_filter = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 0
 
 [node name="空提示" type="Label" parent="边框/内容/滚动/边距/列表"]
 layout_mode = 2
@@ -55,37 +71,155 @@ text = "还没有行程。点 + 加一个只响一次的提醒。"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="本周" type="Label" parent="边框/内容/滚动/边距/列表"]
-visible = false
+[node name="本周条" type="PanelContainer" parent="边框/内容/滚动/边距/列表"]
 layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WeekThis"
+
+[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/本周条"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="本周" type="Label" parent="边框/内容/滚动/边距/列表/本周条/内容"]
+layout_mode = 2
+mouse_filter = 2
 theme_type_variation = &"SectionTitle"
 text = "本周"
 
-[node name="下周" type="Label" parent="边框/内容/滚动/边距/列表"]
+[node name="无提醒" type="Label" parent="边框/内容/滚动/边距/列表/本周条/内容"]
 visible = false
 layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"PauseNote"
+text = "此周无提醒"
+
+[node name="本周天" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/本周条/内容"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="周一" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周二" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周三" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周四" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周五" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周六" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周日" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="下周条" type="PanelContainer" parent="边框/内容/滚动/边距/列表"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WeekNext"
+
+[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下周条"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="下周" type="Label" parent="边框/内容/滚动/边距/列表/下周条/内容"]
+layout_mode = 2
+mouse_filter = 2
 theme_type_variation = &"SectionTitle"
 text = "下周"
 
-[node name="下下周" type="Label" parent="边框/内容/滚动/边距/列表"]
+[node name="无提醒" type="Label" parent="边框/内容/滚动/边距/列表/下周条/内容"]
 visible = false
 layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"PauseNote"
+text = "此周无提醒"
+
+[node name="下周天" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下周条/内容"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="周一" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周二" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周三" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周四" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周五" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周六" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="周日" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+layout_mode = 2
+
+[node name="下下周条" type="PanelContainer" parent="边框/内容/滚动/边距/列表"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WeekAfter"
+
+[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下下周条"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="下下周" type="Label" parent="边框/内容/滚动/边距/列表/下下周条/内容"]
+layout_mode = 2
+mouse_filter = 2
 theme_type_variation = &"SectionTitle"
 text = "下下周"
 
-[node name="更远" type="Label" parent="边框/内容/滚动/边距/列表"]
+[node name="条目" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下下周条/内容"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="更远条" type="PanelContainer" parent="边框/内容/滚动/边距/列表"]
 visible = false
 layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WeekLater"
+
+[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/更远条"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="更远" type="Label" parent="边框/内容/滚动/边距/列表/更远条/内容"]
+layout_mode = 2
+mouse_filter = 2
 theme_type_variation = &"SectionTitle"
 text = "更远"
 
-[node name="更远说明" type="Label" parent="边框/内容/滚动/边距/列表"]
-visible = false
+[node name="更远说明" type="Label" parent="边框/内容/滚动/边距/列表/更远条/内容"]
 layout_mode = 2
+mouse_filter = 2
 theme_type_variation = &"PauseNote"
 theme_override_font_sizes/font_size = 13
 text = "您的一般周提醒不会在这里显示的哦"
 autowrap_mode = 3
+
+[node name="条目" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/更远条/内容"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
 
 [node name="已完成" type="Label" parent="边框/内容/滚动/边距/列表"]
 visible = false
@@ -93,29 +227,42 @@ layout_mode = 2
 theme_type_variation = &"SectionTitle"
 text = "已完成"
 
-[node name="操作" type="PanelContainer" parent="边框/内容"]
-layout_mode = 2
-size_flags_vertical = 0
-theme_type_variation = &"ActionBar"
-
-[node name="按钮" type="VBoxContainer" parent="边框/内容/操作"]
-layout_mode = 2
-size_flags_horizontal = 3
+[node name="添加行" type="VBoxContainer" parent="边框/内容"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -104.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="动作" type="HBoxContainer" parent="边框/内容/操作/按钮"]
+[node name="隐藏" type="Button" parent="边框/内容/添加行"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_type_variation = &"DayButton"
+text = "隐藏每周日常提醒"
+
+[node name="动作" type="HBoxContainer" parent="边框/内容/添加行"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="添加" type="Button" parent="边框/内容/操作/按钮/动作"]
+[node name="添加" type="Button" parent="边框/内容/添加行/动作"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"OkButton"
 text = "+ 添加"
 
-[node name="删除" type="Button" parent="边框/内容/操作/按钮/动作"]
+[node name="删除" type="Button" parent="边框/内容/添加行/动作"]
 visible = false
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
@@ -123,10 +270,11 @@ size_flags_horizontal = 3
 theme_type_variation = &"DeleteButton"
 text = "删除"
 
-[node name="撤销" type="Button" parent="边框/内容/操作/按钮/动作"]
+[node name="撤销" type="Button" parent="边框/内容/添加行/动作"]
 visible = false
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SkipButton"
 text = "撤销"
+
