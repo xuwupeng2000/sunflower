@@ -329,22 +329,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="标题" type="Label" parent="边框/内容/行列/时间/任务时间" unique_id=976268565]
-visible = false
+[node name="钟点行" type="VBoxContainer" parent="边框/内容/行列/时间/任务时间"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"SectionTitle"
-text = "开始"
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_horizontal = 4
+theme_override_constants/separation = 12
 
-[node name="钟点" type="Button" parent="边框/内容/行列/时间/任务时间" unique_id=174850017]
+[node name="开始" type="HBoxContainer" parent="边框/内容/行列/时间/任务时间/钟点行"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="钟点" type="Button" parent="边框/内容/行列/时间/任务时间/钟点行/开始" unique_id=174850017]
 custom_minimum_size = Vector2(180, 52)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"ClockButton"
 
-[node name="读数" type="HBoxContainer" parent="边框/内容/行列/时间/任务时间/钟点" unique_id=976268570]
+[node name="读数" type="HBoxContainer" parent="边框/内容/行列/时间/任务时间/钟点行/开始/钟点" unique_id=976268570]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -355,75 +357,120 @@ mouse_filter = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="上下午" type="Label" parent="边框/内容/行列/时间/任务时间/钟点/读数" unique_id=976268571]
+[node name="上下午" type="Label" parent="边框/内容/行列/时间/任务时间/钟点行/开始/钟点/读数" unique_id=976268571]
 layout_mode = 2
-theme_type_variation = &"ClockMeridiem"
+theme_type_variation = &"ClockMeridiemSmall"
 text = "上午"
 vertical_alignment = 1
 
-[node name="数字" type="Label" parent="边框/内容/行列/时间/任务时间/钟点/读数" unique_id=976268572]
+[node name="数字" type="Label" parent="边框/内容/行列/时间/任务时间/钟点行/开始/钟点/读数" unique_id=976268572]
 layout_mode = 2
-theme_type_variation = &"ClockDigits"
+theme_type_variation = &"ClockDigitsSmall"
 text = "09:00"
 vertical_alignment = 1
 
-[node name="添加时间" type="Button" parent="边框/内容/行列/时间/任务时间" unique_id=976268567]
+[node name="时段" type="HBoxContainer" parent="边框/内容/行列/时间/任务时间/钟点行"]
 visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="起" type="PanelContainer" parent="边框/内容/行列/时间/任务时间/钟点行/时段"]
+layout_mode = 2
+mouse_filter = 0
+theme_type_variation = &"ClockRing"
+
+[node name="行" type="HBoxContainer" parent="边框/内容/行列/时间/任务时间/钟点行/时段/起"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="上下午" type="Label" parent="边框/内容/行列/时间/任务时间/钟点行/时段/起/行"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"ClockMeridiemSmall"
+text = "上午"
+vertical_alignment = 1
+
+[node name="数字" type="Label" parent="边框/内容/行列/时间/任务时间/钟点行/时段/起/行"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"ClockMeridiemSmall"
+theme_override_font_sizes/font_size = 18
+text = "9:00"
+vertical_alignment = 1
+
+[node name="到" type="Label" parent="边框/内容/行列/时间/任务时间/钟点行/时段"]
+layout_mode = 2
+theme_type_variation = &"ClockMeridiemSmall"
+text = "到"
+vertical_alignment = 1
+
+[node name="止" type="PanelContainer" parent="边框/内容/行列/时间/任务时间/钟点行/时段"]
+layout_mode = 2
+mouse_filter = 0
+theme_type_variation = &"ClockRing"
+
+[node name="行" type="HBoxContainer" parent="边框/内容/行列/时间/任务时间/钟点行/时段/止"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="上下午" type="Label" parent="边框/内容/行列/时间/任务时间/钟点行/时段/止/行"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"ClockMeridiemSmall"
+text = "下午"
+vertical_alignment = 1
+
+[node name="数字" type="Label" parent="边框/内容/行列/时间/任务时间/钟点行/时段/止/行"]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"ClockMeridiemSmall"
+theme_override_font_sizes/font_size = 18
+text = "5:00"
+vertical_alignment = 1
+
+[node name="提前说明" type="Label" parent="边框/内容/行列/时间/任务时间/钟点行"]
+visible = false
+layout_mode = 2
+text = "提前 15 分钟，16:45 响"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="暂不提醒" type="Label" parent="边框/内容/行列/时间/任务时间/钟点行"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"PauseNote"
+text = "暂不提醒"
+horizontal_alignment = 1
+
+[node name="添加时间边距" type="MarginContainer" parent="边框/内容/行列/时间/任务时间"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_top = 16
+
+[node name="添加时间" type="Button" parent="边框/内容/行列/时间/任务时间/添加时间边距" unique_id=976268567]
 custom_minimum_size = Vector2(180, 44)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"ActionButton"
 text = "＋ 添加提醒时间"
 
-[node name="添加结束" type="Button" parent="边框/内容/行列/时间/任务时间" unique_id=976268566]
+[node name="添加结束边距" type="MarginContainer" parent="边框/内容/行列/时间/任务时间"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_top = 16
+
+[node name="添加结束" type="Button" parent="边框/内容/行列/时间/任务时间/添加结束边距" unique_id=976268566]
 custom_minimum_size = Vector2(180, 44)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"ActionButton"
 text = "＋ 添加结束时间"
-
-[node name="结束" type="VBoxContainer" parent="边框/内容/行列/时间" unique_id=976268561]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 4
-
-[node name="标题" type="Label" parent="边框/内容/行列/时间/结束" unique_id=976268562]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"SectionTitle"
-text = "结束"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="钟点" type="Button" parent="边框/内容/行列/时间/结束" unique_id=976268563]
-custom_minimum_size = Vector2(180, 52)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"ClockButton"
-
-[node name="读数" type="HBoxContainer" parent="边框/内容/行列/时间/结束/钟点" unique_id=976268580]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 6
-alignment = 1
-
-[node name="上下午" type="Label" parent="边框/内容/行列/时间/结束/钟点/读数" unique_id=976268581]
-layout_mode = 2
-theme_type_variation = &"ClockMeridiem"
-text = "上午"
-vertical_alignment = 1
-
-[node name="数字" type="Label" parent="边框/内容/行列/时间/结束/钟点/读数" unique_id=976268582]
-layout_mode = 2
-theme_type_variation = &"ClockDigits"
-text = "09:00"
-vertical_alignment = 1
 
 [node name="暂停说明" type="Label" parent="边框/内容/行列/时间" unique_id=976268690]
 visible = false

@@ -12,18 +12,45 @@ private var snoozeCallback: (() -> Void)?
         snoozeCallback = callback
     }
 
-    /// Empty means the user has not chosen a language, so the app follows the phone.
-    /// "zh", "zh_TW" and "en" are explicit choices from Settings.
+    /// Always "zh", "zh_TW", or "en". Called again each time the app comes forward.
+    /// "system" and a missing value follow the language iOS is using for this app.
+    /// An explicit choice in Settings wins over a stale "system" left in another cache.
     @objc public static func settingsLanguage() -> String {
-        let key = "sunflower_ui_language"
-        UserDefaults.standard.synchronize()
-        CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication)
-        let stored = (CFPreferencesCopyAppValue(key as CFString, kCFPreferencesCurrentApplication) as? String)
-            ?? UserDefaults.standard.string(forKey: key)
-        let explicit = stored.flatMap { Copy.languages.contains($0) ? $0 : nil } ?? ""
-        let resolved = explicit.isEmpty ? Copy.phoneLanguage() : explicit
+        let raw = readUILanguage()
+        let resolved = Copy.languages.contains(raw) ? raw : Copy.phoneLanguage()
         UserDefaults(suiteName: "group.com.xinli.sunflower")?.set(resolved, forKey: "sunflower_language")
-        return explicit
+        return resolved
+    }
+
+    private static func readUILanguage() -> String {
+        let key = "sunflower_ui_language"
+        let bundleID = Bundle.main.bundleIdentifier ?? "com.xinli.sunflower"
+        UserDefaults.standard.synchronize()
+        // Drop the in-memory cache. Settings writes the new value while this
+        // process is suspended, and the cache otherwise keeps the old one.
+        UserDefaults.resetStandardUserDefaults()
+        CFPreferencesAppSynchronize(bundleID as CFString)
+        let saved = [
+            CFPreferencesCopyValue(key as CFString, bundleID as CFString, kCFPreferencesCurrentUser, kCFPreferencesAnyHost) as? String,
+            CFPreferencesCopyValue(key as CFString, bundleID as CFString, kCFPreferencesCurrentUser, kCFPreferencesCurrentHost) as? String,
+            UserDefaults.standard.persistentDomain(forName: bundleID)?[key] as? String,
+            UserDefaults.standard.string(forKey: key),
+            readPreferencesPlist()?[key] as? String,
+        ].compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
+        if let explicit = saved.first(where: { Copy.languages.contains($0) }) {
+            return explicit
+        }
+        return saved.first ?? ""
+    }
+
+    private static func readPreferencesPlist() -> [String: Any]? {
+        guard let bundleID = Bundle.main.bundleIdentifier,
+              let url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first?
+                .appendingPathComponent("Preferences/\(bundleID).plist"),
+              let data = try? Data(contentsOf: url, options: [.uncached]) else {
+            return nil
+        }
+        return try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any]
     }
 
     @objc public static func requestAuthorization() {

@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[node name="行程行" type="Button"]
+custom_minimum_size = Vector2(0, 76)
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 2
+theme_type_variation = &"DayButton"
+clip_text = false
+autowrap_mode = 3
+alignment = 0
+text = "交表
+下周一 10/24 · 09:00"

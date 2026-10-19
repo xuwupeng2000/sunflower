@@ -23,8 +23,8 @@ public enum Copy {
     /// "zh" Simplified, "zh_TW" Traditional, "en" English — the same codes the Godot side uses.
     public static let languages = ["zh", "zh_TW", "en"]
 
-    /// The in-app choice lives in the shared app group. Otherwise use the phone language,
-    /// because Locale.current follows this bundle, which only ships English.
+    /// The in-app choice lives in the shared app group. Otherwise follow the language
+    /// iOS is actually using for this app, including a per-app language.
     public static var language: String {
         if let chosen = UserDefaults(suiteName: "group.com.xinli.sunflower")?.string(forKey: "sunflower_language"),
            languages.contains(chosen) {
@@ -33,10 +33,12 @@ public enum Copy {
         return phoneLanguage()
     }
 
+    /// Locale.preferredLanguages follows Settings → this app → Language.
+    /// UserDefaults' AppleLanguages falls through to the whole phone, so it hides that choice.
     public static func phoneLanguage() -> String {
-        let global = UserDefaults.standard.persistentDomain(forName: UserDefaults.globalDomain)
-        let preferred = global?["AppleLanguages"] as? [String]
-        let first = (preferred?.first ?? Locale.preferredLanguages.first ?? "").lowercased()
+        let first = (Locale.preferredLanguages.first ?? "")
+            .lowercased()
+            .replacingOccurrences(of: "_", with: "-")
         guard first.hasPrefix("zh") else { return "en" }
         let traditional = ["hant", "-tw", "-hk", "-mo"].contains { first.contains($0) }
         return traditional ? "zh_TW" : "zh"

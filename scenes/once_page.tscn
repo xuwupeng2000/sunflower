@@ -1,0 +1,132 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/once_page.gd" id="1_page"]
+
+[node name="行程" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_page")
+
+[node name="边框" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"AlarmFrame"
+
+[node name="内容" type="VBoxContainer" parent="边框"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="滚动" type="ScrollContainer" parent="边框/内容"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="边距" type="MarginContainer" parent="边框/内容/滚动"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 72
+
+[node name="列表" type="VBoxContainer" parent="边框/内容/滚动/边距"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="空提示" type="Label" parent="边框/内容/滚动/边距/列表"]
+layout_mode = 2
+theme_type_variation = &"PauseNote"
+text = "还没有行程。点 + 加一个只响一次的提醒。"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="本周" type="Label" parent="边框/内容/滚动/边距/列表"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "本周"
+
+[node name="下周" type="Label" parent="边框/内容/滚动/边距/列表"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "下周"
+
+[node name="下下周" type="Label" parent="边框/内容/滚动/边距/列表"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "下下周"
+
+[node name="更远" type="Label" parent="边框/内容/滚动/边距/列表"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "更远"
+
+[node name="更远说明" type="Label" parent="边框/内容/滚动/边距/列表"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"PauseNote"
+theme_override_font_sizes/font_size = 13
+text = "您的一般周提醒不会在这里显示的哦"
+autowrap_mode = 3
+
+[node name="已完成" type="Label" parent="边框/内容/滚动/边距/列表"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "已完成"
+
+[node name="操作" type="PanelContainer" parent="边框/内容"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"ActionBar"
+
+[node name="按钮" type="VBoxContainer" parent="边框/内容/操作"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="动作" type="HBoxContainer" parent="边框/内容/操作/按钮"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="添加" type="Button" parent="边框/内容/操作/按钮/动作"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"OkButton"
+text = "+ 添加"
+
+[node name="删除" type="Button" parent="边框/内容/操作/按钮/动作"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"DeleteButton"
+text = "删除"
+
+[node name="撤销" type="Button" parent="边框/内容/操作/按钮/动作"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"SkipButton"
+text = "撤销"

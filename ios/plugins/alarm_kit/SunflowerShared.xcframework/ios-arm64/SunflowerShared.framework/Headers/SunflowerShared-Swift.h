@@ -372,8 +372,9 @@ extern "C" {
 SWIFT_CLASS_NAMED("AlarmKitBridge")
 @interface AlarmKitBridge : NSObject
 + (void)setSnoozeCallback:(void (^ _Nullable)(void))callback;
-/// Empty means the user has not chosen a language, so the app follows the phone.
-/// “zh”, “zh_TW” and “en” are explicit choices from Settings.
+/// Always “zh”, “zh_TW”, or “en”. Called again each time the app comes forward.
+/// “system” and a missing value follow the language iOS is using for this app.
+/// An explicit choice in Settings wins over a stale “system” left in another cache.
 + (NSString * _Nonnull)settingsLanguage SWIFT_WARN_UNUSED_RESULT;
 + (void)requestAuthorization;
 + (void)scheduleWeeklyJSON:(NSString * _Nonnull)json;

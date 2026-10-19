@@ -1,6 +1,5 @@
 extends Node
 
-var _date_key := ""
 var _date_label: Label
 var _count_label: Label
 var _due_label: Label
@@ -8,6 +7,13 @@ var _sunflower: Node3D
 var _flower_page: Control
 var _pot_page: Control
 var _alarm_page: Control
+var _once_page: Control
+var _once_add: Control
+var _once_naming := false
+var _once_date := ""
+var _once_name := ""
+var _once_edit_id := ""
+var _once_summary: Control
 var _selected_day := 0
 var _current_tab := ""
 var _ring_popup: Control
@@ -40,7 +46,7 @@ var _order_dirty := false
 var _ignore_tab_press := false
 const TaskTabScene := preload("res://scenes/task_tab.tscn")
 const QUICK_END_MINUTES := [15, 30, 60]
-const TABS := ["flower", "pot", "alarm", "timer"]
+const TABS := ["flower", "pot", "alarm", "timer", "once"]
 ## 按下缩一点、松手弹回来，按钮才有软绵绵的手感。
 const PRESS_SCALE := 0.96
 const PRESS_IN := 0.08
@@ -58,8 +64,6 @@ var _day_buttons: Array[Button] = []
 var _week_drag := false
 var _week_days: Control
 var _tab_buttons: Array[Button] = []
-var _prev_button: Button
-var _next_button: Button
 var _playback := -1
 var _times: Control
 var _time_fade: Tween
@@ -81,24 +85,37 @@ var _pause_note: Label
 var _menu_task := -1
 var _press_at := Vector2.ZERO
 var _day_hold := 0
-var _start_title: Label
+var _start_row: Control
+var _range_line: Control
+var _off_note: Label
 var _add_time_row: Button
 var _add_end_row: Button
+var _lead_note: Label
 var _skip_today_button: Button
 var _pause_day_button: Button
-var _end_row: Control
-var _end_button: Button
 var _picker_tabs: Control
 var _start_tab: Button
 var _end_tab: Button
 var _end_area: Control
 var _end_options: Control
 var _add_end_button: Button
+var _lead_area: Control
+var _lead_hint: Label
+var _lead_tip: Label
+var _lead_ring: Label
+var _lead_buttons: Array[Button] = []
+var _picker_custom: Button
+var _clock_area: Control
+var _lead_custom: Control
+var _lead_wheel: Control
+var _lead_readout: Label
+var _picking_custom_lead := false
 var _quick_ends: Array[Button] = []
 var _picker_tab := "start"
 var _picker_has_end := false
 var _picker_end_hour := 10
 var _picker_end_minute := 0
+var _picker_lead := 0
 var _water_button: Button
 var _feed_button: Button
 var _feed_count: Label
@@ -137,6 +154,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	AlarmStore.apply_system_setting()
 	_sunflower = $Sunflower
 	_sunflower.plant_tapped.connect(_on_plant_tapped)
 	_bind_nodes()
@@ -147,17 +165,17 @@ func _ready() -> void:
 	var ring := load("res://ios/sounds/sunflower.wav")
 	if ring:
 		$RingPlayer.stream = ring
-	_date_key = AlarmStore.today_key()
 	AlarmStore.changed.connect(_refresh)
 	AlarmService.snoozes_updated.connect(_refresh)
 	_sunflower.apply_style(AlarmStore.flower_kind, AlarmStore.pot_kind)
 	_fill_pot_rows()
 	_select_day(_today_alarm_index(), false)
-	shift_date(0)
+	_refresh()
 	_show_tab("flower")
 	_catch_ringing()
 	_schedule_days()
 	set_process(false)
+	call_deferred("_apply_language_from_settings")
 
 
 func _soften(node: Node) -> void:
@@ -185,16 +203,12 @@ func _squish(button: Button, down: bool) -> void:
 
 
 func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and _date_label != null:
+		_refresh_for_language()
+		return
 	if what != NOTIFICATION_APPLICATION_FOCUS_IN:
 		return
-	if _date_label != null and AlarmStore.apply_system_setting():
-		_style_tab(_sleep_tab, _sleep_tab.text)
-		for button in _task_buttons:
-			_style_tab(button, button.text)
-		_refresh()
-		_update_time_label()
-		_apply_task_chrome()
-		_schedule_days()
+	call_deferred("_apply_language_from_settings")
 	if AlarmStore.prune_skips():
 		AlarmService.resync_alarms()
 		_update_time_label()
@@ -209,10 +223,6 @@ func _bind_nodes() -> void:
 	_date_label = root.get_node("看花页/顶部/日期行/日期")
 	_count_label = root.get_node("看花页/顶部/次数")
 	_due_label = root.get_node("看花页/顶部/到点事项")
-	_prev_button = root.get_node("看花页/顶部/日期行/前一天")
-	_next_button = root.get_node("看花页/顶部/日期行/后一天")
-	_prev_button.pressed.connect(func() -> void: shift_date(-1))
-	_next_button.pressed.connect(func() -> void: shift_date(1))
 	_flower_page = root.get_node("看花页")
 	_water_button = _flower_page.get_node("照料/浇水")
 	_feed_button = _flower_page.get_node("照料/施肥")
@@ -229,6 +239,21 @@ func _bind_nodes() -> void:
 	_feed_button.focus_mode = Control.FOCUS_NONE
 	_pot_page = root.get_node("花盆页/花盆")
 	_alarm_page = root.get_node("定时页/定时")
+	_once_page = root.get_node("行程页/行程")
+	_once_add = root.get_node("单次日期")
+	_once_page.add_once.connect(_open_once_add)
+	_once_page.edit_once.connect(_edit_once)
+	_once_page.open_alarm.connect(_open_once_alarm)
+	_once_page.guide_preview_edit.connect(_preview_once_edit)
+	_once_page.guide_close_edit.connect(_close_once_preview)
+	_once_add.date_picked.connect(_on_once_date)
+	_once_summary = root.get_node("单次确认")
+	_once_summary.gui_input.connect(func(event: InputEvent) -> void:
+		if event is InputEventMouseButton and event.pressed:
+			_return_once_edit()
+	)
+	_once_summary.get_node("居中/面板/内容/按钮/确认").pressed.connect(_confirm_once_summary)
+	_once_summary.get_node("居中/面板/内容/按钮/返回").pressed.connect(_return_once_edit)
 	var days := _alarm_page.get_node("边框/内容/行列/星期") as Control
 	days.mouse_filter = Control.MOUSE_FILTER_STOP
 	days.gui_input.connect(_on_week_gesture.bind(days))
@@ -243,12 +268,14 @@ func _bind_nodes() -> void:
 	_wake_row = _times.get_node("起床")
 	_sleep_row = _times.get_node("睡觉")
 	_task_row = _times.get_node("任务时间")
-	_start_title = _task_row.get_node("标题")
-	_add_time_row = _task_row.get_node("添加时间")
-	_add_end_row = _task_row.get_node("添加结束")
-	_end_row = _times.get_node("结束")
-	_end_button = _end_row.get_node("钟点")
-	_end_button.pressed.connect(_open_time_picker.bind("task", "end"))
+	_start_row = _task_row.get_node("钟点行/开始")
+	_range_line = _task_row.get_node("钟点行/时段")
+	_off_note = _task_row.get_node("钟点行/暂不提醒")
+	_range_line.get_node("起").gui_input.connect(_open_range_chip.bind("start"))
+	_range_line.get_node("止").gui_input.connect(_open_range_chip.bind("end"))
+	_add_time_row = _task_row.get_node("添加时间边距/添加时间")
+	_add_end_row = _task_row.get_node("添加结束边距/添加结束")
+	_lead_note = _task_row.get_node("钟点行/提前说明")
 	_add_time_row.pressed.connect(_open_time_picker.bind("task"))
 	_add_end_row.pressed.connect(func() -> void:
 		_open_time_picker("task")
@@ -257,7 +284,7 @@ func _bind_nodes() -> void:
 	_task_name = _alarm_page.get_node("边框/内容/行列/时间/提醒标题")
 	_task_name.mouse_filter = Control.MOUSE_FILTER_STOP
 	_task_name.gui_input.connect(_on_task_name_input)
-	_task_button = _task_row.get_node("钟点")
+	_task_button = _task_row.get_node("钟点行/开始/钟点")
 	_wake_button.pressed.connect(_open_time_picker.bind("wake"))
 	_sleep_button.pressed.connect(_open_time_picker.bind("sleep"))
 	_task_button.pressed.connect(_open_time_picker.bind("task"))
@@ -305,9 +332,16 @@ func _bind_nodes() -> void:
 	)
 	_remove_dialog.get_node("居中/面板/内容/按钮/取消").pressed.connect(func() -> void: _remove_dialog.visible = false)
 	_remove_dialog.get_node("居中/面板/内容/按钮/删除").pressed.connect(_confirm_remove_task)
-	_name_dialog.get_node("居中/面板/内容/快捷/健身").pressed.connect(_confirm_new_task.bind(tr("💪 健身")))
-	_name_dialog.get_node("居中/面板/内容/快捷/接娃").pressed.connect(_confirm_new_task.bind(tr("👶 接娃")))
-	_name_dialog.get_node("居中/面板/内容/快捷/吃药").pressed.connect(_confirm_new_task.bind(tr("💊 吃药")))
+	_name_dialog.get_node("居中/面板/内容/快捷/行1/健身").pressed.connect(_confirm_shortcut.bind("💪 健身"))
+	_name_dialog.get_node("居中/面板/内容/快捷/行1/接娃").pressed.connect(_confirm_shortcut.bind("👶 接娃"))
+	_name_dialog.get_node("居中/面板/内容/快捷/行2/吃药").pressed.connect(_confirm_shortcut.bind("💊 吃药"))
+	_name_dialog.get_node("居中/面板/内容/快捷/行2/上班").pressed.connect(_confirm_shortcut.bind("🚌 上班"))
+	_name_dialog.get_node("居中/面板/内容/快捷/行3/送娃").pressed.connect(_confirm_shortcut.bind("🏫 送娃"))
+	_name_dialog.get_node("居中/面板/内容/快捷/行3/上课").pressed.connect(_confirm_shortcut.bind("📚 上课"))
+	_name_dialog.get_node("居中/面板/内容/快捷/行4/会议").pressed.connect(_confirm_shortcut.bind("📅 会议"))
+	_name_dialog.get_node("居中/面板/内容/快捷/行4/遛狗").pressed.connect(_confirm_shortcut.bind("🐶 遛狗"))
+	_name_dialog.get_node("居中/面板/内容/快捷/行5/倒垃圾").pressed.connect(_confirm_shortcut.bind("🗑️ 倒垃圾"))
+	_name_dialog.get_node("居中/面板/内容/快捷/行5/买菜").pressed.connect(_confirm_shortcut.bind("🛒 买菜"))
 	_name_dialog.get_node("居中/面板/内容/完成").pressed.connect(_confirm_typed_task)
 	_ampm_wheel = _picker.get_node("居中/面板/内容/滚轮区/列/上下午")
 	_hour_wheel = _picker.get_node("居中/面板/内容/滚轮区/列/时")
@@ -337,6 +371,17 @@ func _bind_nodes() -> void:
 	_end_options.get_node("没有结束").pressed.connect(_remove_picker_end)
 	_add_end_button = _picker.get_node("居中/面板/内容/增加结束")
 	_add_end_button.pressed.connect(_add_picker_end)
+	_lead_area = _picker.get_node("居中/面板/内容/提前区")
+	_lead_hint = _lead_area.get_node("说明")
+	_lead_tip = _lead_area.get_node("提示")
+	_lead_ring = _lead_area.get_node("响铃")
+	_bind_lead_buttons(_lead_area.get_node("选项"))
+	_clock_area = _picker.get_node("居中/面板/内容/滚轮区")
+	_lead_custom = _picker.get_node("居中/面板/内容/分钟区")
+	_lead_wheel = _lead_custom.get_node("滚轮/列/数字")
+	_lead_readout = _lead_custom.get_node("读数")
+	_lead_wheel.settled.connect(_paint_custom_lead)
+	_lead_custom.get_node("完成").pressed.connect(_confirm_custom_lead)
 	_apply_dialog = root.get_node("应用到")
 	_apply_dialog.gui_input.connect(_close_apply_on_click)
 	var weekday_row := _apply_dialog.get_node("居中/面板/内容/星期")
@@ -377,7 +422,9 @@ func _pick_style(flower: int, pot: int) -> void:
 func _close_picker_on_click(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		_pending_task_apply = false
+		_picking_custom_lead = false
 		_picker.visible = false
+		_update_time_label()
 
 
 func _finish_picker() -> void:
@@ -387,6 +434,9 @@ func _finish_picker() -> void:
 	if not _picker_problem().is_empty():
 		return
 	_picker.visible = false
+	if _editing_kind == "once":
+		_show_once_summary()
+		return
 	if _pending_task_apply:
 		_open_weekday_apply()
 		return
@@ -423,10 +473,13 @@ func _store_wheel_time(hour: int, minute: int) -> void:
 
 
 func _commit_time() -> void:
+	if _editing_kind == "once":
+		return
 	if _pending_task_apply or not _picker_problem().is_empty():
 		return
 	if _editing_kind == "task":
 		AlarmStore.set_task_time(_selected_task, _selected_day, _picker_hour, _picker_minute)
+		AlarmStore.set_task_lead(_selected_task, _selected_day, _picker_lead)
 		if _picker_has_end:
 			AlarmStore.set_task_end(_selected_task, _selected_day, _picker_end_hour, _picker_end_minute)
 	else:
@@ -479,6 +532,81 @@ func _pick_quick_end(minutes: int) -> void:
 	_refresh_picker_tabs()
 
 
+func _pick_lead(minutes: int) -> void:
+	_picker_lead = maxi(0, minutes)
+	if _editing_kind == "task" and not _pending_task_apply:
+		AlarmStore.set_task_lead(_selected_task, _selected_day, _picker_lead)
+		_update_time_label()
+		_schedule_days()
+	_refresh_picker_tabs()
+
+
+func _bind_lead_buttons(root: Node) -> void:
+	for child in root.get_children():
+		if child is Button and str(child.name) == "自选":
+			(child as Button).pressed.connect(_open_custom_lead)
+			_picker_custom = child
+			continue
+		if child is Button and child.has_meta("minutes"):
+			var button := child as Button
+			button.pressed.connect(_pick_lead.bind(int(button.get_meta("minutes"))))
+			_lead_buttons.append(button)
+			continue
+		_bind_lead_buttons(child)
+
+
+func _paint_lead_buttons(buttons: Array[Button], custom: Button, lead: int, font: int) -> void:
+	var matched := false
+	for button in buttons:
+		var minutes := int(button.get_meta("minutes"))
+		var on := minutes == lead
+		matched = matched or on
+		button.set_pressed_no_signal(on)
+		button.text = tr("正点") if minutes == 0 else AlarmStore.format_lead(minutes)
+		if font > 0:
+			_fit_font(button, font)
+	if custom == null:
+		return
+	var custom_on := lead > 0 and not matched
+	custom.set_pressed_no_signal(custom_on)
+	custom.text = AlarmStore.format_lead(lead) if custom_on else tr("自选")
+	if font > 0:
+		_fit_font(custom, font)
+
+
+func _open_custom_lead() -> void:
+	var current := _picker_lead
+	_picking_custom_lead = true
+	var start := current if current > 0 else 15
+	_lead_wheel.value = clampi(start, int(_lead_wheel.minimum), int(_lead_wheel.maximum))
+	_lead_wheel.queue_redraw()
+	_paint_custom_lead(_lead_wheel.value)
+	_refresh_picker_tabs()
+
+
+func _show_custom_lead() -> void:
+	_clock_area.visible = false
+	_picker_tabs.visible = false
+	_end_area.visible = false
+	_lead_area.visible = false
+	_add_end_button.visible = false
+	_picker_warn.visible = false
+	_picker_done.visible = false
+	_lead_custom.visible = true
+
+
+func _paint_custom_lead(minutes: int) -> void:
+	if _lead_readout == null:
+		return
+	_lead_readout.text = tr("正点") if minutes <= 0 else AlarmStore.format_lead(minutes)
+
+
+func _confirm_custom_lead() -> void:
+	var minutes := int(_lead_wheel.commit_value())
+	_picking_custom_lead = false
+	_pick_lead(minutes)
+
+
 func _remove_picker_end() -> void:
 	_picker_has_end = false
 	if not _pending_task_apply:
@@ -494,6 +622,8 @@ func _picker_problem() -> String:
 		if _picker_has_end and _picker_end_hour * 60 + _picker_end_minute <= picked:
 			return tr("结束时间要晚于开始时间")
 		return ""
+	if _editing_kind == "once":
+		return ""
 	var slot: Dictionary = AlarmStore.day_slot(_selected_day)
 	var wake := int(slot["wake_hour"]) * 60 + int(slot["wake_minute"])
 	var sleep := int(slot["sleep_hour"]) * 60 + int(slot["sleep_minute"])
@@ -507,15 +637,33 @@ func _picker_problem() -> String:
 
 
 func _refresh_picker_tabs() -> void:
+	if _picking_custom_lead:
+		_show_custom_lead()
+		return
+	if _lead_custom:
+		_lead_custom.visible = false
+	if _clock_area:
+		_clock_area.visible = true
+	if _picker_done:
+		_picker_done.visible = true
 	var problem := _picker_problem()
 	_picker_warn.text = problem
 	_picker_warn.visible = not problem.is_empty()
 	_picker_done.disabled = not problem.is_empty()
 	var task := _editing_kind == "task"
+	var reminder := task or _editing_kind == "once"
 	_picker_tabs.visible = task and _picker_has_end
-	_end_area.visible = task and _picker_has_end
-	_end_options.visible = _picker_tab == "end"
+	_end_area.visible = task and _picker_has_end and _picker_tab == "end"
+	_end_options.visible = true
 	_add_end_button.visible = task and not _picker_has_end
+	if _lead_area:
+		_lead_area.visible = reminder and _picker_tab == "start"
+		_lead_hint.text = tr("提前多久")
+		_lead_tip.text = tr("按到达时间设，路上要多久就提前多久")
+		var ring: Dictionary = AlarmStore.ring_clock(_picker_hour, _picker_minute, _picker_lead)
+		_lead_ring.text = AlarmStore.format_lead_note(_picker_lead, int(ring["hour"]), int(ring["minute"]))
+		_lead_ring.visible = _picker_lead > 0
+		_paint_lead_buttons(_lead_buttons, _picker_custom, _picker_lead, 16)
 	_start_tab.set_pressed_no_signal(_picker_tab == "start")
 	_end_tab.set_pressed_no_signal(_picker_tab == "end")
 	_start_tab.text = "%s  %s" % [tr("开始"), _clock_text(_picker_hour, _picker_minute)]
@@ -530,6 +678,23 @@ func _refresh_picker_tabs() -> void:
 func _clock_text(hour: int, minute: int) -> String:
 	var hour12 := 12 if hour % 12 == 0 else hour % 12
 	return "%s %d:%02d" % [tr("上午") if hour < 12 else tr("下午"), hour12, minute]
+
+
+func _open_range_chip(event: InputEvent, tab: String) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		_open_time_picker("task", tab)
+
+
+func _show_range(hour: int, minute: int, end_hour: int, end_minute: int) -> void:
+	_paint_range_chip(_range_line.get_node("起"), hour, minute)
+	_paint_range_chip(_range_line.get_node("止"), end_hour, end_minute)
+	_range_line.get_node("到").text = tr("到")
+
+
+func _paint_range_chip(chip: Node, hour: int, minute: int) -> void:
+	var hour12 := 12 if hour % 12 == 0 else hour % 12
+	chip.get_node("行/上下午").text = tr("上午") if hour < 12 else tr("下午")
+	chip.get_node("行/数字").text = "%d:%02d" % [hour12, minute]
 
 
 # 字多的按钮不变宽，只把字号调小到放得下。
@@ -576,6 +741,11 @@ func _show_tab(tab: String, pin_today: bool = true) -> void:
 	_pot_page.get_parent().visible = tab == "pot"
 	_alarm_page.get_parent().visible = tab == "alarm"
 	$UI/界面/计时页.visible = tab == "timer"
+	$UI/界面/行程页.visible = tab == "once"
+	if tab == "once" and _once_page:
+		_once_page.show_guide()
+	if tab != "once" and _once_page:
+		_once_page.leave()
 	if _water_button:
 		_flower_page.get_node("照料").visible = tab == "flower"
 	if tab == "alarm":
@@ -859,6 +1029,14 @@ func _open_time_picker(kind: String, tab: String = "start") -> void:
 	var now := Time.get_time_dict_from_system()
 	_picker_hour = int(now["hour"])
 	_picker_minute = int(now["minute"])
+	_picker_lead = 0
+	_picking_custom_lead = false
+	if kind == "once" and not _once_edit_id.is_empty():
+		var editing: Dictionary = AlarmStore.once_named(_once_edit_id)
+		if not editing.is_empty():
+			_picker_hour = int(editing.get("hour", _picker_hour))
+			_picker_minute = int(editing.get("minute", _picker_minute))
+			_picker_lead = int(editing.get("lead_minutes", 0))
 	if kind == "task":
 		if _selected_task < 0:
 			return
@@ -870,6 +1048,7 @@ func _open_time_picker(kind: String, tab: String = "start") -> void:
 			var moment: Dictionary = times[_selected_day]
 			_picker_hour = int(moment["hour"])
 			_picker_minute = int(moment["minute"])
+			_picker_lead = int(moment.get("lead_minutes", 0))
 			_picker_has_end = moment.has("end_hour")
 			if _picker_has_end:
 				_picker_end_hour = int(moment["end_hour"])
@@ -908,7 +1087,7 @@ func _confirm_weekday_apply() -> void:
 	var end := {}
 	if _picker_has_end:
 		end = {"hour": _picker_end_hour, "minute": _picker_end_minute}
-	AlarmStore.set_task_times_on_days(_selected_task, days, _picker_hour, _picker_minute, end)
+	AlarmStore.set_task_times_on_days(_selected_task, days, _picker_hour, _picker_minute, end, _picker_lead)
 	_update_time_label()
 	_schedule_days()
 	_buzz()
@@ -930,19 +1109,37 @@ func _update_time_label() -> void:
 		if _selected_day >= 0 and _selected_day < times.size():
 			var moment: Dictionary = times[_selected_day]
 			var reminding := bool(moment.get("enabled", true))
-			_show_clock(_task_button, int(moment["hour"]), int(moment["minute"]), reminding)
 			var has_end := moment.has("end_hour")
-			if has_end:
-				_show_clock(_end_button, int(moment["end_hour"]), int(moment["end_minute"]), reminding)
-			_start_title.visible = has_end
-			_end_row.visible = has_end
+			var show_range := reminding and has_end
+			_off_note.visible = not reminding
+			if not reminding:
+				_off_note.text = tr("暂不提醒")
+				_start_row.visible = false
+				_range_line.visible = false
+			else:
+				_start_row.visible = not show_range
+				_range_line.visible = show_range
+				if show_range:
+					_show_range(int(moment["hour"]), int(moment["minute"]), int(moment["end_hour"]), int(moment["end_minute"]))
+				else:
+					_show_clock(_task_button, int(moment["hour"]), int(moment["minute"]), true)
 			if _add_time_row:
-				_add_time_row.visible = not reminding and not all_paused
-			_add_end_row.visible = reminding and not has_end and not all_paused and not day_paused and not skipped
+				_add_time_row.get_parent().visible = not reminding and not all_paused
+			_add_end_row.get_parent().visible = reminding and not has_end and not all_paused and not day_paused and not skipped
+			var lead := int(moment.get("lead_minutes", 0)) if reminding else 0
+			if _lead_note:
+				if reminding and lead > 0:
+					var ring: Dictionary = AlarmStore.ring_clock(int(moment["hour"]), int(moment["minute"]), lead)
+					_lead_note.text = AlarmStore.format_lead_note(lead, int(ring["hour"]), int(ring["minute"]))
+					_lead_note.visible = true
+				else:
+					_lead_note.visible = false
 	var faint := all_paused or day_paused or skipped
-	for button in [_wake_button, _sleep_button, _task_button, _end_button]:
+	for button in [_wake_button, _sleep_button, _task_button]:
 		if button != null:
 			button.get_node("读数").modulate.a = 0.35 if faint else 1.0
+	if _range_line:
+		_range_line.modulate.a = 0.35 if faint else 1.0
 	_pause_note.visible = faint
 	if all_paused:
 		_pause_note.text = tr("整个提醒已暂停 · 长按标签可以继续")
@@ -1001,8 +1198,114 @@ func _on_task_name_input(event: InputEvent) -> void:
 
 func _open_task_name() -> void:
 	_rename_mode = false
+	_once_naming = false
 	_name_field.text = ""
 	_name_dialog.visible = true
+
+
+func _preview_once_edit(once_id: String) -> void:
+	var item: Dictionary = AlarmStore.once_named(once_id)
+	if item.is_empty():
+		return
+	_once_edit_id = ""
+	_once_name = str(item.get("name", ""))
+	_once_date = str(item.get("date", ""))
+	_once_add.open(_once_name, _once_date)
+
+
+func _close_once_preview() -> void:
+	if not _once_edit_id.is_empty() or _once_add == null or not _once_add.visible:
+		return
+	_once_add.visible = false
+
+
+func _open_once_add() -> void:
+	_once_edit_id = ""
+	_once_name = ""
+	_once_date = ""
+	_once_add.open("")
+
+
+func _edit_once(once_id: String) -> void:
+	var item: Dictionary = AlarmStore.once_named(once_id)
+	if item.is_empty():
+		return
+	_once_edit_id = once_id
+	_once_name = str(item.get("name", ""))
+	_once_date = str(item.get("date", ""))
+	_once_add.open(_once_name, _once_date)
+
+
+func _on_once_date(date_key: String, once_name: String) -> void:
+	_once_name = once_name.strip_edges()
+	_once_date = date_key
+	_open_time_picker("once")
+
+
+func _show_once_summary() -> void:
+	var ring: Dictionary = AlarmStore.ring_clock(_picker_hour, _picker_minute, _picker_lead)
+	var ring_when := _clock_text(int(ring["hour"]), int(ring["minute"]))
+	if int(ring["day"]) != 0:
+		ring_when = "%s %s" % [AlarmStore.agenda_when(AlarmStore.shift_date(_once_date, int(ring["day"]))), ring_when]
+	var body := _once_summary.get_node("居中/面板/内容")
+	body.get_node("事情").text = tr("事情：%s") % _once_name
+	body.get_node("日期").text = tr("那天：%s") % AlarmStore.agenda_when(_once_date)
+	body.get_node("闹钟").text = tr("几点闹钟：%s") % _clock_text(_picker_hour, _picker_minute)
+	body.get_node("响铃").text = tr("几点会响：%s") % ring_when
+	_once_summary.visible = true
+
+
+func _confirm_once_summary() -> void:
+	_once_summary.visible = false
+	_save_once()
+
+
+func _return_once_edit() -> void:
+	if not _once_summary.visible:
+		return
+	_once_summary.visible = false
+	_picker_tab = "start"
+	_set_wheels(_picker_hour, _picker_minute)
+	_refresh_picker_tabs()
+	_picker.visible = true
+
+
+func _open_once_name(current: String) -> void:
+	_once_naming = true
+	_rename_mode = false
+	_name_field.text = current
+	_name_dialog.visible = true
+
+
+func _save_once() -> void:
+	if _once_name.is_empty() or _once_date.is_empty():
+		return
+	if _once_edit_id.is_empty():
+		AlarmStore.add_once(_once_name, _once_date, _picker_hour, _picker_minute, _picker_lead)
+	else:
+		AlarmStore.update_once(_once_edit_id, _once_name, _once_date, _picker_hour, _picker_minute, _picker_lead)
+	_once_edit_id = ""
+	_once_name = ""
+	_once_date = ""
+	AlarmService.resync_alarms()
+	_buzz()
+
+
+func _open_once_alarm(alarm_id: String) -> void:
+	var day := 0
+	var task_index := -1
+	if alarm_id.begins_with("wake-") or alarm_id.begins_with("sleep-"):
+		day = int(alarm_id.get_slice("-", 1)) - 1
+	elif alarm_id.begins_with("task-"):
+		var weekday := int(alarm_id.split("-")[-1])
+		day = weekday - 1
+		task_index = AlarmStore.task_index_for_alarm(alarm_id, weekday)
+	_show_tab("alarm", false)
+	if task_index >= 0:
+		_show_custom_task(task_index)
+	else:
+		_show_sleep_task()
+	_select_day(clampi(day, 0, 6), false)
 
 
 func _open_rename() -> void:
@@ -1022,6 +1325,9 @@ func _close_name_on_click(event: InputEvent) -> void:
 		return
 	_name_dialog.visible = false
 	_rename_mode = false
+	_once_naming = false
+	_once_edit_id = ""
+	_once_name = ""
 
 
 func _dismiss_name_keyboard(event: InputEvent) -> bool:
@@ -1061,6 +1367,26 @@ func _hide_keyboard(field: LineEdit) -> void:
 	DisplayServer.virtual_keyboard_hide()
 
 
+func _apply_language_from_settings() -> void:
+	if _date_label != null:
+		AlarmStore.apply_system_setting()
+
+
+func _refresh_for_language() -> void:
+	if _sleep_tab:
+		_style_tab(_sleep_tab, _sleep_tab.text)
+	for button in _task_buttons:
+		_style_tab(button, button.text)
+	_refresh()
+	_update_time_label()
+	_apply_task_chrome()
+	_schedule_days()
+
+
+func _confirm_shortcut(key: String) -> void:
+	_confirm_new_task(tr(key))
+
+
 func _confirm_typed_task() -> void:
 	_confirm_new_task(_name_field.text)
 
@@ -1075,6 +1401,11 @@ func _limit_name(task_name: String) -> String:
 func _confirm_new_task(task_name: String) -> void:
 	var trimmed := _limit_name(task_name)
 	_name_dialog.visible = false
+	if _once_naming:
+		_once_naming = false
+		_once_name = trimmed
+		_once_add.open()
+		return
 	if _rename_mode:
 		_rename_mode = false
 		if _selected_task < 0:
@@ -1095,10 +1426,12 @@ func _confirm_new_task(task_name: String) -> void:
 		_tab_scroll.ensure_control_visible(_task_buttons[_task_buttons.size() - 1])
 
 
-func _show_clock(button: Button, hour: int, minute: int, enabled: bool) -> void:
+func _show_clock(button: Button, hour: int, minute: int, enabled: bool, compact: bool = false) -> void:
 	# 字体和字号都在 theme/ui.tres 的“ClockDigits / ClockMeridiem / ClockOff”里，这里只切类型。
 	var meridiem := button.get_node("读数/上下午") as Label
 	var digits := button.get_node("读数/数字") as Label
+	button.custom_minimum_size = Vector2(128, 44) if compact else Vector2(180, 52)
+	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	if not enabled:
 		meridiem.visible = false
 		digits.theme_type_variation = &"ClockOff"
@@ -1106,7 +1439,10 @@ func _show_clock(button: Button, hour: int, minute: int, enabled: bool) -> void:
 		return
 	meridiem.visible = true
 	meridiem.text = tr("上午") if hour < 12 else tr("下午")
-	digits.theme_type_variation = &"ClockDigits"
+	meridiem.theme_type_variation = &"ClockMeridiemSmall" if compact else &"ClockMeridiem"
+	digits.theme_type_variation = &"ClockDigitsSmall" if compact else &"ClockDigits"
+	meridiem.remove_theme_font_size_override("font_size")
+	digits.remove_theme_font_size_override("font_size")
 	var hour12 := 12 if hour % 12 == 0 else hour % 12
 	digits.text = "%02d:%02d" % [hour12, minute]
 
@@ -1138,8 +1474,13 @@ func _apply_task_chrome() -> void:
 		_sleep_row.visible = sleep
 	if _task_row:
 		_task_row.visible = custom
-	if _end_row and not custom:
-		_end_row.visible = false
+	if not custom:
+		if _start_row:
+			_start_row.visible = true
+		if _range_line:
+			_range_line.visible = false
+		if _off_note:
+			_off_note.visible = false
 	if _task_name:
 		_task_name.visible = custom or empty
 		if custom:
@@ -1358,7 +1699,11 @@ func _catch_ringing() -> void:
 			first_id = group_id
 			first_state = str(item.get("state", ""))
 			ring_left = float(item.get("ring_left", 0.0))
+		var today := AlarmStore.local_today_key()
 		for event in AlarmStore.due_group(group_id).get("events", []):
+			var once_date := str(event.get("date", ""))
+			if not once_date.is_empty() and once_date != today:
+				continue
 			var label := str(event.get("label", ""))
 			if not label.is_empty() and label not in names:
 				names.append(label)
@@ -1427,7 +1772,7 @@ func _on_care_button_down(kind: String) -> void:
 	if not _care_kind.is_empty():
 		return
 	if not _can_drag_care(kind):
-		if kind == "feed" and AlarmStore.fertilizer <= 0 and _date_key == AlarmStore.today_key():
+		if kind == "feed" and AlarmStore.fertilizer <= 0:
 			var middle := _feed_button.global_position + _feed_button.size * 0.5
 			_float_tip(tr("推迟闹铃或完成任务才能拿到肥料"), middle)
 		return
@@ -1436,8 +1781,6 @@ func _on_care_button_down(kind: String) -> void:
 
 
 func _can_drag_care(kind: String) -> bool:
-	if _date_key != AlarmStore.today_key():
-		return false
 	if kind == "feed" and (AlarmStore.fertilizer <= 0 or _feeding):
 		return false
 	return true
@@ -1554,7 +1897,7 @@ func _apply_care(kind: String, global_pos: Vector2) -> void:
 
 ## 花蔫了就提醒浇水。点花时在手指处飘，进看花页时在花上飘。
 func _hint_wilted(global_pos: Vector2) -> void:
-	if _current_tab != "flower" or _date_key != AlarmStore.today_key():
+	if _current_tab != "flower":
 		return
 	if AlarmStore.wilt_level() <= 0:
 		return
@@ -1590,16 +1933,13 @@ func _float_tip(text: String, global_pos: Vector2) -> void:
 
 
 func _refresh() -> void:
-	var count := AlarmStore.sleep_snooze_on(_date_key)
+	var today := AlarmStore.today_key()
+	var count := AlarmStore.sleep_snooze_on(today)
 	AlarmStore.settle_dry()
-	var growth := AlarmStore.growth_on(_date_key)
-	var when := AlarmStore.format_date(_date_key)
-	_date_label.text = when
+	var growth := AlarmStore.growth_on(today)
+	_date_label.text = AlarmStore.format_date(today)
 	_count_label.visible = count > 0
-	if _date_key == AlarmStore.today_key():
-		_count_label.text = tr("今天贪睡了 %d 次") % count
-	else:
-		_count_label.text = tr("%s贪睡了 %d 次") % [when, count]
+	_count_label.text = tr("今天贪睡了 %d 次") % count
 	if _playback != growth:
 		_playback = growth
 		_sunflower.play_count(growth)
@@ -1612,10 +1952,9 @@ func _refresh() -> void:
 func _refresh_care() -> void:
 	if _water_button == null or _feed_button == null:
 		return
-	var today := _date_key == AlarmStore.today_key()
-	_water_button.modulate.a = 1.0 if today else 0.35
+	_water_button.modulate.a = 1.0
 	var packs := AlarmStore.fertilizer
-	_feed_button.modulate.a = 1.0 if today and packs > 0 else 0.35
+	_feed_button.modulate.a = 1.0 if packs > 0 else 0.35
 	if _feed_count:
 		_feed_count.text = "× %d" % packs
 	if _shown_packs >= 0 and packs > _shown_packs:
@@ -1640,28 +1979,9 @@ func _shake_feed_button() -> void:
 func _show_due_list() -> void:
 	if _due_label == null:
 		return
-	if _date_key != AlarmStore.today_key():
-		_due_label.visible = false
-		return
 	var labels := AlarmStore.current_due_labels()
 	if labels.is_empty():
 		_due_label.visible = false
 		return
 	_due_label.text = tr("现在要做\n%s") % "\n".join(labels)
 	_due_label.visible = true
-
-
-func shift_date(days: int) -> void:
-	var today := AlarmStore.today_key()
-	var earliest := AlarmStore.shift_date(today, -6)
-	var next := AlarmStore.shift_date(_date_key, days)
-	if next > today:
-		next = today
-	if next < earliest:
-		next = earliest
-	_date_key = next
-	_refresh()
-	if _prev_button:
-		_prev_button.disabled = _date_key <= earliest
-	if _next_button:
-		_next_button.disabled = _date_key >= today

@@ -1,12 +1,9 @@
 keys,en,zh_TW
-前一天,Previous day,前一天
 今天,Today,今天
-后一天,Next day,後一天
 今天推迟了 0 次,No snoozes today,今天延後了 0 次
 今天推迟了 %d 次,Snoozes today: %d,今天延後了 %d 次
 %s推迟了 %d 次,Snoozes on %s: %d,%s延後了 %d 次
 今天贪睡了 %d 次,Snoozes today: %d,今天貪睡了 %d 次
-%s贪睡了 %d 次,Snoozes on %s: %d,%s貪睡了 %d 次
 浇水,Water,澆水
 施肥,Feed,施肥
 浇水不枯萎,Water it so it doesn't wilt,澆水不枯萎
@@ -21,6 +18,13 @@ keys,en,zh_TW
 取消推迟,Cancel snooze,取消延後
 确定,OK,確定
 完成,Done,完成
+确认,Confirm,確認
+请确认,Please confirm,請確認
+返回编辑,Back to edit,返回編輯
+事情：%s,What: %s,事情：%s
+那天：%s,Day: %s,那天：%s
+几点闹钟：%s,Alarm set for %s,幾點鬧鐘：%s
+几点会响：%s,Rings at %s,幾點會響：%s
 蜀葵,Hollyhock,蜀葵
 向日葵,Sunflower,向日葵
 兰花,Orchid,蘭花
@@ -66,6 +70,13 @@ keys,en,zh_TW
 %s结束,%s is over,%s結束
 👶 接娃,👶 Pickup,👶 接小孩
 💊 吃药,💊 Meds,💊 吃藥
+🚌 上班,🚌 Commute,🚌 上班
+🏫 送娃,🏫 Drop-off,🏫 送小孩
+📚 上课,📚 Class,📚 上課
+📅 会议,📅 Meeting,📅 會議
+🐶 遛狗,🐶 Dog walk,🐶 遛狗
+🗑️ 倒垃圾,🗑️ Trash day,🗑️ 倒垃圾
+🛒 买菜,🛒 Groceries,🛒 買菜
 暂不提醒,Off for now,暫不提醒
 提醒,Reminder,提醒
 %d月%d日,%d/%d,%d月%d日
@@ -78,6 +89,8 @@ keys,en,zh_TW
 不重复,Doesn't repeat,不重複
 这个时间用在哪几天,Which days should get this time?,這個時間用在哪幾天
 上午,AM,上午
+%s 到 %s,%s to %s,%s 到 %s
+到,to,到
 下午,PM,下午
 选一个任务，开始计时,Pick something to start a timer,選一個任務，開始計時
 %s 时间到了,%s · time's up!,%s 時間到了
@@ -98,6 +111,8 @@ keys,en,zh_TW
 分钟,min,分鐘
 取消,Cancel,取消
 删除,Delete,刪除
+编辑,Edit,編輯
+详情🔎,Details 🔎,詳情🔎
 "＋ 自定
 选时长","＋ Custom
 pick a time","＋ 自訂
@@ -124,3 +139,32 @@ When it's up you'll get a heads-up, not an alarm","點一下就開始計時
 结束时间要晚于开始时间,End time has to be after the start time,結束時間要晚於開始時間
 睡觉时间要晚于起床时间,Bedtime has to be after wake-up time,睡覺時間要晚於起床時間
 取消计时,Cancel timer,取消計時
+行程,Agenda,行程
+本周,This week,本週
+下周,Next week,下週
+下下周,The week after,下下週
+更远,Later,更遠
+自选日期,Pick a date,自選日期
+已完成,Done,已完成
+哪一天？,Which day?,哪一天？
++ 添加,+ Add,+ 新增
+撤销,Undo,撤銷
+还没有行程。点 + 加一个只响一次的提醒。,Nothing planned yet. Tap + to add a one-time reminder.,還沒有行程。點 + 加一個只響一次的提醒。
+下%s %s,Next %s %s,下%s %s
+下下%s %s,%s the week after %s,下下%s %s
+%d年%d月%d日 %s,%d-%d-%d %s,%d年%d月%d日 %s
+您的一般周提醒不会在这里显示的哦,Your usual weekly reminders won't show up here.,您的一般週提醒不會在這裡顯示的哦
+正点,On time,準時
+自选,Custom,自選
+提前几分钟,How many minutes early?,提前幾分鐘
+提前多久,How early?,提前多久
+按到达时间设，路上要多久就提前多久,"Set the arrival time, then how early to leave",按到達時間設，路上要多久就提前多久
+提前 %s，%s 响,"%s early · rings %s",提前 %s，%s 響
+%s 到,Arrive %s,%s 到
+%s 响,Rings %s,%s 響
+开始 %s · 结束 %s,Start %s · End %s,開始 %s · 結束 %s
+蓝色的是在闹钟页面设的，每个星期都响。黄色的只响一次。,"Blue ones are set on the alarm page and ring every week. Yellow ones ring just once.","藍色的是在鬧鐘頁面設的，每個星期都響。黃色的只響一次。"
+长按蓝色的，点「详情」，就能去闹钟页面改它。,"Press and hold a blue one, then tap Detail to change it on the alarm page.","長按藍色的，點「詳情」，就能去鬧鐘頁面改它。"
+想加一个只响一次的，点下面的加号。,Want one that rings just once? Tap the plus button below.,想加一個只響一次的，點下面的加號。
+这是在改这条黄色的。名字、哪一天、几点，都能改。,"This is where you change the yellow one. You can change the name, the day, and the time.","這是在改這條黃色的。名字、哪一天、幾點，都能改。"
+这条黄色的是例子。长按它可以删掉。,This yellow one is just an example. Press and hold it to delete it.,這條黃色的是例子。長按它可以刪掉。

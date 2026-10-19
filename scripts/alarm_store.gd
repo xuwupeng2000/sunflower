@@ -9,18 +9,23 @@ var care: Array[Dictionary] = []
 var fertilizer := 0
 var fertilizer_used := 0
 const BLOOM_GROWTH := 2
+const WEEKS_AHEAD := 8
 var last_watered := ""
 var language := "zh"
 const LANGUAGES := ["zh", "zh_TW", "en"]
 const LANGUAGE_FILES := ["res://locale/ui.en.translation", "res://locale/ui.zh_TW.translation"]
 var tutorial_seen := false
 var timer_tutorial_seen := false
+var once_tutorial_seen := false
+const SAMPLE_ONCE_ID := "sample-once"
 var sleep_present := true
 var sleep_paused := false
 ## 计时页里自己加的计时：{title, minutes}。
 var custom_timers: Array[Dictionary] = []
 ## 正在走的那一个：{id, title, minutes, ends_at}；空字典就是没在计时。
 var active_timer: Dictionary = {}
+## 只响一次的提醒：{id, name, date, hour, minute, lead_minutes}。hour/minute 是到达时间。
+var once_reminders: Array[Dictionary] = []
 ## 看花页选的花和盆，对应 Sunflower.FLOWER_KINDS / POT_KINDS 的下标。
 var flower_kind := 0
 var pot_kind := 0
@@ -58,8 +63,10 @@ func load_data() -> void:
 	alarms.clear()
 	snoozes.clear()
 	care.clear()
+	once_reminders.clear()
 	if not FileAccess.file_exists(SAVE_PATH):
 		_ensure_days()
+		_add_sample_once()
 		_sync_day_alarms()
 		last_watered = today_key()
 		changed.emit()
@@ -100,11 +107,15 @@ func load_data() -> void:
 	_load_days(data.get("days", []))
 	tutorial_seen = bool(data.get("tutorial_seen", false)) and int(data.get("tutorial_v", 1)) >= 4
 	timer_tutorial_seen = bool(data.get("timer_tutorial_seen", false))
+	once_tutorial_seen = bool(data.get("once_tutorial_seen", false)) and int(data.get("once_tutorial_v", 1)) >= 2
 	scheduled_ids.clear()
 	for item in data.get("scheduled_ids", []):
 		scheduled_ids.append(str(item))
 	_load_fertilizer(data)
 	_load_timers(data)
+	_load_onces(data.get("once_reminders", []))
+	_add_sample_once()
+	_sync_day_alarms()
 	flower_kind = int(data.get("flower_kind", 0))
 	pot_kind = int(data.get("pot_kind", 0))
 	# 以前 0 蜀葵 / 1 向日葵 / 2 兰花 / 3 玫瑰，现在只留向日葵和兰花。
@@ -131,6 +142,8 @@ func save_data() -> void:
 		"tutorial_seen": tutorial_seen,
 		"tutorial_v": 4,
 		"timer_tutorial_seen": timer_tutorial_seen,
+		"once_tutorial_seen": once_tutorial_seen,
+		"once_tutorial_v": 2,
 		"sleep_present": sleep_present,
 		"sleep_paused": sleep_paused,
 		"fertilizer": fertilizer,
@@ -138,6 +151,7 @@ func save_data() -> void:
 		"last_watered": last_watered,
 		"custom_timers": custom_timers,
 		"active_timer": active_timer,
+		"once_reminders": once_reminders,
 		"flower_kind": flower_kind,
 		"flower_kind_v": 2,
 		"pot_kind": pot_kind,
@@ -188,6 +202,273 @@ func clear_timer() -> void:
 		return
 	active_timer = {}
 	save_data()
+
+
+func _load_onces(raw: Variant) -> void:
+	once_reminders.clear()
+	if typeof(raw) != TYPE_ARRAY:
+		return
+	for item in raw:
+		if typeof(item) == TYPE_DICTIONARY:
+			once_reminders.append(_normalize_once(item))
+
+
+func _normalize_once(raw: Dictionary) -> Dictionary:
+	return {
+		"id": str(raw.get("id", _new_task_id())),
+		"name": str(raw.get("name", "")).strip_edges(),
+		"date": str(raw.get("date", "")),
+		"hour": clampi(int(raw.get("hour", 9)), 0, 23),
+		"minute": clampi(int(raw.get("minute", 0)), 0, 59),
+		"lead_minutes": maxi(0, int(raw.get("lead_minutes", 0))),
+	}
+
+
+func add_once(once_name: String, date_key: String, hour: int, minute: int, lead_minutes: int = 0) -> Dictionary:
+	var item := _normalize_once({
+		"id": _new_task_id(),
+		"name": once_name if not once_name.strip_edges().is_empty() else tr("新的提醒"),
+		"date": date_key,
+		"hour": hour,
+		"minute": minute,
+		"lead_minutes": lead_minutes,
+	})
+	once_reminders.append(item)
+	fertilizer += 1
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
+	return item
+
+
+func update_once(once_id: String, once_name: String, date_key: String, hour: int, minute: int, lead_minutes: int = 0) -> void:
+	for item in once_reminders:
+		if str(item.get("id", "")) != once_id:
+			continue
+		item["name"] = once_name if not once_name.strip_edges().is_empty() else tr("新的提醒")
+		item["date"] = date_key
+		item["hour"] = clampi(hour, 0, 23)
+		item["minute"] = clampi(minute, 0, 59)
+		item["lead_minutes"] = maxi(0, lead_minutes)
+		_sync_day_alarms()
+		save_data()
+		changed.emit()
+		return
+
+
+func once_named(once_id: String) -> Dictionary:
+	for item in once_reminders:
+		if str(item.get("id", "")) == once_id:
+			return item
+	return {}
+
+
+func restore_once(raw: Dictionary) -> Dictionary:
+	var item := _normalize_once(raw)
+	if item["id"].is_empty() or item["date"].is_empty():
+		return {}
+	for existing in once_reminders:
+		if str(existing.get("id", "")) == item["id"]:
+			return existing
+	once_reminders.append(item)
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
+	return item
+
+
+func remove_once(once_id: String) -> Dictionary:
+	var found := {}
+	var kept: Array[Dictionary] = []
+	for item in once_reminders:
+		if str(item.get("id", "")) == once_id:
+			found = item
+		else:
+			kept.append(item)
+	if found.is_empty():
+		return {}
+	once_reminders = kept
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
+	return found
+
+
+func once_done(item: Dictionary) -> bool:
+	var ring: Dictionary = ring_clock(int(item.get("hour", 0)), int(item.get("minute", 0)), int(item.get("lead_minutes", 0)))
+	return _stamp_at(shift_date(str(item.get("date", "")), int(ring.get("day", 0))), int(ring["hour"]), int(ring["minute"])) <= Time.get_unix_time_from_system()
+
+
+## 用户设的是到达时间；lead 是提前多少分钟响。day 为 -1 表示跨到前一天。
+func ring_clock(hour: int, minute: int, lead_minutes: int) -> Dictionary:
+	var total := hour * 60 + minute - maxi(0, lead_minutes)
+	var day := 0
+	while total < 0:
+		total += 1440
+		day -= 1
+	while total >= 1440:
+		total -= 1440
+		day += 1
+	return {"hour": int(total / 60.0), "minute": total % 60, "day": day}
+
+
+func _stamp_at(date_key: String, hour: int, minute: int) -> int:
+	var parts := date_key.split("-")
+	if parts.size() != 3:
+		return 0
+	return int(Time.get_unix_time_from_datetime_dict({
+		"year": int(parts[0]),
+		"month": int(parts[1]),
+		"day": int(parts[2]),
+		"hour": hour,
+		"minute": minute,
+		"second": 0,
+	}))
+
+
+func monday_of(date_key: String) -> String:
+	var index := date_weekday_index(date_key)
+	if index < 0:
+		return date_key
+	return shift_date(date_key, -index)
+
+
+func week_bucket(date_key: String) -> String:
+	var this_monday := monday_of(local_today_key())
+	var that_monday := monday_of(date_key)
+	if that_monday == this_monday:
+		return "this"
+	if that_monday == shift_date(this_monday, 7):
+		return "next"
+	if that_monday == shift_date(this_monday, 14):
+		return "after"
+	return "later"
+
+
+func once_pick_dates() -> Array[Dictionary]:
+	var today := local_today_key()
+	var this_monday := monday_of(today)
+	var dates: Array[Dictionary] = []
+	for index in 7:
+		var date_key := shift_date(this_monday, index)
+		if date_key > today:
+			dates.append({"date": date_key, "week": "this", "day_index": index})
+	for index in 7:
+		dates.append({"date": shift_date(this_monday, 7 + index), "week": "next", "day_index": index})
+	for index in 7:
+		dates.append({"date": shift_date(this_monday, 14 + index), "week": "after", "day_index": index})
+	return dates
+
+
+func agenda_when(date_key: String) -> String:
+	var day_index := date_weekday_index(date_key)
+	var weekday := tr("周" + WEEKDAY_NAMES[clampi(day_index, 0, 6)])
+	var parts := date_key.split("-")
+	var month_day := date_key
+	if parts.size() == 3:
+		month_day = "%d/%d" % [int(parts[1]), int(parts[2])]
+	if date_key == local_today_key():
+		return "%s %s" % [tr("今天"), month_day]
+	match week_bucket(date_key):
+		"this":
+			return "%s %s" % [weekday, month_day]
+		"next":
+			return tr("下%s %s") % [weekday, month_day]
+		"after":
+			return tr("下下%s %s") % [weekday, month_day]
+		_:
+			if parts.size() == 3:
+				return tr("%d年%d月%d日 %s") % [int(parts[0]), int(parts[1]), int(parts[2]), weekday]
+			return "%s %s" % [weekday, month_day]
+
+
+func agenda() -> Array[Dictionary]:
+	var upcoming: Array[Dictionary] = []
+	var finished: Array[Dictionary] = []
+	var ends := {}
+	for alarm in alarms:
+		var end_id := str(alarm.get("id", ""))
+		if end_id.ends_with("-end"):
+			ends[end_id] = alarm
+	for alarm in alarms:
+		if str(alarm.get("date", "")) != "":
+			continue
+		if not bool(alarm.get("enabled", true)):
+			continue
+		var alarm_id := str(alarm.get("id", ""))
+		if alarm_id.ends_with("-end"):
+			continue
+		var days: Array = alarm.get("weekdays", [])
+		if days.is_empty():
+			continue
+		var weekday := int(days[0])
+		var hour := int(alarm.get("hour", 0))
+		var minute := int(alarm.get("minute", 0))
+		var lead := int(alarm.get("lead_minutes", 0))
+		var event_hour := int(alarm.get("event_hour", hour))
+		var event_minute := int(alarm.get("event_minute", minute))
+		var first := next_date(weekday - 1, hour, minute)
+		var skips: Array = alarm.get("skip_dates", [])
+		var label := tr(str(alarm.get("label", "")))
+		var end_alarm: Dictionary = ends.get(alarm_id + "-end", {})
+		for week in WEEKS_AHEAD:
+			var date_key := shift_date(first, week * 7)
+			if skips.has(date_key):
+				continue
+			var row := {
+				"kind": "weekly",
+				"id": "%s@%s" % [alarm_id, date_key],
+				"alarm_id": alarm_id,
+				"date": date_key,
+				"hour": hour,
+				"minute": minute,
+				"event_hour": event_hour,
+				"event_minute": event_minute,
+				"lead_minutes": lead,
+				"label": label,
+				"done": false,
+				"day_index": weekday - 1,
+			}
+			if not end_alarm.is_empty():
+				row["end_hour"] = int(end_alarm.get("hour", 0))
+				row["end_minute"] = int(end_alarm.get("minute", 0))
+			upcoming.append(row)
+	for item in once_reminders:
+		var lead := int(item.get("lead_minutes", 0))
+		var event_hour := int(item.get("hour", 0))
+		var event_minute := int(item.get("minute", 0))
+		var ring: Dictionary = ring_clock(event_hour, event_minute, lead)
+		var date_key := shift_date(str(item.get("date", "")), int(ring.get("day", 0)))
+		var row := {
+			"kind": "once",
+			"id": str(item.get("id", "")),
+			"alarm_id": "once-%s" % str(item.get("id", "")),
+			"date": date_key,
+			"hour": int(ring["hour"]),
+			"minute": int(ring["minute"]),
+			"event_hour": event_hour,
+			"event_minute": event_minute,
+			"lead_minutes": lead,
+			"label": str(item.get("name", "")),
+			"done": once_done(item),
+			"day_index": date_weekday_index(str(item.get("date", ""))),
+		}
+		if bool(row["done"]):
+			finished.append(row)
+		else:
+			upcoming.append(row)
+	upcoming.sort_custom(_agenda_sooner)
+	finished.sort_custom(_agenda_sooner)
+	upcoming.append_array(finished)
+	return upcoming
+
+
+func _agenda_sooner(left: Dictionary, right: Dictionary) -> bool:
+	var a := _stamp_at(str(left.get("date", "")), int(left.get("hour", 0)), int(left.get("minute", 0)))
+	var b := _stamp_at(str(right.get("date", "")), int(right.get("hour", 0)), int(right.get("minute", 0)))
+	if a == b:
+		return str(left.get("kind", "")) > str(right.get("kind", ""))
+	return a < b
 
 
 func add_custom_timer(title: String, minutes: int) -> void:
@@ -243,9 +524,42 @@ func mark_timer_tutorial_seen() -> void:
 	save_data()
 
 
+func mark_once_tutorial_seen() -> void:
+	if once_tutorial_seen:
+		return
+	once_tutorial_seen = true
+	save_data()
+
+
+## 日程教程要有一条黄色的一次提醒可以先编辑、再删掉。看过之后就不再加。
+func _add_sample_once() -> void:
+	if once_tutorial_seen and not replay_tutorials():
+		return
+	for item in once_reminders:
+		if str(item.get("id", "")) == SAMPLE_ONCE_ID:
+			return
+	once_reminders.append(_normalize_once({
+		"id": SAMPLE_ONCE_ID,
+		"name": tr("🛒 买菜"),
+		"date": shift_date(local_today_key(), 1),
+		"hour": 10,
+		"minute": 0,
+	}))
+
+
+func ensure_sample_once() -> void:
+	var before := once_reminders.size()
+	_add_sample_once()
+	if once_reminders.size() == before:
+		return
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
+
+
 func apply_system_setting() -> bool:
 	var next := _settings_language()
-	if next == language:
+	if next == language and TranslationServer.get_locale() == next:
 		return false
 	language = next
 	_apply_locale()
@@ -256,7 +570,7 @@ func _settings_language() -> String:
 	if Engine.has_singleton("AlarmKit"):
 		var native := Engine.get_singleton("AlarmKit")
 		if native.has_method("settings_language"):
-			var chosen := str(native.settings_language())
+			var chosen := str(native.settings_language()).strip_edges()
 			if chosen in LANGUAGES:
 				return chosen
 	return _system_language()
@@ -360,6 +674,9 @@ func _normalize_task(raw: Dictionary) -> Dictionary:
 				"minute": clampi(int(item.get("minute", 0)), 0, 59),
 				"enabled": bool(item.get("enabled", true)),
 			}
+			var lead := maxi(0, int(item.get("lead_minutes", 0)))
+			if lead > 0:
+				moment["lead_minutes"] = lead
 			if bool(item.get("paused", false)):
 				moment["paused"] = true
 			if item.has("end_hour"):
@@ -460,10 +777,11 @@ func task_has_reminder(index: int) -> bool:
 	return false
 
 
-func set_task_times_on_days(index: int, days: Array, hour: int, minute: int, end: Dictionary = {}) -> void:
+func set_task_times_on_days(index: int, days: Array, hour: int, minute: int, end: Dictionary = {}, lead_minutes: int = 0) -> void:
 	if index < 0 or index >= tasks.size():
 		return
 	var times: Array = tasks[index]["times"]
+	var lead := maxi(0, lead_minutes)
 	for day_index in days:
 		var day := int(day_index)
 		if day < 0 or day > 6:
@@ -473,6 +791,8 @@ func set_task_times_on_days(index: int, days: Array, hour: int, minute: int, end
 			"minute": clampi(minute, 0, 59),
 			"enabled": true,
 		}
+		if lead > 0:
+			moment["lead_minutes"] = lead
 		if end.has("hour"):
 			moment["end_hour"] = clampi(int(end["hour"]), 0, 23)
 			moment["end_minute"] = clampi(int(end["minute"]), 0, 59)
@@ -504,6 +824,20 @@ func set_task_time(index: int, day_index: int, hour: int, minute: int) -> void:
 	moment["enabled"] = true
 	_sync_day_alarms()
 	save_data()
+
+
+func set_task_lead(index: int, day_index: int, minutes: int) -> void:
+	if index < 0 or index >= tasks.size() or day_index < 0 or day_index > 6:
+		return
+	var moment: Dictionary = tasks[index]["times"][day_index]
+	var lead := maxi(0, minutes)
+	if lead > 0:
+		moment["lead_minutes"] = lead
+	else:
+		moment.erase("lead_minutes")
+	_sync_day_alarms()
+	save_data()
+	changed.emit()
 
 
 func task_day_enabled(index: int, day_index: int) -> bool:
@@ -597,13 +931,37 @@ func _sync_day_alarms() -> void:
 				continue
 			var task_weekday := day_index + 1
 			var task_skips := skipped_dates(day_index, skip_key(task_id))
-			kept.append(_day_alarm(task_alarm_id(task_id, task_weekday), int(moment["hour"]), int(moment["minute"]), task_weekday, label, task_skips))
+			var event_hour := int(moment["hour"])
+			var event_minute := int(moment["minute"])
+			var lead := int(moment.get("lead_minutes", 0))
+			var ring: Dictionary = ring_clock(event_hour, event_minute, lead)
+			var ring_weekday := posmod(day_index + int(ring.get("day", 0)), 7) + 1
+			var ring_skips: Array = []
+			for date_key in task_skips:
+				ring_skips.append(shift_date(date_key, int(ring.get("day", 0))))
+			kept.append(_day_alarm(task_alarm_id(task_id, task_weekday), int(ring["hour"]), int(ring["minute"]), ring_weekday, label, ring_skips, "", _event_extra(event_hour, event_minute, lead)))
 			if moment.has("end_hour"):
 				var end_weekday := _end_weekday(moment, day_index)
 				var end_skips: Array = []
 				for date_key in task_skips:
 					end_skips.append(shift_date(date_key, posmod(end_weekday - task_weekday, 7)))
 				kept.append(_day_alarm(task_end_alarm_id(task_id, task_weekday), int(moment["end_hour"]), int(moment["end_minute"]), end_weekday, label, end_skips))
+	for item in once_reminders:
+		if once_done(item):
+			continue
+		var date_key := str(item.get("date", ""))
+		var day_index := date_weekday_index(date_key)
+		if day_index < 0:
+			continue
+		var event_hour := int(item.get("hour", 0))
+		var event_minute := int(item.get("minute", 0))
+		var lead := int(item.get("lead_minutes", 0))
+		var ring: Dictionary = ring_clock(event_hour, event_minute, lead)
+		var ring_date := shift_date(date_key, int(ring.get("day", 0)))
+		var ring_weekday := date_weekday_index(ring_date) + 1
+		if ring_weekday <= 0:
+			continue
+		kept.append(_day_alarm("once-%s" % str(item.get("id", "")), int(ring["hour"]), int(ring["minute"]), ring_weekday, str(item.get("name", "")), [], ring_date, _event_extra(event_hour, event_minute, lead)))
 	alarms = kept
 
 
@@ -631,24 +989,26 @@ func due_groups() -> Array[Dictionary]:
 			var event_label := tr(str(alarm.get("label", "")))
 			if alarm_id.ends_with("-end"):
 				event_label = tr("%s结束") % event_label
+			var once_date := str(alarm.get("date", ""))
 			events.append({
 				"id": alarm_id,
 				"label": event_label,
 				"skip_dates": alarm.get("skip_dates", []),
+				"date": once_date,
 			})
 	var groups: Array[Dictionary] = []
 	for key in buckets:
 		var group: Dictionary = buckets[key]
 		var names := PackedStringArray()
-		var has_skip := false
+		var has_dated := false
 		for event in group["events"]:
 			var event_label := str(event.get("label", ""))
 			if not event_label.is_empty():
 				names.append(event_label)
-			if not (event["skip_dates"] as Array).is_empty():
-				has_skip = true
+			if not (event["skip_dates"] as Array).is_empty() or not str(event.get("date", "")).is_empty():
+				has_dated = true
 		group["label"] = "、".join(names)
-		if has_skip:
+		if has_dated:
 			group["dates"] = _dated_occurrences(group)
 		groups.append(group)
 	return groups
@@ -660,13 +1020,28 @@ func _dated_occurrences(group: Dictionary) -> Array:
 	var hour := int(group.get("hour", 0))
 	var minute := int(group.get("minute", 0))
 	var first := next_date(int(group["weekdays"][0]) - 1, hour, minute)
-	var occurrences: Array = []
+	var by_date := {}
 	for week in WEEKS_AHEAD:
-		var date_key := shift_date(first, week * 7)
-		var events: Array = []
-		for event in group["events"]:
-			if not (event["skip_dates"] as Array).has(date_key):
-				events.append({"id": event["id"], "label": event["label"]})
+		by_date[shift_date(first, week * 7)] = []
+	for event in group["events"]:
+		var once_date := str(event.get("date", ""))
+		if not once_date.is_empty():
+			if _stamp_at(once_date, hour, minute) <= Time.get_unix_time_from_system():
+				continue
+			if not by_date.has(once_date):
+				by_date[once_date] = []
+			by_date[once_date].append({"id": event["id"], "label": event["label"]})
+			continue
+		for week in WEEKS_AHEAD:
+			var date_key := shift_date(first, week * 7)
+			if (event["skip_dates"] as Array).has(date_key):
+				continue
+			by_date[date_key].append({"id": event["id"], "label": event["label"]})
+	var date_keys: Array = by_date.keys()
+	date_keys.sort()
+	var occurrences: Array = []
+	for date_key in date_keys:
+		var events: Array = by_date[date_key]
 		if not events.is_empty():
 			occurrences.append({"date": date_key, "events": events})
 	return occurrences
@@ -702,8 +1077,18 @@ func replace_scheduled_ids(next_ids: Array) -> void:
 	save_data()
 
 
-func _day_alarm(alarm_id: String, hour: int, minute: int, weekday: int, label: String, skip_dates: Array = []) -> Dictionary:
+func _event_extra(event_hour: int, event_minute: int, lead_minutes: int) -> Dictionary:
+	if lead_minutes <= 0:
+		return {}
 	return {
+		"event_hour": event_hour,
+		"event_minute": event_minute,
+		"lead_minutes": lead_minutes,
+	}
+
+
+func _day_alarm(alarm_id: String, hour: int, minute: int, weekday: int, label: String, skip_dates: Array = [], date_key: String = "", extra: Dictionary = {}) -> Dictionary:
+	var alarm := {
 		"id": alarm_id,
 		"hour": hour,
 		"minute": minute,
@@ -712,6 +1097,11 @@ func _day_alarm(alarm_id: String, hour: int, minute: int, weekday: int, label: S
 		"enabled": true,
 		"skip_dates": skip_dates,
 	}
+	if not date_key.is_empty():
+		alarm["date"] = date_key
+	for key in extra:
+		alarm[key] = extra[key]
+	return alarm
 
 
 func add_alarm(hour: int, minute: int, weekdays: Array, label: String) -> Dictionary:
@@ -977,12 +1367,13 @@ func _is_sleep_snooze(alarm_id: String) -> bool:
 
 
 func _group_has_task(alarm_id: String) -> bool:
-	if alarm_id.begins_with("task-"):
+	if alarm_id.begins_with("task-") or alarm_id.begins_with("once-"):
 		return true
 	if not alarm_id.begins_with("due-"):
 		return false
 	for event in due_group(alarm_id).get("events", []):
-		if str(event.get("id", "")).begins_with("task-"):
+		var event_id := str(event.get("id", ""))
+		if event_id.begins_with("task-") or event_id.begins_with("once-"):
 			return true
 	return false
 
@@ -996,7 +1387,6 @@ func _grant_for(event: Dictionary) -> void:
 
 ## 同一次推迟倒计时里系统会连着报好几次，8 分钟内同一闹钟同一类只记一包肥料。
 const REWARD_SESSION := 8 * 60
-const WEEKS_AHEAD := 8
 
 
 func _has_recent_reward(event: Dictionary) -> bool:
@@ -1152,6 +1542,24 @@ func format_date(date_key: String) -> String:
 
 func format_time(hour: int, minute: int) -> String:
 	return "%02d:%02d" % [hour, minute]
+
+
+func format_lead(lead_minutes: int) -> String:
+	if lead_minutes <= 0:
+		return ""
+	var hours := int(lead_minutes / 60.0)
+	var mins := lead_minutes % 60
+	if hours > 0 and mins > 0:
+		return tr("%d 小时 %d 分钟") % [hours, mins]
+	if hours > 0:
+		return tr("%d 小时") % hours
+	return tr("%d 分钟") % mins
+
+
+func format_lead_note(lead_minutes: int, hour: int, minute: int) -> String:
+	if lead_minutes <= 0:
+		return ""
+	return tr("提前 %s，%s 响") % [format_lead(lead_minutes), format_time(hour, minute)]
 
 
 func format_weekdays(weekdays: Array) -> String:

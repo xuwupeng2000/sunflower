@@ -52,6 +52,24 @@ corner_detail = 12
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_flat"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clock_ring"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 14.0
+content_margin_bottom = 6.0
+bg_color = Color(0.741176, 0.847059, 0.929412, 0)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.372549, 0.576471, 0.721569, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+corner_detail = 8
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
 content_margin_left = 10.0
 content_margin_top = 6.0
@@ -220,10 +238,6 @@ corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
-expand_margin_left = 16.0
-expand_margin_top = 16.0
-expand_margin_right = 16.0
-expand_margin_bottom = 16.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_guide_ring"]
 draw_center = false
@@ -506,10 +520,12 @@ CareCount/constants/outline_size = 6
 CareCount/font_sizes/font_size = 20
 CareCount/fonts/font = ExtResource("2_ios_bold")
 ClockButton/base_type = &"Button"
-ClockButton/styles/focus = SubResource("StyleBoxEmpty_flat")
-ClockButton/styles/hover = SubResource("StyleBoxEmpty_flat")
-ClockButton/styles/normal = SubResource("StyleBoxEmpty_flat")
-ClockButton/styles/pressed = SubResource("StyleBoxEmpty_flat")
+ClockButton/styles/focus = SubResource("StyleBoxFlat_clock_ring")
+ClockButton/styles/hover = SubResource("StyleBoxFlat_clock_ring")
+ClockButton/styles/normal = SubResource("StyleBoxFlat_clock_ring")
+ClockButton/styles/pressed = SubResource("StyleBoxFlat_clock_ring")
+ClockRing/base_type = &"PanelContainer"
+ClockRing/styles/panel = SubResource("StyleBoxFlat_clock_ring")
 ClockColon/base_type = &"Label"
 ClockColon/font_sizes/font_size = 36
 ClockColon/fonts/font = ExtResource("3_digit")
@@ -517,10 +533,18 @@ ClockDigits/base_type = &"Label"
 ClockDigits/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
 ClockDigits/font_sizes/font_size = 34
 ClockDigits/fonts/font = ExtResource("3_digit")
+ClockDigitsSmall/base_type = &"Label"
+ClockDigitsSmall/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
+ClockDigitsSmall/font_sizes/font_size = 22
+ClockDigitsSmall/fonts/font = ExtResource("3_digit")
 ClockMeridiem/base_type = &"Label"
 ClockMeridiem/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
 ClockMeridiem/font_sizes/font_size = 24
 ClockMeridiem/fonts/font = ExtResource("2_ios_bold")
+ClockMeridiemSmall/base_type = &"Label"
+ClockMeridiemSmall/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
+ClockMeridiemSmall/font_sizes/font_size = 16
+ClockMeridiemSmall/fonts/font = ExtResource("2_ios_bold")
 ClockOff/base_type = &"Label"
 ClockOff/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
 ClockOff/font_sizes/font_size = 20
@@ -640,6 +664,10 @@ RoundButton/styles/normal = SubResource("StyleBoxFlat_round")
 RoundButton/styles/pressed = SubResource("StyleBoxFlat_round_pressed")
 SectionTitle/base_type = &"Label"
 SectionTitle/font_sizes/font_size = 20
+ClockHeading/base_type = &"Label"
+ClockHeading/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
+ClockHeading/font_sizes/font_size = 34
+ClockHeading/fonts/font = ExtResource("2_ios_bold")
 SkipButton/base_type = &"Button"
 SkipButton/colors/font_color = Color(0.352941, 0.258824, 0.0784314, 1)
 SkipButton/colors/font_focus_color = Color(0.352941, 0.258824, 0.0784314, 1)

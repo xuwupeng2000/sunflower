@@ -255,7 +255,8 @@
             "moduleName": "SunflowerShared",
             "static": true,
             "declAttributes": [
-              "AccessControl"
+              "AccessControl",
+              "RawDocComment"
             ],
             "funcSelfKind": "NonMutating"
           },
@@ -2311,14 +2312,14 @@
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SunflowerShared.swift",
       "kind": "StringLiteral",
-      "offset": 2169,
+      "offset": 2223,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/SunflowerShared.swift",
       "kind": "StringLiteral",
-      "offset": 4526,
+      "offset": 4580,
       "length": 27,
       "value": "\"sunflower_timer_cancelled\""
     },
@@ -2360,217 +2361,217 @@
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 10670,
+      "offset": 12172,
       "length": 8,
       "value": "\"停止\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 10680,
+      "offset": 12182,
       "length": 6,
       "value": "\"Stop\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 10694,
+      "offset": 12196,
       "length": 8,
       "value": "\"停止\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 10742,
+      "offset": 12244,
       "length": 13,
       "value": "\"stop.circle\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 10841,
+      "offset": 12343,
       "length": 8,
       "value": "\"推迟\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 10851,
+      "offset": 12353,
       "length": 8,
       "value": "\"Snooze\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 10867,
+      "offset": 12369,
       "length": 8,
       "value": "\"延後\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 10915,
+      "offset": 12417,
       "length": 5,
       "value": "\"zzz\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11217,
+      "offset": 12719,
       "length": 8,
       "value": "\"暂停\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11227,
+      "offset": 12729,
       "length": 7,
       "value": "\"Pause\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11242,
+      "offset": 12744,
       "length": 8,
       "value": "\"暫停\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11290,
+      "offset": 12792,
       "length": 12,
       "value": "\"pause.fill\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11355,
+      "offset": 12857,
       "length": 14,
       "value": "\"即将再响\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11371,
+      "offset": 12873,
       "length": 10,
       "value": "\"Snoozing\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11389,
+      "offset": 12891,
       "length": 14,
       "value": "\"即將再響\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11628,
+      "offset": 13130,
       "length": 8,
       "value": "\"继续\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11638,
+      "offset": 13140,
       "length": 8,
       "value": "\"Resume\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11654,
+      "offset": 13156,
       "length": 8,
       "value": "\"繼續\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11702,
+      "offset": 13204,
       "length": 11,
       "value": "\"play.fill\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11813,
+      "offset": 13315,
       "length": 11,
       "value": "\"已暂停\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11826,
+      "offset": 13328,
       "length": 8,
       "value": "\"Paused\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 11842,
+      "offset": 13344,
       "length": 11,
       "value": "\"已暫停\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12154,
+      "offset": 13656,
       "length": 5,
       "value": "127.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12162,
+      "offset": 13664,
       "length": 5,
       "value": "255.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12176,
+      "offset": 13678,
       "length": 5,
       "value": "167.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12184,
+      "offset": 13686,
       "length": 5,
       "value": "255.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12197,
+      "offset": 13699,
       "length": 5,
       "value": "198.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "FloatLiteral",
-      "offset": 12205,
+      "offset": 13707,
       "length": 5,
       "value": "255.0"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "StringLiteral",
-      "offset": 12270,
+      "offset": 13772,
       "length": 15,
       "value": "\"sunflower.wav\""
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "IntegerLiteral",
-      "offset": 12396,
+      "offset": 13898,
       "length": 1,
       "value": "9"
     },
     {
       "filePath": "\/Users\/pengwu\/Documents\/GitHub\/sunflower\/ios\/shared\/AlarmKitBridge.swift",
       "kind": "IntegerLiteral",
-      "offset": 12400,
+      "offset": 13902,
       "length": 2,
       "value": "60"
     }

@@ -5,8 +5,12 @@ const GAP := 12.0
 const EDGE := 16.0
 
 @onready var _menu: Control = $菜单
+@onready var _detail: Button = $菜单/列表/详情
+@onready var _detail_line: Control = $菜单/列表/详情分隔
 @onready var _pause: Button = $菜单/列表/暂停
 @onready var _line: Control = $菜单/列表/分隔
+@onready var _edit: Button = $菜单/列表/编辑
+@onready var _edit_line: Control = $菜单/列表/编辑分隔
 @onready var _delete: Button = $菜单/列表/删除
 
 var _target: Control
@@ -17,26 +21,37 @@ var _preview := false
 func _ready() -> void:
 	visible = false
 	gui_input.connect(_on_gui_input)
+	_detail.pressed.connect(_choose.bind("detail"))
 	_pause.pressed.connect(_choose.bind("pause"))
+	_edit.pressed.connect(_choose.bind("edit"))
 	_delete.pressed.connect(_choose.bind("delete"))
 
 
 ## pause_text 为空就不显示暂停那一行；can_delete 为假就不显示删除。
 ## 选了之后调 on_choose("pause") 或 on_choose("delete")。
 ## preview 只给人看，点不到，教程黑屏自己收。
-func open(target: Control, pause_text: String, can_delete: bool, on_choose: Callable, preview := false) -> void:
+func open(target: Control, pause_text: String, can_delete: bool, on_choose: Callable, preview := false, can_edit := false, can_detail := false) -> void:
 	close()
 	_preview = preview
 	_target = target
 	_on_choose = on_choose
+	_detail.visible = can_detail
+	_detail.text = tr("详情🔎")
 	_pause.visible = not pause_text.is_empty()
 	_pause.text = pause_text
+	_edit.visible = can_edit
+	_edit.text = tr("编辑")
 	_delete.visible = can_delete
-	_line.visible = _pause.visible and _delete.visible
+	var others := _pause.visible or _edit.visible or _delete.visible
+	_detail_line.visible = _detail.visible and others
+	_line.visible = _pause.visible and (_edit.visible or _delete.visible)
+	_edit_line.visible = _edit.visible and _delete.visible
 	# 按住的那个浮在遮罩上面，看着像被拎起来。
 	_target.z_index = 1
 	mouse_filter = Control.MOUSE_FILTER_IGNORE if preview else Control.MOUSE_FILTER_STOP
+	_detail.mouse_filter = Control.MOUSE_FILTER_IGNORE if preview else Control.MOUSE_FILTER_STOP
 	_pause.mouse_filter = Control.MOUSE_FILTER_IGNORE if preview else Control.MOUSE_FILTER_STOP
+	_edit.mouse_filter = Control.MOUSE_FILTER_IGNORE if preview else Control.MOUSE_FILTER_STOP
 	_delete.mouse_filter = Control.MOUSE_FILTER_IGNORE if preview else Control.MOUSE_FILTER_STOP
 	_menu.mouse_filter = Control.MOUSE_FILTER_IGNORE if preview else Control.MOUSE_FILTER_STOP
 	($遮罩 as CanvasItem).visible = not preview
@@ -65,7 +80,9 @@ func close() -> void:
 	_on_choose = Callable()
 	_preview = false
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	_detail.mouse_filter = Control.MOUSE_FILTER_STOP
 	_pause.mouse_filter = Control.MOUSE_FILTER_STOP
+	_edit.mouse_filter = Control.MOUSE_FILTER_STOP
 	_delete.mouse_filter = Control.MOUSE_FILTER_STOP
 	_menu.mouse_filter = Control.MOUSE_FILTER_STOP
 	($遮罩 as CanvasItem).visible = true

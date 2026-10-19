@@ -20,6 +20,10 @@
 [ext_resource type="PackedScene" path="res://scenes/timer_delete.tscn" id="18_timer_delete"]
 [ext_resource type="PackedScene" path="res://scenes/timer_confirm.tscn" id="19_timer_confirm"]
 [ext_resource type="PackedScene" path="res://scenes/hold_menu.tscn" id="20_hold_menu"]
+[ext_resource type="Texture2D" path="res://icons/tab_once.svg" id="21_once_icon"]
+[ext_resource type="PackedScene" path="res://scenes/once_page.tscn" id="22_once"]
+[ext_resource type="PackedScene" path="res://scenes/once_add.tscn" id="23_once_add"]
+[ext_resource type="PackedScene" path="res://scenes/once_confirm.tscn" id="24_once_confirm"]
 
 [node name="Main" type="Node" unique_id=1975189898]
 script = ExtResource("1_main")
@@ -63,21 +67,11 @@ mouse_filter = 2
 layout_mode = 2
 alignment = 1
 
-[node name="前一天" type="Button" parent="UI/界面/看花页/顶部/日期行" unique_id=1178509098]
-layout_mode = 2
-theme_type_variation = &"DayButton"
-text = "前一天"
-
 [node name="日期" type="Label" parent="UI/界面/看花页/顶部/日期行" unique_id=666349955]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "今天"
 horizontal_alignment = 1
-
-[node name="后一天" type="Button" parent="UI/界面/看花页/顶部/日期行" unique_id=913785045]
-layout_mode = 2
-theme_type_variation = &"DayButton"
-text = "后一天"
 
 [node name="次数" type="Label" parent="UI/界面/看花页/顶部" unique_id=1995925269]
 layout_mode = 2
@@ -254,6 +248,32 @@ hold_menu = NodePath("../../长按菜单")
 guide = NodePath("../../计时教程")
 ring_player = NodePath("../../../../RingPlayer")
 
+[node name="行程页" type="Panel" parent="UI/界面"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 54.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="云彩" type="Control" parent="UI/界面/行程页"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("10_clouds")
+
+[node name="行程" parent="UI/界面/行程页" node_paths=PackedStringArray("hold_menu", "guide") instance=ExtResource("22_once")]
+layout_mode = 1
+hold_menu = NodePath("../../长按菜单")
+guide = NodePath("../../行程教程")
+
 [node name="底栏" type="Panel" parent="UI/界面" unique_id=1119392066]
 layout_mode = 1
 anchors_preset = 12
@@ -272,11 +292,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 28
+theme_override_constants/separation = 8
 alignment = 1
 
 [node name="看花" type="Button" parent="UI/界面/底栏/图标" unique_id=92295042]
-custom_minimum_size = Vector2(72, 56)
+custom_minimum_size = Vector2(64, 56)
 layout_mode = 2
 theme_type_variation = &"TabIcon"
 toggle_mode = true
@@ -286,7 +306,7 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="花盆" type="Button" parent="UI/界面/底栏/图标" unique_id=388562762]
-custom_minimum_size = Vector2(72, 56)
+custom_minimum_size = Vector2(64, 56)
 layout_mode = 2
 theme_type_variation = &"TabIcon"
 toggle_mode = true
@@ -296,7 +316,7 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="定时" type="Button" parent="UI/界面/底栏/图标" unique_id=1766572632]
-custom_minimum_size = Vector2(72, 56)
+custom_minimum_size = Vector2(64, 56)
 layout_mode = 2
 theme_type_variation = &"TabIcon"
 toggle_mode = true
@@ -306,11 +326,21 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="计时" type="Button" parent="UI/界面/底栏/图标" unique_id=1766572633]
-custom_minimum_size = Vector2(72, 56)
+custom_minimum_size = Vector2(64, 56)
 layout_mode = 2
 theme_type_variation = &"TabIcon"
 toggle_mode = true
 icon = ExtResource("15_timer_icon")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="行程" type="Button" parent="UI/界面/底栏/图标"]
+custom_minimum_size = Vector2(64, 56)
+layout_mode = 2
+theme_type_variation = &"TabIcon"
+toggle_mode = true
+icon = ExtResource("21_once_icon")
 flat = true
 icon_alignment = 1
 expand_icon = true
@@ -320,6 +350,14 @@ visible = false
 layout_mode = 1
 
 [node name="任务命名" parent="UI/界面" unique_id=927533225 instance=ExtResource("11_name")]
+visible = false
+layout_mode = 1
+
+[node name="单次日期" parent="UI/界面" instance=ExtResource("23_once_add")]
+visible = false
+layout_mode = 1
+
+[node name="单次确认" parent="UI/界面" instance=ExtResource("24_once_confirm")]
 visible = false
 layout_mode = 1
 
@@ -459,6 +497,86 @@ text = "长按日期，可以暂停当日提醒"
 horizontal_alignment = 1
 autowrap_mode = 3
 
+[node name="行程教程" type="ColorRect" parent="UI/界面"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="颜色框蓝" type="Panel" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideRing"
+
+[node name="颜色框黄" type="Panel" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideRing"
+
+[node name="颜色说明" type="Label" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideText"
+text = "蓝色的是在闹钟页面设的，每个星期都响。黄色的只响一次。"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="添加框" type="Panel" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideRing"
+
+[node name="添加说明" type="Label" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideText"
+text = "想加一个只响一次的，点下面的加号。"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="跳转框" type="Panel" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideRing"
+
+[node name="跳转说明" type="Label" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideText"
+text = "长按蓝色的，点「详情」，就能去闹钟页面改它。"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="编辑框" type="Panel" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideRing"
+
+[node name="编辑说明" type="Label" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideText"
+text = "这是在改这条黄色的。名字、哪一天、几点，都能改。"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="删除框" type="Panel" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideRing"
+
+[node name="删除说明" type="Label" parent="UI/界面/行程教程"]
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"GuideText"
+text = "这条黄色的是例子。长按它可以删掉。"
+horizontal_alignment = 1
+autowrap_mode = 3
+
 [node name="长按菜单" parent="UI/界面" unique_id=927533231 instance=ExtResource("20_hold_menu")]
 visible = false
 layout_mode = 1
@@ -483,7 +601,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="面板" type="PanelContainer" parent="UI/界面/到点弹窗/居中" unique_id=251325005]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 theme_type_variation = &"DueDialog"
 
