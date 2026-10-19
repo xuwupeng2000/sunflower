@@ -169,14 +169,6 @@ func take_cancelled_timer() -> String:
 	return ""
 
 
-func record_desktop_snooze(alarm_id: String = "") -> void:
-	if using_native:
-		return
-	# 调试按钮每点一次都算一次，不走系统重复上报的 8 分钟去重。
-	store.record_snooze(alarm_id if not alarm_id.is_empty() else "desktop", -1, false)
-	snoozes_updated.emit()
-
-
 func preview_ring() -> void:
 	var player := get_node_or_null("/root/Main/RingPlayer") as AudioStreamPlayer
 	if player and player.stream:

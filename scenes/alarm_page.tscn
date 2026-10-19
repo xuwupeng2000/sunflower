@@ -443,13 +443,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="记一次贪睡" type="Button" parent="边框/内容/操作/按钮" unique_id=1051232717]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"DayButton"
-text = "记一次推迟"
-
 [node name="当日" type="HBoxContainer" parent="边框/内容/操作/按钮" unique_id=1051232720]
 layout_mode = 2
 size_flags_horizontal = 3

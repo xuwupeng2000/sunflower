@@ -275,9 +275,6 @@ func _bind_nodes() -> void:
 	_alarm_page.get_node("边框/内容/标签行/加号").pressed.connect(_open_task_name)
 	_rebuild_task_tabs()
 	_show_default_task()
-	var debug_snooze := _alarm_page.get_node("边框/内容/操作/按钮/记一次贪睡") as Button
-	debug_snooze.visible = OS.has_feature("editor")
-	debug_snooze.pressed.connect(_record_snooze)
 	_skip_today_button = _alarm_page.get_node("边框/内容/操作/按钮/当日/跳过一次")
 	_pause_day_button = _alarm_page.get_node("边框/内容/操作/按钮/当日/暂停本日")
 	_skip_today_button.pressed.connect(_toggle_skip_once)
@@ -1424,20 +1421,6 @@ func _open_triggered_alarm() -> void:
 			_show_custom_task(index)
 			return
 	_show_default_task()
-
-
-func _record_snooze() -> void:
-	if AlarmService.using_native:
-		return
-	var alarm_id := "sleep-1"
-	for alarm in AlarmStore.alarms:
-		var id := str(alarm.get("id", ""))
-		if id.begins_with("sleep-"):
-			alarm_id = id
-			break
-	AlarmService.record_desktop_snooze(alarm_id)
-	_buzz()
-	_show_tab("flower")
 
 
 func _on_care_button_down(kind: String) -> void:
