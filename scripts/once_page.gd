@@ -24,11 +24,12 @@ const WEEKDAY_KEYS := ["周一", "周二", "周三", "周四", "周五", "周六
 
 @onready var _scroll: ScrollContainer = $边框/内容/滚动
 @onready var _list: VBoxContainer = $边框/内容/滚动/边距/列表
-@onready var _empty: Label = $边框/内容/滚动/边距/列表/空提示
-@onready var _this_days: VBoxContainer = $边框/内容/滚动/边距/列表/本周条/内容/本周天
-@onready var _next_days: VBoxContainer = $边框/内容/滚动/边距/列表/下周条/内容/下周天
-@onready var _after_rows: VBoxContainer = $边框/内容/滚动/边距/列表/下下周条/内容/条目
-@onready var _later_rows: VBoxContainer = $边框/内容/滚动/边距/列表/更远条/内容/条目
+@onready var _empty: Label = $边框/内容/空提示
+@onready var _this_days: VBoxContainer = $边框/内容/滚动/边距/列表/本周条/内容/底色/内边距/列/本周天
+@onready var _next_days: VBoxContainer = $边框/内容/滚动/边距/列表/下周条/内容/内边距/列/下周天
+@onready var _after_rows: VBoxContainer = $边框/内容/滚动/边距/列表/下下周条/内容/内边距/条目
+@onready var _later_rows: VBoxContainer = $边框/内容/滚动/边距/列表/更远条/内容/内边距/列/条目
+@onready var _done_rows: VBoxContainer = $边框/内容/滚动/边距/列表/已完成条/内容/内边距/条目
 @onready var _hide_button: Button = $边框/内容/添加行/隐藏
 @onready var _add_button: Button = $边框/内容/添加行/动作/添加
 @onready var _delete_button: Button = $边框/内容/添加行/动作/删除
@@ -57,13 +58,13 @@ func _ready() -> void:
 	_delete_button.visible = false
 	_undo_button.pressed.connect(_undo_delete)
 	_headers = {
-		"this": $边框/内容/滚动/边距/列表/本周条/内容/本周,
-		"next": $边框/内容/滚动/边距/列表/下周条/内容/下周,
-		"after": $边框/内容/滚动/边距/列表/下下周条/内容/下下周,
-		"later": $边框/内容/滚动/边距/列表/更远条/内容/更远,
-		"done": $边框/内容/滚动/边距/列表/已完成,
+		"this": $边框/内容/滚动/边距/列表/本周条/内容/书签/行/页签/本周,
+		"next": $边框/内容/滚动/边距/列表/下周条/内容/书签/行/页签/下周,
+		"after": $边框/内容/滚动/边距/列表/下下周条/内容/书签/行/页签/下下周,
+		"later": $边框/内容/滚动/边距/列表/更远条/内容/书签/行/页签/更远,
+		"done": $边框/内容/滚动/边距/列表/已完成条/内容/书签/行/页签/已完成,
 	}
-	_later_note = $边框/内容/滚动/边距/列表/更远条/内容/更远说明
+	_later_note = $边框/内容/滚动/边距/列表/更远条/内容/内边距/列/更远说明
 	AlarmStore.changed.connect(refresh)
 	_scroll.gui_input.connect(_on_scroll_input)
 	if guide != null:
@@ -134,8 +135,12 @@ func refresh() -> void:
 		"later": [],
 		"done": [],
 	}
+	var today := AlarmStore.local_today_key()
 	for item in AlarmStore.agenda():
-		var bucket := "done" if bool(item.get("done", false)) else AlarmStore.week_bucket(str(item.get("date", "")))
+		var date := str(item.get("date", ""))
+		# 今天的都留在今天，钟点过了也不收进已完成。更早的已完成仍在最底下。
+		var finished := bool(item.get("done", false)) and date < today
+		var bucket := "done" if finished else AlarmStore.week_bucket(date)
 		if not groups.has(bucket):
 			bucket = "later"
 		if bucket == "later" and str(item.get("kind", "")) != "once":
@@ -150,6 +155,19 @@ func refresh() -> void:
 					continue
 				kept.append(item)
 			groups[key] = kept
+	var blank := true
+	for key in ["this", "next", "after", "later", "done"]:
+		if not (groups[key] as Array).is_empty():
+			blank = false
+			break
+	if blank:
+		_empty.visible = true
+		for key in ["this", "next", "after", "later", "done"]:
+			_show_header(key, false)
+		_selected_id = ""
+		_relabel_actions()
+		_refresh_actions()
+		return
 	_empty.visible = false
 	_show_header("this", true)
 	_show_header("next", true)
@@ -164,15 +182,7 @@ func refresh() -> void:
 	_later_note.visible = true
 	selected_found = _fill_bucket(_later_rows, groups["later"]) or selected_found
 	_show_header("done", not (groups["done"] as Array).is_empty())
-	var insert_at := _list_index_after(_headers["done"])
-	for item in groups["done"]:
-		var row := _make_row(item, false)
-		_list.add_child(row)
-		_pad_row(row, str(item.get("kind", "")) == "weekly")
-		_list.move_child(row, insert_at)
-		insert_at += 1
-		if _row_selected(item):
-			selected_found = true
+	selected_found = _fill_bucket(_done_rows, groups["done"]) or selected_found
 	if not selected_found:
 		_selected_id = ""
 	_relabel_actions()
@@ -190,10 +200,6 @@ func _section_of(header: Node) -> Node:
 	return top
 
 
-func _list_index_after(header: Node) -> int:
-	return _section_of(header).get_index() + 1
-
-
 func _fill_bucket(box: VBoxContainer, items: Array) -> bool:
 	var selected_found := false
 	for item in items:
@@ -208,11 +214,8 @@ func _fill_bucket(box: VBoxContainer, items: Array) -> bool:
 func _fill_days(box: VBoxContainer, week_offset: int, items: Array) -> bool:
 	var note := box.get_parent().get_node("无提醒") as Label
 	note.text = tr("此周无提醒")
-	note.visible = items.is_empty()
-	box.visible = not items.is_empty()
-	if items.is_empty():
-		return false
 	var monday := AlarmStore.monday_of(AlarmStore.local_today_key())
+	var today := AlarmStore.local_today_key()
 	var by_date := {}
 	for item in items:
 		var date := str(item.get("date", ""))
@@ -220,16 +223,24 @@ func _fill_days(box: VBoxContainer, week_offset: int, items: Array) -> bool:
 		bucket.append(item)
 		by_date[date] = bucket
 	var selected_found := false
+	var any_shown := false
 	for index in 7:
 		var day := box.get_child(index) as VBoxContainer
 		var date_key := AlarmStore.shift_date(monday, week_offset + index)
+		# 本周已经过去的日子不再占一行。下周仍从周一开始。
+		var passed := week_offset == 0 and date_key < today
+		day.visible = not passed
+		if passed:
+			continue
 		var title := day.get_node("标题") as Label
 		var empty := day.get_node("空") as Label
 		var name := tr(WEEKDAY_KEYS[index])
-		title.text = "%s · %s" % [name, tr("今天")] if date_key == AlarmStore.local_today_key() else name
+		title.text = "%s · %s" % [name, tr("今天")] if date_key == today else name
 		empty.text = tr("没有行程")
 		var day_items: Array = by_date.get(date_key, [])
 		empty.visible = day_items.is_empty()
+		if not day_items.is_empty():
+			any_shown = true
 		for item in day_items:
 			var row := _make_row(item, true)
 			day.add_child(row)
@@ -237,6 +248,8 @@ func _fill_days(box: VBoxContainer, week_offset: int, items: Array) -> bool:
 			day.move_child(row, empty.get_index())
 			if _row_selected(item):
 				selected_found = true
+	note.visible = not any_shown
+	box.visible = any_shown
 	return selected_found
 
 
@@ -337,7 +350,7 @@ func _paint_row(row: Button, item: Dictionary, in_day: bool = false) -> void:
 		label = "%s · %s" % [label, tr("%s 到") % event]
 		when = tr("%s 响") % ring
 	if not in_day:
-		when = "%s · %s" % [AlarmStore.agenda_when(str(item.get("date", ""))), when]
+		when = "%s · %s" % [AlarmStore.agenda_when(str(item.get("date", "")), bool(item.get("done", false))), when]
 	if bool(item.get("done", false)):
 		row.text = "%s\n%s · %s" % [label, when, tr("已完成")]
 		row.theme_type_variation = "PausedButton"
@@ -393,17 +406,18 @@ func _on_hold(row: Button) -> void:
 					open_alarm.emit(alarm_id)
 			, false, false, true)
 		return
-	if str(item.get("kind", "")) != "once" or bool(item.get("done", false)):
+	if str(item.get("kind", "")) != "once":
 		return
 	var once_id := str(item.get("id", ""))
 	_selected_id = once_id
+	var finished := bool(item.get("done", false))
 	if hold_menu:
 		hold_menu.open(row, "", true, func(action: String) -> void:
-			if action == "edit":
+			if action == "edit" and not finished:
 				edit_once.emit(once_id)
 			elif action == "delete":
 				_delete_selected()
-		, false, true)
+		, false, not finished)
 
 
 func _delete_selected() -> void:
@@ -451,13 +465,13 @@ func _relabel_actions() -> void:
 	_add_button.text = tr("+ 添加")
 	_delete_button.text = tr("删除")
 	_undo_button.text = tr("撤销")
-	_empty.text = tr("还没有行程。点 + 加一个只响一次的提醒。")
+	_empty.text = tr("白茫茫大雪真干净")
 	(_headers["this"] as Label).text = tr("本周")
 	(_headers["next"] as Label).text = tr("下周")
 	(_headers["after"] as Label).text = tr("下下周")
 	(_headers["later"] as Label).text = tr("更远")
-	_later_note.text = tr("您的一般周提醒不会在这里显示的哦")
-	(_headers["done"] as Label).text = tr("已完成")
+	_later_note.text = tr("你的「固定每周提醒」不会在此处显示的哦")
+	(_headers["done"] as Label).text = tr("已完成🐳")
 
 
 func show_guide() -> void:

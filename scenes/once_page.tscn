@@ -1,10 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dixab6cem8v1x"]
 
-[ext_resource type="Script" path="res://scripts/once_page.gd" id="1_page"]
+[ext_resource type="Script" uid="uid://dc2p044n1vfit" path="res://scripts/once_page.gd" id="1_page"]
 [ext_resource type="PackedScene" path="res://scenes/once_day.tscn" id="2_day"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_agenda_frame"]
-bg_color = Color(1, 1, 1, 1)
+bg_color = Color(1, 1, 1, 0)
 border_color = Color(0.372549, 0.576471, 0.721569, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
@@ -12,7 +12,7 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 corner_detail = 5
 
-[node name="行程" type="Control"]
+[node name="行程" type="Control" unique_id=1713174221]
 clip_contents = true
 layout_mode = 3
 anchors_preset = 15
@@ -24,7 +24,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_page")
 
-[node name="边框" type="PanelContainer" parent="."]
+[node name="边框" type="PanelContainer" parent="." unique_id=1964476076]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,13 +34,13 @@ grow_vertical = 2
 theme_type_variation = &"AlarmFrame"
 theme_override_styles/panel = SubResource("StyleBoxFlat_agenda_frame")
 
-[node name="内容" type="Control" parent="边框"]
+[node name="内容" type="Control" parent="边框" unique_id=1727711314]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="滚动" type="ScrollContainer" parent="边框/内容"]
+[node name="滚动" type="ScrollContainer" parent="边框/内容" unique_id=1130466644]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,184 +50,335 @@ grow_vertical = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 3
 
-[node name="边距" type="MarginContainer" parent="边框/内容/滚动"]
+[node name="边距" type="MarginContainer" parent="边框/内容/滚动" unique_id=468778544]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 mouse_filter = 2
 theme_override_constants/margin_bottom = 116
 
-[node name="列表" type="VBoxContainer" parent="边框/内容/滚动/边距"]
+[node name="列表" type="VBoxContainer" parent="边框/内容/滚动/边距" unique_id=1967726745]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="空提示" type="Label" parent="边框/内容/滚动/边距/列表"]
+[node name="本周条" type="PanelContainer" parent="边框/内容/滚动/边距/列表" unique_id=359663910]
 layout_mode = 2
-theme_type_variation = &"PauseNote"
-text = "还没有行程。点 + 加一个只响一次的提醒。"
-horizontal_alignment = 1
-autowrap_mode = 3
+mouse_filter = 2
+theme_type_variation = &"WeekClear"
 
-[node name="本周条" type="PanelContainer" parent="边框/内容/滚动/边距/列表"]
+[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/本周条" unique_id=236461746]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="书签" type="PanelContainer" parent="边框/内容/滚动/边距/列表/本周条/内容" unique_id=1313704640]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WeekStandThis"
+
+[node name="行" type="HBoxContainer" parent="边框/内容/滚动/边距/列表/本周条/内容/书签" unique_id=784968678]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="页签" type="PanelContainer" parent="边框/内容/滚动/边距/列表/本周条/内容/书签/行" unique_id=1628036864]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_type_variation = &"WeekMarkThis"
+
+[node name="本周" type="Label" parent="边框/内容/滚动/边距/列表/本周条/内容/书签/行/页签" unique_id=402596717]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "本周"
+
+[node name="底色" type="PanelContainer" parent="边框/内容/滚动/边距/列表/本周条/内容" unique_id=1315688338]
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"WeekThis"
 
-[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/本周条"]
+[node name="内边距" type="MarginContainer" parent="边框/内容/滚动/边距/列表/本周条/内容/底色" unique_id=801203069]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="列" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/本周条/内容/底色/内边距" unique_id=371710787]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 10
 
-[node name="本周" type="Label" parent="边框/内容/滚动/边距/列表/本周条/内容"]
-layout_mode = 2
-mouse_filter = 2
-theme_type_variation = &"SectionTitle"
-text = "本周"
-
-[node name="无提醒" type="Label" parent="边框/内容/滚动/边距/列表/本周条/内容"]
+[node name="无提醒" type="Label" parent="边框/内容/滚动/边距/列表/本周条/内容/底色/内边距/列" unique_id=272930109]
 visible = false
 layout_mode = 2
-mouse_filter = 2
 theme_type_variation = &"PauseNote"
 text = "此周无提醒"
 
-[node name="本周天" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/本周条/内容"]
+[node name="本周天" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/本周条/内容/底色/内边距/列" unique_id=1210634372]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 12
 
-[node name="周一" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+[node name="周一" parent="边框/内容/滚动/边距/列表/本周条/内容/底色/内边距/列/本周天" unique_id=1451127736 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周二" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+[node name="周二" parent="边框/内容/滚动/边距/列表/本周条/内容/底色/内边距/列/本周天" unique_id=1740841063 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周三" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+[node name="周三" parent="边框/内容/滚动/边距/列表/本周条/内容/底色/内边距/列/本周天" unique_id=880822558 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周四" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+[node name="周四" parent="边框/内容/滚动/边距/列表/本周条/内容/底色/内边距/列/本周天" unique_id=1686251073 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周五" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+[node name="周五" parent="边框/内容/滚动/边距/列表/本周条/内容/底色/内边距/列/本周天" unique_id=892136356 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周六" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+[node name="周六" parent="边框/内容/滚动/边距/列表/本周条/内容/底色/内边距/列/本周天" unique_id=1778686716 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周日" parent="边框/内容/滚动/边距/列表/本周条/内容/本周天" instance=ExtResource("2_day")]
+[node name="周日" parent="边框/内容/滚动/边距/列表/本周条/内容/底色/内边距/列/本周天" unique_id=1710139747 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="下周条" type="PanelContainer" parent="边框/内容/滚动/边距/列表"]
+[node name="下周条" type="PanelContainer" parent="边框/内容/滚动/边距/列表" unique_id=1163760641]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"WeekNext"
 
-[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下周条"]
+[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下周条" unique_id=1381062864]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="书签" type="PanelContainer" parent="边框/内容/滚动/边距/列表/下周条/内容" unique_id=273813772]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WeekStandNext"
+
+[node name="行" type="HBoxContainer" parent="边框/内容/滚动/边距/列表/下周条/内容/书签" unique_id=271617376]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="页签" type="PanelContainer" parent="边框/内容/滚动/边距/列表/下周条/内容/书签/行" unique_id=147206398]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_type_variation = &"WeekMarkNext"
+
+[node name="下周" type="Label" parent="边框/内容/滚动/边距/列表/下周条/内容/书签/行/页签" unique_id=386072001]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "下周"
+
+[node name="内边距" type="MarginContainer" parent="边框/内容/滚动/边距/列表/下周条/内容" unique_id=1236587187]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="列" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下周条/内容/内边距" unique_id=2102876078]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 10
 
-[node name="下周" type="Label" parent="边框/内容/滚动/边距/列表/下周条/内容"]
-layout_mode = 2
-mouse_filter = 2
-theme_type_variation = &"SectionTitle"
-text = "下周"
-
-[node name="无提醒" type="Label" parent="边框/内容/滚动/边距/列表/下周条/内容"]
+[node name="无提醒" type="Label" parent="边框/内容/滚动/边距/列表/下周条/内容/内边距/列" unique_id=800520789]
 visible = false
 layout_mode = 2
-mouse_filter = 2
 theme_type_variation = &"PauseNote"
 text = "此周无提醒"
 
-[node name="下周天" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下周条/内容"]
+[node name="下周天" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下周条/内容/内边距/列" unique_id=384615255]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 12
 
-[node name="周一" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+[node name="周一" parent="边框/内容/滚动/边距/列表/下周条/内容/内边距/列/下周天" unique_id=240807282 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周二" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+[node name="周二" parent="边框/内容/滚动/边距/列表/下周条/内容/内边距/列/下周天" unique_id=604508691 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周三" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+[node name="周三" parent="边框/内容/滚动/边距/列表/下周条/内容/内边距/列/下周天" unique_id=1752705358 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周四" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+[node name="周四" parent="边框/内容/滚动/边距/列表/下周条/内容/内边距/列/下周天" unique_id=1223105298 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周五" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+[node name="周五" parent="边框/内容/滚动/边距/列表/下周条/内容/内边距/列/下周天" unique_id=1368673990 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周六" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+[node name="周六" parent="边框/内容/滚动/边距/列表/下周条/内容/内边距/列/下周天" unique_id=1294206070 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="周日" parent="边框/内容/滚动/边距/列表/下周条/内容/下周天" instance=ExtResource("2_day")]
+[node name="周日" parent="边框/内容/滚动/边距/列表/下周条/内容/内边距/列/下周天" unique_id=400043249 instance=ExtResource("2_day")]
 layout_mode = 2
 
-[node name="下下周条" type="PanelContainer" parent="边框/内容/滚动/边距/列表"]
+[node name="下下周条" type="PanelContainer" parent="边框/内容/滚动/边距/列表" unique_id=1161362145]
 visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"WeekAfter"
 
-[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下下周条"]
+[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下下周条" unique_id=484063711]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 0
 
-[node name="下下周" type="Label" parent="边框/内容/滚动/边距/列表/下下周条/内容"]
+[node name="书签" type="PanelContainer" parent="边框/内容/滚动/边距/列表/下下周条/内容" unique_id=1871696724]
 layout_mode = 2
 mouse_filter = 2
+theme_type_variation = &"WeekStandAfter"
+
+[node name="行" type="HBoxContainer" parent="边框/内容/滚动/边距/列表/下下周条/内容/书签" unique_id=108684139]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="页签" type="PanelContainer" parent="边框/内容/滚动/边距/列表/下下周条/内容/书签/行" unique_id=1161525391]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_type_variation = &"WeekMarkAfter"
+
+[node name="下下周" type="Label" parent="边框/内容/滚动/边距/列表/下下周条/内容/书签/行/页签" unique_id=490658522]
+layout_mode = 2
 theme_type_variation = &"SectionTitle"
 text = "下下周"
 
-[node name="条目" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下下周条/内容"]
+[node name="内边距" type="MarginContainer" parent="边框/内容/滚动/边距/列表/下下周条/内容" unique_id=655480442]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="条目" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/下下周条/内容/内边距" unique_id=1244916321]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="更远条" type="PanelContainer" parent="边框/内容/滚动/边距/列表"]
-visible = false
+[node name="更远条" type="PanelContainer" parent="边框/内容/滚动/边距/列表" unique_id=2062027906]
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"WeekLater"
 
-[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/更远条"]
+[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/更远条" unique_id=1615464811]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="书签" type="PanelContainer" parent="边框/内容/滚动/边距/列表/更远条/内容" unique_id=2100997519]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WeekStandLater"
+
+[node name="行" type="HBoxContainer" parent="边框/内容/滚动/边距/列表/更远条/内容/书签" unique_id=255357457]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="页签" type="PanelContainer" parent="边框/内容/滚动/边距/列表/更远条/内容/书签/行" unique_id=264273637]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_type_variation = &"WeekMarkLater"
+
+[node name="更远" type="Label" parent="边框/内容/滚动/边距/列表/更远条/内容/书签/行/页签" unique_id=1182951283]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "更远"
+
+[node name="内边距" type="MarginContainer" parent="边框/内容/滚动/边距/列表/更远条/内容" unique_id=577242208]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="列" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/更远条/内容/内边距" unique_id=531615499]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 10
 
-[node name="更远" type="Label" parent="边框/内容/滚动/边距/列表/更远条/内容"]
+[node name="更远说明" type="Label" parent="边框/内容/滚动/边距/列表/更远条/内容/内边距/列" unique_id=1201844403]
 layout_mode = 2
-mouse_filter = 2
-theme_type_variation = &"SectionTitle"
-text = "更远"
-
-[node name="更远说明" type="Label" parent="边框/内容/滚动/边距/列表/更远条/内容"]
-layout_mode = 2
-mouse_filter = 2
 theme_type_variation = &"PauseNote"
 theme_override_font_sizes/font_size = 13
-text = "您的一般周提醒不会在这里显示的哦"
+text = "你的「固定每周提醒」不会在此处显示的哦"
 autowrap_mode = 3
 
-[node name="条目" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/更远条/内容"]
+[node name="条目" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/更远条/内容/内边距/列" unique_id=827513317]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="已完成" type="Label" parent="边框/内容/滚动/边距/列表"]
-visible = false
+[node name="已完成条" type="PanelContainer" parent="边框/内容/滚动/边距/列表" unique_id=886770108]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WeekDone"
+
+[node name="内容" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/已完成条" unique_id=1792262793]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="书签" type="PanelContainer" parent="边框/内容/滚动/边距/列表/已完成条/内容" unique_id=587925219]
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"WeekStandDone"
+
+[node name="行" type="HBoxContainer" parent="边框/内容/滚动/边距/列表/已完成条/内容/书签" unique_id=102960340]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="页签" type="PanelContainer" parent="边框/内容/滚动/边距/列表/已完成条/内容/书签/行" unique_id=1854945742]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_type_variation = &"WeekMarkDone"
+
+[node name="已完成" type="Label" parent="边框/内容/滚动/边距/列表/已完成条/内容/书签/行/页签" unique_id=748025595]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "已完成"
+theme_override_colors/font_color = Color(0.92, 0.96, 1, 1)
+text = "已完成🐳"
 
-[node name="添加行" type="VBoxContainer" parent="边框/内容"]
+[node name="内边距" type="MarginContainer" parent="边框/内容/滚动/边距/列表/已完成条/内容" unique_id=2061517026]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="条目" type="VBoxContainer" parent="边框/内容/滚动/边距/列表/已完成条/内容/内边距" unique_id=1942334724]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="空提示" type="Label" parent="边框/内容" unique_id=44403818]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PauseNote"
+theme_override_font_sizes/font_size = 13
+text = "白茫茫大雪真干净"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="添加行" type="VBoxContainer" parent="边框/内容" unique_id=958373813]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -242,27 +393,27 @@ grow_vertical = 0
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="隐藏" type="Button" parent="边框/内容/添加行"]
+[node name="隐藏" type="Button" parent="边框/内容/添加行" unique_id=1055805271]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"DayButton"
 text = "隐藏每周日常提醒"
 
-[node name="动作" type="HBoxContainer" parent="边框/内容/添加行"]
+[node name="动作" type="HBoxContainer" parent="边框/内容/添加行" unique_id=835900368]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="添加" type="Button" parent="边框/内容/添加行/动作"]
+[node name="添加" type="Button" parent="边框/内容/添加行/动作" unique_id=1981624565]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"OkButton"
 text = "+ 添加"
 
-[node name="删除" type="Button" parent="边框/内容/添加行/动作"]
+[node name="删除" type="Button" parent="边框/内容/添加行/动作" unique_id=353484627]
 visible = false
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
@@ -270,11 +421,10 @@ size_flags_horizontal = 3
 theme_type_variation = &"DeleteButton"
 text = "删除"
 
-[node name="撤销" type="Button" parent="边框/内容/添加行/动作"]
+[node name="撤销" type="Button" parent="边框/内容/添加行/动作" unique_id=15631660]
 visible = false
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SkipButton"
 text = "撤销"
-

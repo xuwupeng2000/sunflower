@@ -52,24 +52,6 @@ corner_detail = 12
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_flat"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clock_ring"]
-content_margin_left = 14.0
-content_margin_top = 6.0
-content_margin_right = 14.0
-content_margin_bottom = 6.0
-bg_color = Color(0.741176, 0.847059, 0.929412, 0)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.372549, 0.576471, 0.721569, 1)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
-corner_detail = 8
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
 content_margin_left = 10.0
 content_margin_top = 6.0
@@ -132,6 +114,23 @@ corner_detail = 12
 shadow_color = Color(0.22, 0.4, 0.58, 0.22)
 shadow_size = 3
 shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clock_ring"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 14.0
+content_margin_bottom = 6.0
+bg_color = Color(0.741176, 0.847059, 0.929412, 0)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.372549, 0.576471, 0.721569, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_day"]
 content_margin_left = 5.0
@@ -473,32 +472,115 @@ shadow_color = Color(0.62, 0.45, 0.1, 0.25)
 shadow_size = 3
 shadow_offset = Vector2(0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_this"]
-content_margin_left = 16.0
-content_margin_top = 14.0
-content_margin_right = 16.0
-content_margin_bottom = 14.0
-bg_color = Color(0.62, 0.78, 0.9, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_next"]
-content_margin_left = 16.0
-content_margin_top = 14.0
-content_margin_right = 16.0
-content_margin_bottom = 14.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_after"]
 bg_color = Color(0.76, 0.86, 0.94, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_after"]
-content_margin_left = 16.0
-content_margin_top = 14.0
-content_margin_right = 16.0
-content_margin_bottom = 14.0
-bg_color = Color(0.88, 0.93, 0.97, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_done"]
+bg_color = Color(0.03, 0.22, 0.38, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_later"]
-content_margin_left = 16.0
-content_margin_top = 14.0
+bg_color = Color(0.62, 0.78, 0.9, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mark_after"]
+content_margin_left = 14.0
+content_margin_top = 6.0
 content_margin_right = 16.0
-content_margin_bottom = 14.0
+content_margin_bottom = 6.0
+bg_color = Color(0.76, 0.86, 0.94, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(0.58, 0.72, 0.84, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mark_done"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 6.0
+bg_color = Color(0.03, 0.22, 0.38, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(0.015, 0.12, 0.24, 1)
+expand_margin_bottom = 2.0
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mark_later"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 6.0
+bg_color = Color(0.62, 0.78, 0.9, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(0.45, 0.62, 0.76, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mark_next"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 6.0
+bg_color = Color(0.88, 0.93, 0.97, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(0.7, 0.8, 0.88, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mark_this"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 6.0
+bg_color = Color(0.97, 0.985, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(0.78, 0.86, 0.92, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_next"]
+bg_color = Color(0.88, 0.93, 0.97, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stand_after"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+bg_color = Color(0.88, 0.93, 0.97, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stand_done"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+bg_color = Color(0.62, 0.78, 0.9, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stand_later"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+bg_color = Color(0.76, 0.86, 0.94, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stand_next"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+bg_color = Color(0.97, 0.985, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stand_this"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_week_this"]
 bg_color = Color(0.97, 0.985, 1, 1)
 
 [resource]
@@ -552,8 +634,6 @@ ClockButton/styles/focus = SubResource("StyleBoxFlat_clock_ring")
 ClockButton/styles/hover = SubResource("StyleBoxFlat_clock_ring")
 ClockButton/styles/normal = SubResource("StyleBoxFlat_clock_ring")
 ClockButton/styles/pressed = SubResource("StyleBoxFlat_clock_ring")
-ClockRing/base_type = &"PanelContainer"
-ClockRing/styles/panel = SubResource("StyleBoxFlat_clock_ring")
 ClockColon/base_type = &"Label"
 ClockColon/font_sizes/font_size = 36
 ClockColon/fonts/font = ExtResource("3_digit")
@@ -565,6 +645,10 @@ ClockDigitsSmall/base_type = &"Label"
 ClockDigitsSmall/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
 ClockDigitsSmall/font_sizes/font_size = 22
 ClockDigitsSmall/fonts/font = ExtResource("3_digit")
+ClockHeading/base_type = &"Label"
+ClockHeading/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
+ClockHeading/font_sizes/font_size = 34
+ClockHeading/fonts/font = ExtResource("2_ios_bold")
 ClockMeridiem/base_type = &"Label"
 ClockMeridiem/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
 ClockMeridiem/font_sizes/font_size = 24
@@ -577,6 +661,8 @@ ClockOff/base_type = &"Label"
 ClockOff/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
 ClockOff/font_sizes/font_size = 20
 ClockOff/fonts/font = ExtResource("2_ios_bold")
+ClockRing/base_type = &"PanelContainer"
+ClockRing/styles/panel = SubResource("StyleBoxFlat_clock_ring")
 DayButton/base_type = &"Button"
 DayButton/font_sizes/font_size = 16
 DayButton/styles/disabled = SubResource("StyleBoxFlat_disabled")
@@ -585,6 +671,10 @@ DayButton/styles/hover = SubResource("StyleBoxFlat_day")
 DayButton/styles/hover_pressed = SubResource("StyleBoxFlat_day_hover")
 DayButton/styles/normal = SubResource("StyleBoxFlat_day")
 DayButton/styles/pressed = SubResource("StyleBoxFlat_day_hover")
+DayTitle/base_type = &"Label"
+DayTitle/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
+DayTitle/font_sizes/font_size = 16
+DayTitle/fonts/font = ExtResource("2_ios_bold")
 DeleteButton/base_type = &"Button"
 DeleteButton/colors/font_color = Color(0.709804, 0.396078, 0.352941, 1)
 DeleteButton/colors/font_focus_color = Color(0.709804, 0.396078, 0.352941, 1)
@@ -692,22 +782,6 @@ RoundButton/styles/normal = SubResource("StyleBoxFlat_round")
 RoundButton/styles/pressed = SubResource("StyleBoxFlat_round_pressed")
 SectionTitle/base_type = &"Label"
 SectionTitle/font_sizes/font_size = 20
-WeekThis/base_type = &"PanelContainer"
-WeekThis/styles/panel = SubResource("StyleBoxFlat_week_this")
-WeekNext/base_type = &"PanelContainer"
-WeekNext/styles/panel = SubResource("StyleBoxFlat_week_next")
-WeekAfter/base_type = &"PanelContainer"
-WeekAfter/styles/panel = SubResource("StyleBoxFlat_week_after")
-WeekLater/base_type = &"PanelContainer"
-WeekLater/styles/panel = SubResource("StyleBoxFlat_week_later")
-DayTitle/base_type = &"Label"
-DayTitle/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
-DayTitle/font_sizes/font_size = 16
-DayTitle/fonts/font = ExtResource("2_ios_bold")
-ClockHeading/base_type = &"Label"
-ClockHeading/colors/font_color = Color(0.133333, 0.219608, 0.290196, 1)
-ClockHeading/font_sizes/font_size = 34
-ClockHeading/fonts/font = ExtResource("2_ios_bold")
 SkipButton/base_type = &"Button"
 SkipButton/colors/font_color = Color(0.352941, 0.258824, 0.0784314, 1)
 SkipButton/colors/font_focus_color = Color(0.352941, 0.258824, 0.0784314, 1)
@@ -729,3 +803,35 @@ TaskTitle/base_type = &"Label"
 TaskTitle/font_sizes/font_size = 28
 TimeWheel/base_type = &"Control"
 TimeWheel/fonts/font = ExtResource("3_digit")
+WeekAfter/base_type = &"PanelContainer"
+WeekAfter/styles/panel = SubResource("StyleBoxFlat_week_after")
+WeekClear/base_type = &"PanelContainer"
+WeekClear/styles/panel = SubResource("StyleBoxEmpty_flat")
+WeekDone/base_type = &"PanelContainer"
+WeekDone/styles/panel = SubResource("StyleBoxFlat_week_done")
+WeekLater/base_type = &"PanelContainer"
+WeekLater/styles/panel = SubResource("StyleBoxFlat_week_later")
+WeekMarkAfter/base_type = &"PanelContainer"
+WeekMarkAfter/styles/panel = SubResource("StyleBoxFlat_mark_after")
+WeekMarkDone/base_type = &"PanelContainer"
+WeekMarkDone/styles/panel = SubResource("StyleBoxFlat_mark_done")
+WeekMarkLater/base_type = &"PanelContainer"
+WeekMarkLater/styles/panel = SubResource("StyleBoxFlat_mark_later")
+WeekMarkNext/base_type = &"PanelContainer"
+WeekMarkNext/styles/panel = SubResource("StyleBoxFlat_mark_next")
+WeekMarkThis/base_type = &"PanelContainer"
+WeekMarkThis/styles/panel = SubResource("StyleBoxFlat_mark_this")
+WeekNext/base_type = &"PanelContainer"
+WeekNext/styles/panel = SubResource("StyleBoxFlat_week_next")
+WeekStandAfter/base_type = &"PanelContainer"
+WeekStandAfter/styles/panel = SubResource("StyleBoxFlat_stand_after")
+WeekStandDone/base_type = &"PanelContainer"
+WeekStandDone/styles/panel = SubResource("StyleBoxFlat_stand_done")
+WeekStandLater/base_type = &"PanelContainer"
+WeekStandLater/styles/panel = SubResource("StyleBoxFlat_stand_later")
+WeekStandNext/base_type = &"PanelContainer"
+WeekStandNext/styles/panel = SubResource("StyleBoxFlat_stand_next")
+WeekStandThis/base_type = &"PanelContainer"
+WeekStandThis/styles/panel = SubResource("StyleBoxFlat_stand_this")
+WeekThis/base_type = &"PanelContainer"
+WeekThis/styles/panel = SubResource("StyleBoxFlat_week_this")

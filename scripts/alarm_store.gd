@@ -360,10 +360,12 @@ func once_pick_dates() -> Array[Dictionary]:
 	return dates
 
 
-func agenda_when(date_key: String) -> String:
+func agenda_when(date_key: String, with_year: bool = false) -> String:
 	var day_index := date_weekday_index(date_key)
 	var weekday := tr("周" + WEEKDAY_NAMES[clampi(day_index, 0, 6)])
 	var parts := date_key.split("-")
+	if with_year and parts.size() == 3:
+		return tr("%d年%d月%d日 %s") % [int(parts[0]), int(parts[1]), int(parts[2]), weekday]
 	var month_day := date_key
 	if parts.size() == 3:
 		month_day = "%d/%d" % [int(parts[1]), int(parts[2])]
@@ -407,7 +409,7 @@ func agenda() -> Array[Dictionary]:
 		var lead := int(alarm.get("lead_minutes", 0))
 		var event_hour := int(alarm.get("event_hour", hour))
 		var event_minute := int(alarm.get("event_minute", minute))
-		var first := next_date(weekday - 1, hour, minute)
+		var first := agenda_date(weekday - 1)
 		var skips: Array = alarm.get("skip_dates", [])
 		var label := tr(str(alarm.get("label", "")))
 		var end_alarm: Dictionary = ends.get(alarm_id + "-end", {})
@@ -1406,6 +1408,12 @@ func _has_recent_reward(event: Dictionary) -> bool:
 func today_weekday_index() -> int:
 	var godot_day := int(Time.get_datetime_dict_from_system().get("weekday", 0))
 	return 6 if godot_day == 0 else godot_day - 1
+
+
+## 行程上这个星期几从哪天起。今天该出现的都算今天，不看钟点过没过。
+func agenda_date(day_index: int) -> String:
+	var ahead := posmod(day_index - today_weekday_index(), 7)
+	return shift_date(local_today_key(), ahead)
 
 
 ## 这个星期几下一次到点是哪天；今天已经过了那个钟点就算下周。
