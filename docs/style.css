@@ -111,3 +111,12 @@ header .local-data { max-width: 620px; margin: 8px auto 20px; }
 }
 
 header .weekly-intro { max-width: 700px; margin: 20px auto 0; color: var(--navy); font-size: 17px; line-height: 1.85; text-align: left; }
+
+header .flower.mascot { width: 112px; height: 96px; margin: 0 auto; overflow: hidden; border-radius: 50%; }
+.mascot svg { display: block; width: 100%; height: 100%; }
+.comic { padding: 24px; margin: 4px 0 24px; }
+.comic h2 { margin: 0 0 20px; }
+.comic figure { margin: 0 auto; max-width: 720px; }
+.comic img { display: block; width: 100%; height: auto; border-radius: 10px; }
+.comic figcaption { margin-top: 10px; text-align: center; font-size: 13px; color: var(--muted); }
+@media (max-width: 620px) { .comic { padding: 14px; } .comic h2 { font-size: 18px; } }
