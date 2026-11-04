@@ -1,0 +1,2 @@
+CFBundleDisplayName = "작은 꽃 알람";
+NSAlarmKitUsageDescription = "작은 꽃 알람이 정해 둔 시간에 알람으로 깨워 드려요.";

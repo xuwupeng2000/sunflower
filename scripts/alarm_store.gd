@@ -12,8 +12,18 @@ const BLOOM_GROWTH := 2
 const WEEKS_AHEAD := 8
 var last_watered := ""
 var language := "zh"
-const LANGUAGES := ["zh", "zh_TW", "en"]
-const LANGUAGE_FILES := ["res://locale/ui.en.translation", "res://locale/ui.zh_TW.translation"]
+const LANGUAGES := ["zh", "zh_TW", "en", "ja", "ko", "de", "fr", "it", "es", "ru"]
+const LANGUAGE_FILES := [
+	"res://locale/ui.en.translation",
+	"res://locale/ui.zh_TW.translation",
+	"res://locale/ui.ja.translation",
+	"res://locale/ui.ko.translation",
+	"res://locale/ui.de.translation",
+	"res://locale/ui.fr.translation",
+	"res://locale/ui.it.translation",
+	"res://locale/ui.es.translation",
+	"res://locale/ui.ru.translation",
+]
 var tutorial_seen := false
 var timer_tutorial_seen := false
 var once_tutorial_seen := false
@@ -365,10 +375,10 @@ func agenda_when(date_key: String, with_year: bool = false) -> String:
 	var weekday := tr("周" + WEEKDAY_NAMES[clampi(day_index, 0, 6)])
 	var parts := date_key.split("-")
 	if with_year and parts.size() == 3:
-		return tr("%d年%d月%d日 %s") % [int(parts[0]), int(parts[1]), int(parts[2]), weekday]
+		return full_date(parts, weekday)
 	var month_day := date_key
 	if parts.size() == 3:
-		month_day = "%d/%d" % [int(parts[1]), int(parts[2])]
+		month_day = short_date(int(parts[1]), int(parts[2]))
 	if date_key == local_today_key():
 		return "%s %s" % [tr("今天"), month_day]
 	match week_bucket(date_key):
@@ -380,8 +390,17 @@ func agenda_when(date_key: String, with_year: bool = false) -> String:
 			return tr("下下%s %s") % [weekday, month_day]
 		_:
 			if parts.size() == 3:
-				return tr("%d年%d月%d日 %s") % [int(parts[0]), int(parts[1]), int(parts[2]), weekday]
+				return full_date(parts, weekday)
 			return "%s %s" % [weekday, month_day]
+
+
+## 月和日的先后按语言来：欧洲先写日。
+func short_date(month: int, day: int) -> String:
+	return tr("{m}/{d}").format({"m": month, "d": day})
+
+
+func full_date(parts: PackedStringArray, weekday: String) -> String:
+	return tr("{y}年{m}月{d}日 {w}").format({"y": int(parts[0]), "m": int(parts[1]), "d": int(parts[2]), "w": weekday})
 
 
 func agenda() -> Array[Dictionary]:
@@ -582,7 +601,8 @@ func _settings_language() -> String:
 func _system_language() -> String:
 	var preferred := OS.get_locale().to_lower().replace("-", "_")
 	if not preferred.begins_with("zh"):
-		return "en"
+		var base := preferred.get_slice("_", 0)
+		return base if base in LANGUAGES else "en"
 	for mark in ["hant", "_tw", "_hk", "_mo"]:
 		if preferred.contains(mark):
 			return "zh_TW"
@@ -1545,7 +1565,7 @@ func format_date(date_key: String) -> String:
 	var parts := date_key.split("-")
 	if parts.size() != 3:
 		return date_key
-	return tr("%d月%d日") % [int(parts[1]), int(parts[2])]
+	return tr("{m}月{d}日").format({"m": int(parts[1]), "d": int(parts[2])})
 
 
 func format_time(hour: int, minute: int) -> String:

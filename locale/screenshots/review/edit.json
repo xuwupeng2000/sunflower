@@ -1,0 +1,29 @@
+{
+  "source": "/Users/pengwu/Desktop/\u5f55\u5c4f2026-11-04 20.02.30.mov",
+  "output": "sunflower-1.3-review-en-40s.mp4",
+  "duration_seconds": 40,
+  "segments_seconds": [
+    [
+      19,
+      26
+    ],
+    [
+      33,
+      38
+    ],
+    [
+      129,
+      138
+    ],
+    [
+      148,
+      164
+    ],
+    [
+      170,
+      173
+    ]
+  ],
+  "audio": "removed",
+  "purpose": "App Review attachment; edited real-device English demonstration"
+}

@@ -1,0 +1,245 @@
+{
+  "zh-Hant": {
+    "title": "原來你也 by week！",
+    "p1": "我習慣按星期幾安排生活。",
+    "p2a": "啊？",
+    "p2b": "不是按天嗎？",
+    "p3a": "怎麼沒人懂我……",
+    "p3b": "我懂！",
+    "p4a": "自己人！",
+    "p4b": "我也按星期幾安排！",
+    "p5": "健身定時、泡茶定時，也交給我！",
+    "p6": "以後每週，都一起！",
+    "timers": [
+      "有氧 5分鐘",
+      "力量 10分鐘",
+      "紅茶 3分鐘",
+      "綠茶 1小時"
+    ],
+    "week": [
+      "週一",
+      "週二",
+      "週三",
+      "週四",
+      "週五",
+      "週六",
+      "週日"
+    ]
+  },
+  "en-US": {
+    "title": "So you plan by week, too!",
+    "p1": "I plan my life by weekday.",
+    "p2a": "Huh?",
+    "p2b": "Not day by day?",
+    "p3a": "Nobody gets me…",
+    "p3b": "I do!",
+    "p4a": "My kind of person!",
+    "p4b": "I plan by weekday, too!",
+    "p5": "I time workouts and tea, too!",
+    "p6": "Every week, together!",
+    "timers": [
+      "Cardio 5 min",
+      "Strength 10 min",
+      "Black tea 3 min",
+      "Green tea 1 hour"
+    ],
+    "week": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+      "Sun"
+    ]
+  },
+  "ja": {
+    "title": "君も、曜日で考える派！",
+    "p1": "曜日ごとに予定を立てる派です。",
+    "p2a": "え？",
+    "p2b": "一日ずつじゃなくて？",
+    "p3a": "誰もわかってくれない……",
+    "p3b": "わかる！",
+    "p4a": "仲間だ！",
+    "p4b": "私も曜日ごとに予定を立てるよ！",
+    "p5": "運動もお茶も、タイマーにおまかせ！",
+    "p6": "これからは毎週、一緒！",
+    "timers": [
+      "有酸素 5分",
+      "筋トレ 10分",
+      "紅茶 3分",
+      "緑茶 1時間"
+    ],
+    "week": [
+      "月",
+      "火",
+      "水",
+      "木",
+      "金",
+      "土",
+      "日"
+    ]
+  },
+  "ko": {
+    "title": "너도 요일별로 계획하는구나!",
+    "p1": "난 요일별로 생활을 계획해.",
+    "p2a": "응?",
+    "p2b": "하루하루가 아니라?",
+    "p3a": "아무도 날 이해 못 해…",
+    "p3b": "난 알아!",
+    "p4a": "내 편이다!",
+    "p4b": "나도 요일별로 계획해!",
+    "p5": "운동도, 차 우리기도 타이머에 맡겨!",
+    "p6": "이제 매주, 함께!",
+    "timers": [
+      "유산소 5분",
+      "근력 10분",
+      "홍차 3분",
+      "녹차 1시간"
+    ],
+    "week": [
+      "월",
+      "화",
+      "수",
+      "목",
+      "금",
+      "토",
+      "일"
+    ]
+  },
+  "de": {
+    "title": "Du planst auch nach Wochentagen!",
+    "p1": "Ich plane nach Wochentagen.",
+    "p2a": "Hä?",
+    "p2b": "Nicht Tag für Tag?",
+    "p3a": "Niemand versteht mich…",
+    "p3b": "Ich schon!",
+    "p4a": "Du bist wie ich!",
+    "p4b": "Ich plane auch nach Wochentagen!",
+    "p5": "Timer für Sport und Tee? Kann ich auch!",
+    "p6": "Ab jetzt jede Woche zusammen!",
+    "timers": [
+      "Ausdauer 5 Min.",
+      "Kraft 10 Min.",
+      "Schwarztee 3 Min.",
+      "Grüntee 1 Std."
+    ],
+    "week": [
+      "Mo",
+      "Di",
+      "Mi",
+      "Do",
+      "Fr",
+      "Sa",
+      "So"
+    ]
+  },
+  "fr": {
+    "title": "Toi aussi, tu penses en semaines !",
+    "p1": "Je planifie ma vie par jour de la semaine.",
+    "p2a": "Hein ?",
+    "p2b": "Pas au jour le jour ?",
+    "p3a": "Personne ne me comprend…",
+    "p3b": "Moi, si !",
+    "p4a": "On se comprend !",
+    "p4b": "Moi aussi, je planifie par jour de la semaine !",
+    "p5": "Des minuteurs pour le sport et le thé ? Je gère !",
+    "p6": "Chaque semaine, ensemble !",
+    "timers": [
+      "Cardio 5 min",
+      "Musculation 10 min",
+      "Thé noir 3 min",
+      "Thé vert 1 h"
+    ],
+    "week": [
+      "lun.",
+      "mar.",
+      "mer.",
+      "jeu.",
+      "ven.",
+      "sam.",
+      "dim."
+    ]
+  },
+  "it": {
+    "title": "Anche tu ragioni per settimane!",
+    "p1": "Pianifico la vita per giorni della settimana.",
+    "p2a": "Eh?",
+    "p2b": "Non giorno per giorno?",
+    "p3a": "Nessuno mi capisce…",
+    "p3b": "Io sì!",
+    "p4a": "Sei come me!",
+    "p4b": "Anch’io pianifico per giorni della settimana!",
+    "p5": "Timer per allenarti e preparare il tè? Ci penso io!",
+    "p6": "Ogni settimana, insieme!",
+    "timers": [
+      "Cardio 5 min",
+      "Forza 10 min",
+      "Tè nero 3 min",
+      "Tè verde 1 ora"
+    ],
+    "week": [
+      "lun",
+      "mar",
+      "mer",
+      "gio",
+      "ven",
+      "sab",
+      "dom"
+    ]
+  },
+  "es": {
+    "title": "¡Tú también piensas por semanas!",
+    "p1": "Planifico mi vida por días de la semana.",
+    "p2a": "¿Eh?",
+    "p2b": "¿No día a día?",
+    "p3a": "Nadie me entiende…",
+    "p3b": "¡Yo sí!",
+    "p4a": "¡Eres de los míos!",
+    "p4b": "¡Yo también planifico por días de la semana!",
+    "p5": "¿Temporizadores para entrenar y preparar té? ¡Cuenta conmigo!",
+    "p6": "¡Cada semana, juntos!",
+    "timers": [
+      "Cardio 5 min",
+      "Fuerza 10 min",
+      "Té negro 3 min",
+      "Té verde 1 hora"
+    ],
+    "week": [
+      "lun",
+      "mar",
+      "mié",
+      "jue",
+      "vie",
+      "sáb",
+      "dom"
+    ]
+  },
+  "ru": {
+    "title": "Ты тоже планируешь по дням недели!",
+    "p1": "Я планирую жизнь по дням недели.",
+    "p2a": "А?",
+    "p2b": "Не день за днём?",
+    "p3a": "Никто меня не понимает…",
+    "p3b": "Я понимаю!",
+    "p4a": "Свой человек!",
+    "p4b": "Я тоже планирую по дням недели!",
+    "p5": "Таймеры для спорта и чая? Это ко мне!",
+    "p6": "Теперь каждую неделю вместе!",
+    "timers": [
+      "Кардио 5 мин",
+      "Силовые 10 мин",
+      "Чёрный чай 3 мин",
+      "Зелёный чай 1 час"
+    ],
+    "week": [
+      "пн",
+      "вт",
+      "ср",
+      "чт",
+      "пт",
+      "сб",
+      "вс"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "version": "1.3",
+  "build": "2",
+  "status": "Waiting for Review",
+  "submitted_at": "2026-11-04T20:16:00+08:00",
+  "submission_id": "b38410f5-e9c8-4a0d-aca0-8962c0faeafa",
+  "locales": [
+    "en-US",
+    "zh-Hans",
+    "zh-Hant",
+    "ja",
+    "ko",
+    "de",
+    "fr",
+    "it",
+    "es",
+    "ru"
+  ],
+  "screenshots_per_locale": 6,
+  "metadata_verified": [
+    "promotional text",
+    "description",
+    "keywords"
+  ],
+  "review_attachment": "sunflower-1.3-review-en-40s.mp4",
+  "review_video_seconds": 40
+}

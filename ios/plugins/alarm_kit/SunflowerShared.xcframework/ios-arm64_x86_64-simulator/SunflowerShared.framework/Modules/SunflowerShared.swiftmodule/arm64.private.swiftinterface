@@ -27,6 +27,7 @@ public enum Copy {
   }
   public static func phoneLanguage() -> Swift::String
   public static func text(_ zh: Swift::String, _ en: Swift::String, hant: Swift::String) -> Swift::String
+  public static func clock(hour: Swift::Int, minute: Swift::Int) -> Swift::String
 }
 public struct SunflowerMetadata : AlarmKit::AlarmMetadata {
   public let alarmId: Swift::String

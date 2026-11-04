@@ -51,7 +51,7 @@ theme/custom_font="res://theme/font_ios.tres"
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://locale/ui.en.translation", "res://locale/ui.zh_TW.translation")
+locale/translations=PackedStringArray("res://locale/ui.en.translation", "res://locale/ui.zh_TW.translation", "res://locale/ui.ja.translation", "res://locale/ui.ko.translation", "res://locale/ui.de.translation", "res://locale/ui.fr.translation", "res://locale/ui.it.translation", "res://locale/ui.es.translation", "res://locale/ui.ru.translation")
 locale/fallback="zh"
 
 [ios]

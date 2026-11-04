@@ -313,23 +313,16 @@ struct SunflowerTimerLiveActivity: Widget {
     private func timerNote(_ attributes: SunflowerTimerAttributes) -> String {
         let minutes = max(1, Int((attributes.endDate.timeIntervalSince(attributes.startDate) / 60).rounded()))
         let parts = Calendar.current.dateComponents([.hour, .minute], from: attributes.endDate)
-        let hour = parts.hour ?? 0
-        let minute = parts.minute ?? 0
-        let shown = hour % 12 == 0 ? 12 : hour % 12
         let length: String
         if minutes < 60 {
-            length = Copy.text("\(minutes) 分钟", "\(minutes) min", hant: "\(minutes) 分鐘")
+            length = String(format: Copy.text("%d 分钟", "%d min", hant: "%d 分鐘"), minutes)
         } else if minutes % 60 == 0 {
-            length = Copy.text("\(minutes / 60) 小时", "\(minutes / 60) hr", hant: "\(minutes / 60) 小時")
+            length = String(format: Copy.text("%d 小时", "%d hr", hant: "%d 小時"), minutes / 60)
         } else {
-            length = Copy.text("\(minutes / 60) 小时 \(minutes % 60) 分钟", "\(minutes / 60) hr \(minutes % 60) min", hant: "\(minutes / 60) 小時 \(minutes % 60) 分鐘")
+            length = String(format: Copy.text("%d 小时 %d 分钟", "%d hr %d min", hant: "%d 小時 %d 分鐘"), minutes / 60, minutes % 60)
         }
-        let clock = String(format: "%d:%02d", shown, minute)
-        return Copy.text(
-            "共 \(length) · \(hour < 12 ? "上午" : "下午") \(clock) 到",
-            "\(length) · done at \(clock) \(hour < 12 ? "am" : "pm")",
-            hant: "共 \(length) · \(hour < 12 ? "上午" : "下午") \(clock) 到"
-        )
+        let clock = Copy.clock(hour: parts.hour ?? 0, minute: parts.minute ?? 0)
+        return String(format: Copy.text("共 %@ · %@ 到", "%@ · done at %@", hant: "共 %@ · %@ 到"), length, clock)
     }
 
     private func cancelTimerButton(_ attributes: SunflowerTimerAttributes) -> some View {

@@ -1,0 +1,502 @@
+{
+  "zh-Hans": [
+    {
+      "file": "01-timer.png",
+      "sha256": "fefbb3ccd8f24155b22e32e7b3db4e529a49ae79bd1042cdd6756c04aa09f4d8",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "02-schedule.png",
+      "sha256": "ff8fd46a89d1b1136df81313b0b7a8627324175b52d16d4a798af9e9b0e4a6ed",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "03-once.png",
+      "sha256": "d62068f828ae0e108764e1ded6bb1efbe4b5d4c5d47d6cfcd413010361532b93",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "04-arrival.png",
+      "sha256": "2acbe4babd7c2a6ec6419c71fea73aba520c03d9a245677864106328fd989fca",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "05-weekly.png",
+      "sha256": "4f68dfd1364d983fbb265616c5e772378a55022ef32c62b7b8dafdf6103226d6",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "06-flower.png",
+      "sha256": "c6a382d9d465f3f572fdad80918681545cc8938574e5a8970c6394a6da381b2d",
+      "size": [
+        1206,
+        2622
+      ]
+    }
+  ],
+  "zh-Hant": [
+    {
+      "file": "01-timer.png",
+      "sha256": "44b954ed586bccd9076dc266d5643d433fe5538556be74ed5d489896ab81a129",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "02-schedule.png",
+      "sha256": "08a393c17fd3595f688e96771ba05fc06109c2af5cf7696bea7bedbd865c3c0e",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "03-once.png",
+      "sha256": "185b7a8f2d9a37634b6ea9e402d1f7f9a46e55a32a0fcba082699de218a8b76a",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "04-arrival.png",
+      "sha256": "1ace6c0d6b64f3d6ee50e8d9c4581d690b8d3d0d046f7cd0dc1364c889e27b38",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "05-weekly.png",
+      "sha256": "7f67d60869a9fceee181266628180ff326a9abe87054d29caf84b06419fbb245",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "06-flower.png",
+      "sha256": "f8cf6eac26171838d149b1441ec6114f5628e04f0d9097e92e8f5710c8fa2371",
+      "size": [
+        1206,
+        2622
+      ]
+    }
+  ],
+  "ja": [
+    {
+      "file": "01-timer.png",
+      "sha256": "04394115773215c292ef88167eaa2d2b7eb3d7c3b812bc0dfde7eca3dbcc69e3",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "02-schedule.png",
+      "sha256": "e4202d865aa1a7250195ea41dce7a8c8528f31e45b9fac3417679aafb2cfb09e",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "03-once.png",
+      "sha256": "4b315864c73f2c5cf2edaf1e17e96ba424df7ae100de2a7167f1c8c49aac7f09",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "04-arrival.png",
+      "sha256": "1b888a9af6cd907b50a42d203676f6d82151fbe5bdf1337e8a685dfd0d6bc151",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "05-weekly.png",
+      "sha256": "ef54a9e1608cb62513a07eb11610d9b42f2da1b069cf610fd0e8da5d3e592786",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "06-flower.png",
+      "sha256": "dbd3287cf305af424601cabf966bde08e97cbdf6aa0c3db36567f91a1e6089a8",
+      "size": [
+        1206,
+        2622
+      ]
+    }
+  ],
+  "it": [
+    {
+      "file": "01-timer.png",
+      "sha256": "e226f19f761dbc63637a35a3a47a973eb4df8fa7b1ccae0f92ed4a2881644869",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "02-schedule.png",
+      "sha256": "30b2a940e39647c468e9549351aff9a0cb82306551246cde01c21bc526a0057b",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "03-once.png",
+      "sha256": "5e8d321d946b4421d1572c9e19c68d1d8158b3eee21d3b692d6ebeef7500755f",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "04-arrival.png",
+      "sha256": "58a13e856f307f2bf77bcdccdbb0fabf832099c242f0b3c3896300ee3fdf364d",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "05-weekly.png",
+      "sha256": "6bf36e03e68e252ea0264a6a35c25cd8e84cd3317a358d50bbdfe317a2b9a470",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "06-flower.png",
+      "sha256": "6bba0cd8343c7b4deaedb59f82e368be8a00a0d6998af25904292164f0c5ed24",
+      "size": [
+        1206,
+        2622
+      ]
+    }
+  ],
+  "ru": [
+    {
+      "file": "01-timer.png",
+      "sha256": "71c42f54df876f5a055ac1319d64389281a7aafcbe2950c1b910d61c56b9db7a",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "02-schedule.png",
+      "sha256": "d1f51b1ba9e22af4a7eaf915bd49846e77bc03d5dad1c975abde0fbf2838565d",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "03-once.png",
+      "sha256": "1a7d996f42628051182db28468c0a90207d8e158e217104ccf4ad392d52f6846",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "04-arrival.png",
+      "sha256": "9214cced6b6d8b3bc00e108ac617c46bf2750773564bb03c7dbc05a39b8809f6",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "05-weekly.png",
+      "sha256": "33492e1281c78aa935efb6215410e09d95759b531327d7dd36687c976c52549d",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "06-flower.png",
+      "sha256": "c30c46b2b34ce01849f896a36aef24356d15ebcd6dc97246276850f44997a968",
+      "size": [
+        1206,
+        2622
+      ]
+    }
+  ],
+  "de": [
+    {
+      "file": "01-timer.png",
+      "sha256": "8e5061cb348e8582c5cd9066852a6f788c3266e73cdc707c233dd6a1367730ec",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "02-schedule.png",
+      "sha256": "4d91c161081579208ef6f6a700fc36ca94152bc51f4fb605bbebc4805d03e528",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "03-once.png",
+      "sha256": "1d821d2e2991064892264c90941e1d329c2ee50eab87df5bcbd618dd71cde8c2",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "04-arrival.png",
+      "sha256": "7ed9d3c3f8ed6a33cfa4098bcd136dd0aadc6eeda8a5b37579cd1345787e64cb",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "05-weekly.png",
+      "sha256": "be7491deb76f55910f7e4845ff208aa4ac7a4edd673f8a3ebf6fad2a7bc1c131",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "06-flower.png",
+      "sha256": "14563ded651b3bac5bbb87a1e6834409ef5f685945f116062bbd18ef6e2663b3",
+      "size": [
+        1206,
+        2622
+      ]
+    }
+  ],
+  "ko": [
+    {
+      "file": "01-timer.png",
+      "sha256": "bcbf2bf33bfa4a835d1a0f4b4c98c5eb4ca38c1d414c28ffe1d6902c4c1c0892",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "02-schedule.png",
+      "sha256": "c1223d110a5f9f485a9fbe203e52bd5b4535cfc9cf69fbd1cdad9334b77f560c",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "03-once.png",
+      "sha256": "67b3ee4b250dbfe577d0a98ff1bbb1fb7c43b68d0745a60356160633c44209c2",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "04-arrival.png",
+      "sha256": "e675261c4ce7b06041de18595dee2b23240884649b1e67ddc1e1cd6199f11a1d",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "05-weekly.png",
+      "sha256": "44efaba35c660cd6dcf84ff9d27b4ac1ba7806c807c0940b75c1326250235b5d",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "06-flower.png",
+      "sha256": "7c9e4946aeb0ec2f4dd546058ed2e99a30fd3574ff5f8c554117a5c47c34384e",
+      "size": [
+        1206,
+        2622
+      ]
+    }
+  ],
+  "fr": [
+    {
+      "file": "01-timer.png",
+      "sha256": "018033528ef6ee28e67e5a2b9dc9fd4064823e39cd8207f862a3466bc054566d",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "02-schedule.png",
+      "sha256": "68db5564771a983daf3325c740e4290f432e42694493acaf253ed1e667245704",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "03-once.png",
+      "sha256": "46f2b27138bda07273a2a04e41744ae823ed8d25b84eca1df2628fda694c6c99",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "04-arrival.png",
+      "sha256": "09f973b9b2abb589df86c24eac1536981bcd797f5c495aee6a90337781b56780",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "05-weekly.png",
+      "sha256": "975df6a3bc997960b7862a30d7dcbffab7d3ce90a12e887a8da9f41a3319f34e",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "06-flower.png",
+      "sha256": "639299f9c652f80a5c689769ec013c82be0aa78a587a185dd1cfa08adc8b686a",
+      "size": [
+        1206,
+        2622
+      ]
+    }
+  ],
+  "es": [
+    {
+      "file": "01-timer.png",
+      "sha256": "5fc13288584b067c219d76beaadc7ee1b94bde929b15b070a7274bfa400c94fa",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "02-schedule.png",
+      "sha256": "8078c8867dd0868704e206364fe919d6b5eb2f293cdb51e59b6e1d7b8e90722d",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "03-once.png",
+      "sha256": "9726ec6706cd3798b060dac2a32203e235ad130b34bf10382e703caac452eb85",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "04-arrival.png",
+      "sha256": "4274d2108b6c906454431361f7393d1926afa26bb913aea4da83dbca735b4674",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "05-weekly.png",
+      "sha256": "1dcdc96ca67983e6d1d6dd5e3b637e2572e4e985cc92f18cad5ff7812982f65a",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "06-flower.png",
+      "sha256": "2cc0a8957f8652e1984b1ab36aaf6bb6af33c415837a3dab975b44d5ebcc20e0",
+      "size": [
+        1206,
+        2622
+      ]
+    }
+  ],
+  "en-US": [
+    {
+      "file": "01-timer.png",
+      "sha256": "636d230427a51600c7c2008bf833726651c8de6a698710de43cc1ef42549ada3",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "02-schedule.png",
+      "sha256": "6eb97cf1b6f8997f35aeb0097910cb6b9f7323bd3740369e101f4621fbf25294",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "03-once.png",
+      "sha256": "6f95b2d033c753c3a84d696c6a5d0aaf0c344b200d4a0c718dca57ecd5a73afc",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "04-arrival.png",
+      "sha256": "8fa7ffea7c154decd14dc80a1f2a14b3e5a382e5ca7cd95ed77f93044a852c00",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "05-weekly.png",
+      "sha256": "ed3489c172655cf0a0f6e46a9d23466460dc022b8c7a1ee2bca5b131f20c6fa6",
+      "size": [
+        1206,
+        2622
+      ]
+    },
+    {
+      "file": "06-flower.png",
+      "sha256": "4cbdd1926f3347d16c0902c9af3424b1445ae6377a4227b9f013202283348f02",
+      "size": [
+        1206,
+        2622
+      ]
+    }
+  ]
+}

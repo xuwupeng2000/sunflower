@@ -1,0 +1,2 @@
+CFBundleDisplayName = "Цветочек";
+NSAlarmKitUsageDescription = "Цветочек использует будильники, чтобы разбудить тебя в выбранное время.";

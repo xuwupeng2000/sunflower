@@ -1,0 +1,268 @@
+{
+  "ja": {
+    "title": "プライバシーポリシー",
+    "name": "ちいさな花アラーム",
+    "date": "施行日",
+    "short": "このアプリは、個人データを収集、アップロード、共有しません。アラームと花の記録は、あなたのiPhoneに保存されます。",
+    "none": "収集しない情報",
+    "none_items": [
+      "アプリはネットワーク通信を行わず、独自のサーバーもありません。",
+      "アカウント登録やログインはありません。",
+      "広告、利用状況の解析、アプリ間の追跡はなく、第三者の広告・解析SDKも使用していません。",
+      "位置情報、連絡先、写真、マイク、カメラ、ヘルスケアデータにはアクセスしません。"
+    ],
+    "local": "端末に保存するデータ",
+    "local_intro": "アプリの動作に必要な次の情報は、iPhone内に保存されます。",
+    "local_items": [
+      "設定したアラーム、リマインダー、休止・スキップの状態、タイマーのプリセット",
+      "花の成長、水やりや肥料の記録、選択した花と鉢",
+      "表示言語の設定"
+    ],
+    "local_detail": "データはアプリ専用の保存領域に保存されます。一部は、ウィジェットやライブアクティビティが読み取れるよう、端末内のApp Group共有領域に保存されます。アプリがこれらのデータを私たちや第三者に送信することはなく、私たちが内容を見ることもできません。",
+    "permissions": "システムの許可",
+    "permission_items": [
+      "アラーム（AlarmKit）：設定した時刻にアラームを鳴らすため。",
+      "通知：タイマー終了時などにお知らせするため。"
+    ],
+    "permission_detail": "これらの許可は、端末上でアラームやリマインダーを設定するためにのみ使用します。iPhoneの「設定」でいつでも無効にできます。",
+    "apple": "Appleから提供される情報",
+    "apple_text": "iPhoneの「設定」→「プライバシーとセキュリティ」→「解析と改善」で開発者との共有を有効にした場合、Appleから匿名のクラッシュレポートや利用統計が提供されることがあります。この処理はAppleのプライバシーポリシーに基づいて行われ、共有はいつでも無効にできます。",
+    "delete": "データの削除",
+    "delete_text": "アプリを削除すると、アプリが端末に保存したデータも削除されます。私たちにはサーバーがないため、別途削除を依頼するデータはありません。",
+    "children": "子どものプライバシー",
+    "children_text": "このアプリは、子どもを含むすべての方の個人情報を収集しません。",
+    "changes": "ポリシーの変更",
+    "changes_text": "変更がある場合は、このページと上記の施行日を更新します。",
+    "contact": "お問い合わせ",
+    "developer": "開発者",
+    "support": "ヘルプとサポート"
+  },
+  "ko": {
+    "title": "개인정보 처리방침",
+    "name": "작은 꽃 알람",
+    "date": "시행일",
+    "short": "이 앱은 개인정보를 수집하거나 업로드하거나 공유하지 않습니다. 알람과 꽃의 기록은 사용자의 iPhone에 저장됩니다.",
+    "none": "수집하지 않는 정보",
+    "none_items": [
+      "앱은 네트워크 요청을 보내지 않으며 별도의 서버도 없습니다.",
+      "계정이나 로그인 기능이 없습니다.",
+      "광고, 이용 분석, 앱 간 추적이 없으며 타사 광고 또는 분석 SDK도 사용하지 않습니다.",
+      "위치, 연락처, 사진, 마이크, 카메라 또는 건강 데이터에 접근하지 않습니다."
+    ],
+    "local": "기기에 저장되는 데이터",
+    "local_intro": "앱 작동에 필요한 다음 정보는 iPhone에 저장됩니다.",
+    "local_items": [
+      "설정한 알람과 리마인더, 일시 중지 및 건너뛰기 상태, 타이머 프리셋",
+      "꽃의 성장, 물주기와 비료 기록, 선택한 꽃과 화분",
+      "화면 언어 설정"
+    ],
+    "local_detail": "데이터는 앱 전용 저장 공간에 저장됩니다. 일부 데이터는 위젯과 실시간 현황에서 읽을 수 있도록 기기 내 App Group 공유 공간에 저장됩니다. 앱은 이 데이터를 당사나 제삼자에게 전송하지 않으며, 당사는 내용을 볼 수 없습니다.",
+    "permissions": "시스템 권한",
+    "permission_items": [
+      "알람(AlarmKit): 설정한 시간에 알람을 울리기 위해 사용합니다.",
+      "알림: 타이머 종료 등을 알리기 위해 사용합니다."
+    ],
+    "permission_detail": "이 권한은 기기에서 알람과 리마인더를 예약하는 데만 사용합니다. iPhone 설정에서 언제든지 끌 수 있습니다.",
+    "apple": "Apple이 제공하는 정보",
+    "apple_text": "iPhone 설정 → 개인정보 보호 및 보안 → 분석 및 향상에서 개발자와 공유하기를 선택하면 Apple이 익명 충돌 보고서와 이용 통계를 제공할 수 있습니다. Apple이 자체 개인정보 처리방침에 따라 처리하며, 공유는 언제든지 끌 수 있습니다.",
+    "delete": "데이터 삭제",
+    "delete_text": "앱을 삭제하면 앱이 기기에 저장한 데이터도 삭제됩니다. 당사에는 서버가 없으므로 별도로 삭제를 요청할 데이터가 없습니다.",
+    "children": "아동의 개인정보",
+    "children_text": "이 앱은 아동을 포함한 누구의 개인정보도 수집하지 않습니다.",
+    "changes": "방침 변경",
+    "changes_text": "이 방침이 변경되면 이 페이지와 위의 시행일을 업데이트합니다.",
+    "contact": "문의",
+    "developer": "개발자",
+    "support": "도움말 및 지원"
+  },
+  "de": {
+    "title": "Datenschutzerklärung",
+    "name": "Kleine Blume Wecker",
+    "date": "Gültig ab",
+    "short": "Diese App erhebt, überträgt und teilt keine personenbezogenen Daten. Deine Wecker und der Fortschritt deiner Blume werden auf deinem iPhone gespeichert.",
+    "none": "Was wir nicht erheben",
+    "none_items": [
+      "Die App stellt keine Netzwerkanfragen und hat keinen eigenen Server.",
+      "Es gibt keine Konten und keine Anmeldung.",
+      "Keine Werbung, keine Nutzungsanalyse, kein appübergreifendes Tracking und keine Werbe- oder Analyse-SDKs von Drittanbietern.",
+      "Kein Zugriff auf Standort, Kontakte, Fotos, Mikrofon, Kamera oder Gesundheitsdaten."
+    ],
+    "local": "Daten auf deinem Gerät",
+    "local_intro": "Damit die App funktioniert, speichert sie Folgendes auf deinem iPhone:",
+    "local_items": [
+      "Deine Wecker, Erinnerungen, Pausen- und Überspringen-Einstellungen sowie Timer-Vorlagen",
+      "Wachstum, Gieß- und Düngeverlauf deiner Blume sowie die gewählte Blume und den Topf",
+      "Deine Spracheinstellung"
+    ],
+    "local_detail": "Die Daten liegen im eigenen Speicherbereich der App. Ein Teil wird in einem lokalen App-Group-Container gespeichert, damit Widget und Live-Aktivitäten darauf zugreifen können. Die App sendet diese Daten weder an uns noch an Dritte. Wir können sie nicht einsehen.",
+    "permissions": "Systemberechtigungen",
+    "permission_items": [
+      "Wecker (AlarmKit): um zu den von dir eingestellten Zeiten zu klingeln.",
+      "Mitteilungen: zum Beispiel, wenn ein Timer abgelaufen ist."
+    ],
+    "permission_detail": "Diese Berechtigungen dienen nur dazu, Wecker und Erinnerungen auf deinem Gerät zu planen. Du kannst sie jederzeit in den iPhone-Einstellungen ausschalten.",
+    "apple": "Informationen von Apple",
+    "apple_text": "Wenn du unter iPhone-Einstellungen → Datenschutz & Sicherheit → Analyse & Verbesserungen die Freigabe für App-Entwickler aktivierst, kann Apple uns anonyme Absturzberichte und Nutzungsstatistiken zur Verfügung stellen. Apple verarbeitet diese Informationen nach seiner eigenen Datenschutzrichtlinie. Du kannst die Freigabe jederzeit ausschalten.",
+    "delete": "Deine Daten löschen",
+    "delete_text": "Wenn du die App löschst, werden auch die von ihr auf deinem Gerät gespeicherten Daten gelöscht. Da wir keine Server haben, gibt es keine weiteren Daten, deren Löschung du beantragen musst.",
+    "children": "Datenschutz für Kinder",
+    "children_text": "Die App erhebt von niemandem personenbezogene Daten, auch nicht von Kindern.",
+    "changes": "Änderungen dieser Erklärung",
+    "changes_text": "Bei Änderungen aktualisieren wir diese Seite und das oben genannte Gültigkeitsdatum.",
+    "contact": "Kontakt",
+    "developer": "Entwickler",
+    "support": "Hilfe & Support"
+  },
+  "fr": {
+    "title": "Politique de confidentialité",
+    "name": "Petite Fleur Réveil",
+    "date": "Date d’entrée en vigueur",
+    "short": "Cette app ne collecte, ne téléverse et ne partage aucune donnée personnelle. Tes alarmes et la progression de ta fleur sont enregistrées sur ton iPhone.",
+    "none": "Ce que nous ne collectons pas",
+    "none_items": [
+      "L’app n’effectue aucune requête réseau et ne possède pas de serveur.",
+      "Il n’y a ni compte ni connexion.",
+      "Aucune publicité, aucune analyse d’utilisation, aucun suivi entre les apps et aucun SDK publicitaire ou d’analyse tiers.",
+      "L’app n’accède pas à ta position, tes contacts, tes photos, ton microphone, ta caméra ou tes données de santé."
+    ],
+    "local": "Données enregistrées sur ton appareil",
+    "local_intro": "Pour fonctionner, l’app conserve les éléments suivants sur ton iPhone :",
+    "local_items": [
+      "Tes alarmes, rappels, états de pause ou de saut et modèles de minuteur",
+      "La croissance de ta fleur, les arrosages et l’engrais, ainsi que la fleur et le pot choisis",
+      "Ta langue d’affichage"
+    ],
+    "local_detail": "Ces données sont stockées dans l’espace propre à l’app. Certaines sont placées dans un conteneur App Group local pour être lues par le widget et les activités en direct. L’app ne transmet ces données ni à nous ni à des tiers. Nous ne pouvons pas les consulter.",
+    "permissions": "Autorisations système",
+    "permission_items": [
+      "Alarmes (AlarmKit) : pour sonner aux heures que tu choisis.",
+      "Notifications : pour signaler notamment la fin d’un minuteur."
+    ],
+    "permission_detail": "Ces autorisations servent uniquement à programmer des alarmes et des rappels sur ton appareil. Tu peux les désactiver à tout moment dans les réglages de l’iPhone.",
+    "apple": "Informations fournies par Apple",
+    "apple_text": "Si tu choisis le partage avec les développeurs dans Réglages → Confidentialité et sécurité → Analyse et améliorations, Apple peut nous fournir des rapports de plantage et des statistiques d’utilisation anonymes. Apple gère ce traitement selon sa propre politique de confidentialité. Tu peux désactiver ce partage à tout moment.",
+    "delete": "Supprimer tes données",
+    "delete_text": "Supprimer l’app supprime aussi les données qu’elle a enregistrées sur ton appareil. Comme nous n’avons aucun serveur, il n’y a pas d’autres données à nous demander de supprimer.",
+    "children": "Confidentialité des enfants",
+    "children_text": "L’app ne collecte les données personnelles de personne, y compris des enfants.",
+    "changes": "Modifications de cette politique",
+    "changes_text": "En cas de modification, nous mettrons à jour cette page et la date d’entrée en vigueur ci-dessus.",
+    "contact": "Contact",
+    "developer": "Développeur",
+    "support": "Aide et assistance"
+  },
+  "it": {
+    "title": "Informativa sulla privacy",
+    "name": "Sveglia Fiorellino",
+    "date": "Data di entrata in vigore",
+    "short": "Questa app non raccoglie, carica o condivide dati personali. Le sveglie e i progressi del tuo fiore sono salvati sul tuo iPhone.",
+    "none": "Cosa non raccogliamo",
+    "none_items": [
+      "L’app non effettua richieste di rete e non ha un proprio server.",
+      "Non ci sono account o accessi.",
+      "Niente pubblicità, analisi dell’utilizzo, tracciamento tra app o SDK pubblicitari o di analisi di terze parti.",
+      "L’app non accede a posizione, contatti, foto, microfono, fotocamera o dati sanitari."
+    ],
+    "local": "Dati salvati sul dispositivo",
+    "local_intro": "Per funzionare, l’app conserva sul tuo iPhone:",
+    "local_items": [
+      "Sveglie, promemoria, stati di pausa o salto e modelli di timer",
+      "Crescita del fiore, annaffiature e concime, fiore e vaso scelti",
+      "La lingua dell’interfaccia"
+    ],
+    "local_detail": "I dati sono salvati nello spazio dedicato all’app. Alcuni sono conservati in un contenitore App Group locale per essere letti dal widget e dalle attività in tempo reale. L’app non invia questi dati a noi né a terzi. Non possiamo consultarli.",
+    "permissions": "Autorizzazioni di sistema",
+    "permission_items": [
+      "Sveglie (AlarmKit): per suonare agli orari che imposti.",
+      "Notifiche: ad esempio, per avvisarti quando termina un timer."
+    ],
+    "permission_detail": "Queste autorizzazioni servono solo a programmare sveglie e promemoria sul dispositivo. Puoi disattivarle in qualsiasi momento nelle impostazioni dell’iPhone.",
+    "apple": "Informazioni fornite da Apple",
+    "apple_text": "Se scegli di condividere con gli sviluppatori in Impostazioni → Privacy e sicurezza → Analisi e miglioramenti, Apple può fornirci resoconti anonimi degli arresti anomali e statistiche di utilizzo. Apple gestisce questo trattamento secondo la propria informativa sulla privacy. Puoi disattivare la condivisione in qualsiasi momento.",
+    "delete": "Eliminare i dati",
+    "delete_text": "Eliminando l’app, elimini anche i dati che ha salvato sul dispositivo. Poiché non abbiamo server, non ci sono altri dati da chiederci di eliminare.",
+    "children": "Privacy dei minori",
+    "children_text": "L’app non raccoglie dati personali di nessuno, inclusi i minori.",
+    "changes": "Modifiche all’informativa",
+    "changes_text": "In caso di modifiche, aggiorneremo questa pagina e la data di entrata in vigore indicata sopra.",
+    "contact": "Contatti",
+    "developer": "Sviluppatore",
+    "support": "Aiuto e assistenza"
+  },
+  "es": {
+    "title": "Política de privacidad",
+    "name": "Florecita Despertador",
+    "date": "Fecha de entrada en vigor",
+    "short": "Esta app no recopila, carga ni comparte datos personales. Tus alarmas y el progreso de tu flor se guardan en tu iPhone.",
+    "none": "Lo que no recopilamos",
+    "none_items": [
+      "La app no realiza solicitudes de red y no tiene servidor propio.",
+      "No hay cuentas ni inicio de sesión.",
+      "Sin anuncios, análisis de uso, seguimiento entre apps ni SDK de publicidad o análisis de terceros.",
+      "La app no accede a tu ubicación, contactos, fotos, micrófono, cámara ni datos de salud."
+    ],
+    "local": "Datos guardados en tu dispositivo",
+    "local_intro": "Para funcionar, la app guarda lo siguiente en tu iPhone:",
+    "local_items": [
+      "Tus alarmas, recordatorios, estados de pausa u omisión y plantillas de temporizador",
+      "El crecimiento de tu flor, los riegos y el abono, y la flor y maceta que elijas",
+      "Tu idioma de interfaz"
+    ],
+    "local_detail": "Estos datos se guardan en el espacio propio de la app. Algunos se almacenan en un contenedor App Group local para que el widget y las actividades en directo puedan leerlos. La app no nos envía estos datos ni los transmite a terceros. No podemos verlos.",
+    "permissions": "Permisos del sistema",
+    "permission_items": [
+      "Alarmas (AlarmKit): para sonar a las horas que configures.",
+      "Notificaciones: por ejemplo, para avisarte cuando termine un temporizador."
+    ],
+    "permission_detail": "Estos permisos solo se utilizan para programar alarmas y recordatorios en tu dispositivo. Puedes desactivarlos cuando quieras en los ajustes del iPhone.",
+    "apple": "Información proporcionada por Apple",
+    "apple_text": "Si eliges compartir con desarrolladores en Ajustes → Privacidad y seguridad → Análisis y mejoras, Apple puede proporcionarnos informes de fallos y estadísticas de uso anónimos. Apple gestiona este proceso según su propia política de privacidad. Puedes desactivar la opción cuando quieras.",
+    "delete": "Eliminar tus datos",
+    "delete_text": "Al eliminar la app, también se eliminan los datos que guardó en tu dispositivo. Como no tenemos servidores, no hay otros datos que debas pedirnos que eliminemos.",
+    "children": "Privacidad de los menores",
+    "children_text": "La app no recopila información personal de nadie, incluidos los menores.",
+    "changes": "Cambios en esta política",
+    "changes_text": "Si cambia esta política, actualizaremos esta página y la fecha de entrada en vigor indicada arriba.",
+    "contact": "Contacto",
+    "developer": "Desarrollador",
+    "support": "Ayuda y soporte"
+  },
+  "ru": {
+    "title": "Политика конфиденциальности",
+    "name": "Будильник Цветочек",
+    "date": "Дата вступления в силу",
+    "short": "Приложение не собирает, не загружает и не передаёт персональные данные. Будильники и прогресс цветка хранятся на твоём iPhone.",
+    "none": "Что мы не собираем",
+    "none_items": [
+      "Приложение не отправляет сетевые запросы и не имеет собственного сервера.",
+      "В приложении нет учётных записей и входа в аккаунт.",
+      "Нет рекламы, аналитики использования, отслеживания между приложениями и сторонних рекламных или аналитических SDK.",
+      "Приложение не обращается к геопозиции, контактам, фотографиям, микрофону, камере или данным о здоровье."
+    ],
+    "local": "Данные на твоём устройстве",
+    "local_intro": "Для работы приложение хранит на твоём iPhone:",
+    "local_items": [
+      "Будильники, напоминания, состояния паузы и пропуска, а также шаблоны таймеров",
+      "Рост цветка, записи о поливе и удобрении, выбранные цветок и горшок",
+      "Язык интерфейса"
+    ],
+    "local_detail": "Данные находятся в собственном хранилище приложения. Часть данных сохраняется в локальном контейнере App Group, чтобы виджет и Live Activities могли их читать. Приложение не отправляет эти данные нам или третьим лицам. Мы не можем их просматривать.",
+    "permissions": "Системные разрешения",
+    "permission_items": [
+      "Будильники (AlarmKit): чтобы звонить в заданное время.",
+      "Уведомления: например, чтобы сообщать об окончании таймера."
+    ],
+    "permission_detail": "Эти разрешения используются только для планирования будильников и напоминаний на устройстве. Их можно в любой момент отключить в настройках iPhone.",
+    "apple": "Информация от Apple",
+    "apple_text": "Если включить передачу данных разработчикам в Настройки → Конфиденциальность и безопасность → Аналитика и улучшения, Apple может предоставлять нам анонимные отчёты о сбоях и статистику использования. Apple обрабатывает эти сведения по своей политике конфиденциальности. Передачу можно отключить в любой момент.",
+    "delete": "Удаление данных",
+    "delete_text": "При удалении приложения удаляются и сохранённые им данные на устройстве. У нас нет серверов, поэтому отдельно запрашивать удаление других данных не нужно.",
+    "children": "Конфиденциальность детей",
+    "children_text": "Приложение не собирает персональные данные ни у кого, в том числе у детей.",
+    "changes": "Изменения политики",
+    "changes_text": "Если политика изменится, мы обновим эту страницу и указанную выше дату вступления в силу.",
+    "contact": "Контакты",
+    "developer": "Разработчик",
+    "support": "Помощь и поддержка"
+  }
+}

@@ -19,6 +19,13 @@
 				<string>Simplified Chinese</string>
 				<string>Traditional Chinese</string>
 				<string>English</string>
+				<string>Japanese</string>
+				<string>Korean</string>
+				<string>German</string>
+				<string>French</string>
+				<string>Italian</string>
+				<string>Spanish</string>
+				<string>Russian</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -26,6 +33,13 @@
 				<string>zh</string>
 				<string>zh_TW</string>
 				<string>en</string>
+				<string>ja</string>
+				<string>ko</string>
+				<string>de</string>
+				<string>fr</string>
+				<string>it</string>
+				<string>es</string>
+				<string>ru</string>
 			</array>
 		</dict>
 	</array>

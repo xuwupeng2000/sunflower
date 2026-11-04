@@ -372,7 +372,7 @@ extern "C" {
 SWIFT_CLASS_NAMED("AlarmKitBridge")
 @interface AlarmKitBridge : NSObject
 + (void)setSnoozeCallback:(void (^ _Nullable)(void))callback;
-/// Always “zh”, “zh_TW”, or “en”. Called again each time the app comes forward.
+/// Always one of Copy.languages. Called again each time the app comes forward.
 /// “system” and a missing value follow the language iOS is using for this app.
 /// An explicit choice in Settings wins over a stale “system” left in another cache.
 + (NSString * _Nonnull)settingsLanguage SWIFT_WARN_UNUSED_RESULT;

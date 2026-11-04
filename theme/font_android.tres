@@ -1,10 +1,12 @@
-[gd_resource type="SystemFont" load_steps=3 format=3]
+[gd_resource type="SystemFont" load_steps=5 format=3]
 
 [ext_resource type="FontFile" uid="uid://03hta0n0gava" path="res://fonts/NotoSansSC-Regular.woff2" id="1_noto"]
+[ext_resource type="FontFile" uid="uid://dv1duvsic5f5j" path="res://fonts/NotoSansKR-Regular.woff2" id="2_kr"]
+[ext_resource type="FontFile" uid="uid://bgpdn84jc5va0" path="res://fonts/NotoSans-Regular.woff2" id="3_sans"]
 
 [sub_resource type="SystemFont" id="SystemFont_emoji"]
 font_names = PackedStringArray("Noto Color Emoji", "emoji")
 
 [resource]
-fallbacks = Array[Font]([ExtResource("1_noto"), SubResource("SystemFont_emoji")])
+fallbacks = Array[Font]([ExtResource("1_noto"), ExtResource("2_kr"), ExtResource("3_sans"), SubResource("SystemFont_emoji")])
 font_names = PackedStringArray("Noto Sans CJK SC", "Noto Sans SC", "Source Han Sans SC", "sans-serif")

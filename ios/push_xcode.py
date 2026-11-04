@@ -51,8 +51,18 @@ def preset_value(key: str, fallback: str) -> str:
 
 
 def install_info_strings(app: Path, project: Path) -> None:
-    """Godot only ships en.lproj; add the Chinese ones so permission prompts follow the phone language."""
-    extra = {"zh-Hans": "B10000000000000000000003", "zh-Hant": "B10000000000000000000004"}
+    """Godot only ships en.lproj; add the others so the home-screen name and permission prompts follow the phone language."""
+    extra = {
+        "zh-Hans": "B10000000000000000000003",
+        "zh-Hant": "B10000000000000000000004",
+        "ja": "B10000000000000000000005",
+        "ko": "B10000000000000000000006",
+        "de": "B10000000000000000000007",
+        "fr": "B10000000000000000000008",
+        "it": "B10000000000000000000009",
+        "es": "B1000000000000000000000A",
+        "ru": "B1000000000000000000000B",
+    }
     for region in ("en", *extra):
         dest = app / f"{region}.lproj"
         dest.mkdir(exist_ok=True)

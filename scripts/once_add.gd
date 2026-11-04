@@ -122,7 +122,7 @@ func _fill_week(box: VBoxContainer, monday: String, today: String) -> void:
 		var button := box.get_node(DAY_PATHS[index]) as Button
 		var date_key := AlarmStore.shift_date(monday, index)
 		var parts := date_key.split("-")
-		var month_day := "%d/%d" % [int(parts[1]), int(parts[2])] if parts.size() == 3 else date_key
+		var month_day := AlarmStore.short_date(int(parts[1]), int(parts[2])) if parts.size() == 3 else date_key
 		button.text = "%s\n%s" % [tr("周" + AlarmStore.WEEKDAY_NAMES[index]), month_day]
 		button.focus_mode = Control.FOCUS_NONE
 		button.mouse_filter = Control.MOUSE_FILTER_IGNORE

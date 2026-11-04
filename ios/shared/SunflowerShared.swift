@@ -20,8 +20,8 @@ public enum Haptics {
 }
 
 public enum Copy {
-    /// "zh" Simplified, "zh_TW" Traditional, "en" English — the same codes the Godot side uses.
-    public static let languages = ["zh", "zh_TW", "en"]
+    /// "zh" Simplified, "zh_TW" Traditional, "en" English, then the rest by ISO code — the same codes the Godot side uses.
+    public static let languages = ["zh", "zh_TW", "en", "ja", "ko", "de", "fr", "it", "es", "ru"]
 
     /// The in-app choice lives in the shared app group. Otherwise follow the language
     /// iOS is actually using for this app, including a per-app language.
@@ -39,7 +39,10 @@ public enum Copy {
         let first = (Locale.preferredLanguages.first ?? "")
             .lowercased()
             .replacingOccurrences(of: "_", with: "-")
-        guard first.hasPrefix("zh") else { return "en" }
+        guard first.hasPrefix("zh") else {
+            let base = String(first.prefix { $0 != "-" })
+            return languages.contains(base) ? base : "en"
+        }
         let traditional = ["hant", "-tw", "-hk", "-mo"].contains { first.contains($0) }
         return traditional ? "zh_TW" : "zh"
     }
@@ -48,9 +51,47 @@ public enum Copy {
         switch language {
         case "zh": return zh
         case "zh_TW": return hant
-        default: return en
+        case "en": return en
+        default: return more[en]?[language] ?? en
         }
     }
+
+    /// Clock text for lock-screen copy: 12-hour where people say it that way, 24-hour in Europe.
+    public static func clock(hour: Int, minute: Int) -> String {
+        let shown = hour % 12 == 0 ? 12 : hour % 12
+        let twelve = String(format: "%d:%02d", shown, minute)
+        switch language {
+        case "zh", "zh_TW": return "\(hour < 12 ? "上午" : "下午") \(twelve)"
+        case "ja": return "\(hour < 12 ? "午前" : "午後")\(twelve)"
+        case "ko": return "\(hour < 12 ? "오전" : "오후") \(twelve)"
+        case "en": return "\(twelve) \(hour < 12 ? "am" : "pm")"
+        default: return String(format: "%d:%02d", hour, minute)
+        }
+    }
+
+    /// Keyed by the English text passed to `text`. Missing entries fall back to English.
+    static let more: [String: [String: String]] = [
+        "Wake up": ["ja": "起床", "ko": "기상", "de": "Aufstehen", "fr": "Réveil", "it": "Sveglia", "es": "Despertar", "ru": "Подъём"],
+        "Time's up ☁️": ["ja": "時間だよ ☁️", "ko": "시간 다 됐어요 ☁️", "de": "Zeit ist um ☁️", "fr": "C'est l'heure ☁️", "it": "Tempo scaduto ☁️", "es": "¡Se acabó el tiempo! ☁️", "ru": "Время вышло ☁️"],
+        "Time's up": ["ja": "時間だよ", "ko": "시간 다 됐어요", "de": "Zeit ist um", "fr": "C'est l'heure", "it": "Tempo scaduto", "es": "Se acabó el tiempo", "ru": "Время вышло"],
+        "Stop": ["ja": "停止", "ko": "중단", "de": "Stopp", "fr": "Arrêter", "it": "Stop", "es": "Detener", "ru": "Стоп"],
+        "Snooze 9 min": ["ja": "9分スヌーズ", "ko": "9분 뒤 다시 알림", "de": "9 Min. schlummern", "fr": "Reporter 9 min", "it": "Posticipa 9 min", "es": "Posponer 9 min", "ru": "Отложить на 9 мин"],
+        "Again in 9 min": ["ja": "9分後にまた鳴るよ", "ko": "9분 뒤 다시 울려요", "de": "In 9 Min. wieder", "fr": "Ça re-sonne dans 9 min", "it": "Risuona tra 9 min", "es": "Vuelve a sonar en 9 min", "ru": "Снова через 9 мин"],
+        "Pause": ["ja": "一時停止", "ko": "일시정지", "de": "Pause", "fr": "Pause", "it": "Pausa", "es": "Pausar", "ru": "Пауза"],
+        "Resume": ["ja": "再開", "ko": "계속", "de": "Weiter", "fr": "Reprendre", "it": "Riprendi", "es": "Reanudar", "ru": "Продолжить"],
+        "Paused": ["ja": "一時停止中", "ko": "일시정지됨", "de": "Pausiert", "fr": "En pause", "it": "In pausa", "es": "En pausa", "ru": "На паузе"],
+        "Little Flower": ["ja": "ちいさな花", "ko": "작은 꽃 알람", "de": "Kleine Blume", "fr": "Petite Fleur", "it": "Fiorellino", "es": "Florecita", "ru": "Цветочек"],
+        "Snoozing": ["ja": "スヌーズ中", "ko": "다시 알림 대기 중", "de": "Schlummert", "fr": "En report", "it": "Posticipata", "es": "Pospuesta", "ru": "Отложено"],
+        "Cancel snooze": ["ja": "スヌーズを取り消す", "ko": "다시 알림 취소", "de": "Schlummern beenden", "fr": "Annuler le report", "it": "Annulla posticipo", "es": "Cancelar aplazamiento", "ru": "Отменить отсрочку"],
+        "See your flower": ["ja": "花を見る", "ko": "꽃 보러 가기", "de": "Zur Blume", "fr": "Voir ta fleur", "it": "Guarda il fiore", "es": "Ver tu flor", "ru": "К цветку"],
+        "Done": ["ja": "完了", "ko": "완료", "de": "Fertig", "fr": "Terminé", "it": "Fatto", "es": "Listo", "ru": "Готово"],
+        "Cancel timer": ["ja": "タイマーを取り消す", "ko": "타이머 취소", "de": "Timer abbrechen", "fr": "Annuler le minuteur", "it": "Annulla timer", "es": "Cancelar temporizador", "ru": "Отменить таймер"],
+        ", ": ["ja": "、"],
+        "%d min": ["ja": "%d分", "ko": "%d분", "de": "%d Min.", "ru": "%d мин"],
+        "%d hr": ["ja": "%d時間", "ko": "%d시간", "de": "%d Std.", "fr": "%d h", "it": "%d h", "es": "%d h", "ru": "%d ч"],
+        "%d hr %d min": ["ja": "%d時間%d分", "ko": "%d시간 %d분", "de": "%d Std. %d Min.", "fr": "%d h %d min", "it": "%d h %d min", "es": "%d h %d min", "ru": "%d ч %d мин"],
+        "%@ · done at %@": ["ja": "%@ · %@に終わるよ", "ko": "%@ · %@ 종료", "de": "%@ · fertig um %@", "fr": "%@ · fini à %@", "it": "%@ · finisce alle %@", "es": "%@ · termina a las %@", "ru": "%@ · готово в %@"],
+    ]
 }
 
 public struct SunflowerMetadata: AlarmMetadata {

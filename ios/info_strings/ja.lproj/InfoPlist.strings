@@ -1,0 +1,2 @@
+CFBundleDisplayName = "ちいさな花";
+NSAlarmKitUsageDescription = "ちいさな花は、設定した時刻にアラームで起こしてくれます。";

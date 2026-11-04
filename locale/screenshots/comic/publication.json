@@ -1,0 +1,24 @@
+{
+  "published_locales": [
+    "zh-Hans",
+    "zh-Hant",
+    "ja",
+    "ko",
+    "en-US"
+  ],
+  "no_comic_locales": [
+    "de",
+    "fr",
+    "it",
+    "es",
+    "ru"
+  ],
+  "source_files": {
+    "zh-Hans": "weekly-friends-zh-v2.png",
+    "zh-Hant": "zh-Hant.png",
+    "ja": "ja.png",
+    "ko": "ko.png",
+    "en-US": "en-US.png"
+  },
+  "mascot": "Approved sunflower face reused as an inline SVG viewport crop"
+}

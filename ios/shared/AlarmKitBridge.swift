@@ -12,7 +12,7 @@ private var snoozeCallback: (() -> Void)?
         snoozeCallback = callback
     }
 
-    /// Always "zh", "zh_TW", or "en". Called again each time the app comes forward.
+    /// Always one of Copy.languages. Called again each time the app comes forward.
     /// "system" and a missing value follow the language iOS is using for this app.
     /// An explicit choice in Settings wins over a stale "system" left in another cache.
     @objc public static func settingsLanguage() -> String {

@@ -2,9 +2,11 @@
 
 [ext_resource type="FontFile" uid="uid://03hta0n0gava" path="res://fonts/NotoSansSC-Regular.woff2" id="1_noto"]
 [ext_resource type="FontFile" uid="uid://owionv02wmnx" path="res://fonts/NotoColorEmoji.woff" id="2_emoji"]
+[ext_resource type="FontFile" uid="uid://dv1duvsic5f5j" path="res://fonts/NotoSansKR-Regular.woff2" id="3_kr"]
+[ext_resource type="FontFile" uid="uid://bgpdn84jc5va0" path="res://fonts/NotoSans-Regular.woff2" id="4_sans"]
 
 [resource]
-fallbacks = Array[Font]([ExtResource("2_emoji")])
+fallbacks = Array[Font]([ExtResource("3_kr"), ExtResource("4_sans"), ExtResource("2_emoji")])
 base_font = ExtResource("1_noto")
 variation_opentype = {
 0: 1

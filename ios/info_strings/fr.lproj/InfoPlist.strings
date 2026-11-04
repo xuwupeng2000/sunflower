@@ -1,0 +1,2 @@
+CFBundleDisplayName = "Petite Fleur";
+NSAlarmKitUsageDescription = "Petite Fleur utilise les alarmes pour te réveiller aux heures que tu choisis.";
