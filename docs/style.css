@@ -109,3 +109,5 @@ header .local-data { max-width: 620px; margin: 8px auto 20px; }
   .lang a, .lang strong { padding: 4px 8px; }
   h1 { font-size: 27px; line-height: 1.35; }
 }
+
+header .weekly-intro { max-width: 700px; margin: 20px auto 0; color: var(--navy); font-size: 17px; line-height: 1.85; text-align: left; }
