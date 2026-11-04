@@ -1,5 +1,5 @@
 (function () {
-  var root = document.currentScript.src.replace(/lang\.js(\?.*)?$/, "");
+  var root = new URL(".", document.currentScript.src).href;
   var dirs = { "zh-Hans": "", "zh-Hant": "zh-hant/", "en": "en/", "ja": "ja/", "ko": "ko/", "de": "de/", "fr": "fr/", "it": "it/", "es": "es/", "ru": "ru/" };
   function detect() {
     var langs = navigator.languages || [navigator.language || ""];
