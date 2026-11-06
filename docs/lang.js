@@ -21,6 +21,11 @@
     location.replace(root + dirs[want] + location.hash);
     return;
   }
+  var tracker = document.createElement("script");
+  tracker.defer = true;
+  tracker.src = "https://cloud.umami.is/script.js";
+  tracker.setAttribute("data-website-id", "592c511d-7af7-4aef-a215-2c7a1019bbd2");
+  document.head.appendChild(tracker);
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest("nav.lang a[hreflang]");
     if (!a) return;
