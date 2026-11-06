@@ -3,6 +3,13 @@
 
 # Local editor / export leftovers
 .vscode/
+
+# Local AI agent folders
+.cursor/
+.agents/
+.claude/
+.codex/
+.gemini/
 addons/
 .DS_Store
 export.cfg
