@@ -396,20 +396,28 @@ func _bind_nodes() -> void:
 func _fill_pot_rows() -> void:
 	var flower_row := _pot_page.get_node("边框/列表/花")
 	var pot_row := _pot_page.get_node("边框/列表/盆")
-	var flower_names := PackedStringArray()
-	var pot_names := PackedStringArray()
-	for kind in _sunflower.flower_kinds():
-		flower_names.append(str(kind["name"]))
-	for kind in _sunflower.pot_kinds():
-		pot_names.append(str(kind["name"]))
-	flower_row.set_labels(flower_names, _sunflower.flower_index)
-	pot_row.set_labels(pot_names, _sunflower.pot_index)
+	_refresh_pot_labels()
 	flower_row.selected.connect(func(index: int) -> void:
 		_pick_style(index, pot_row.index)
 	)
 	pot_row.selected.connect(func(index: int) -> void:
 		_pick_style(flower_row.index, index)
 	)
+
+
+func _refresh_pot_labels() -> void:
+	if _pot_page == null or _sunflower == null:
+		return
+	var flower_row := _pot_page.get_node("边框/列表/花")
+	var pot_row := _pot_page.get_node("边框/列表/盆")
+	var flower_names := PackedStringArray()
+	var pot_names := PackedStringArray()
+	for kind in _sunflower.flower_kinds():
+		flower_names.append(tr(str(kind["name"])))
+	for kind in _sunflower.pot_kinds():
+		pot_names.append(tr(str(kind["name"])))
+	flower_row.set_labels(flower_names, _sunflower.flower_index)
+	pot_row.set_labels(pot_names, _sunflower.pot_index)
 
 
 func _pick_style(flower: int, pot: int) -> void:
@@ -1373,6 +1381,7 @@ func _apply_language_from_settings() -> void:
 
 
 func _refresh_for_language() -> void:
+	_refresh_pot_labels()
 	if _sleep_tab:
 		_style_tab(_sleep_tab, _sleep_tab.text)
 	for button in _task_buttons:
@@ -1888,8 +1897,8 @@ func _on_feed_landed(global_pos: Vector2) -> void:
 func _apply_care(kind: String, global_pos: Vector2) -> void:
 	if kind == "water":
 		_float_tip(tr("浇水不枯萎"), global_pos)
-		AlarmStore.record_water()
 		_sunflower.water()
+		AlarmStore.record_water()
 		return
 	if AlarmStore.use_fertilizer():
 		_float_tip(tr("施肥会长高"), global_pos)

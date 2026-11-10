@@ -23,3 +23,7 @@ build/
 *.aab
 *.ipa
 test-report/
+
+# Local source packages and texture copies extracted from self-contained GLBs.
+/assets/staging/
+/assets/tripo/**/*_tripo_image_*

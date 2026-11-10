@@ -11,9 +11,10 @@ var fertilizer_used := 0
 const BLOOM_GROWTH := 2
 const WEEKS_AHEAD := 8
 var last_watered := ""
-var language := "zh"
+var language := "en"
 const LANGUAGES := ["zh", "zh_TW", "en", "ja", "ko", "de", "fr", "it", "es", "ru"]
 const LANGUAGE_FILES := [
+	"res://locale/ui.zh.translation",
 	"res://locale/ui.en.translation",
 	"res://locale/ui.zh_TW.translation",
 	"res://locale/ui.ja.translation",
@@ -60,11 +61,13 @@ func _install_locale() -> void:
 	_apply_locale()
 
 
-## Godot 会把 "zh" 模糊匹配到 "zh_TW"，所以选简体时要把繁体翻译摘掉，只留跟当前语言一致的那份。
+## Keep the exact locale plus English fallback; explicit zh entries prevent zh/zh_TW fuzzy matching.
 func _apply_locale() -> void:
+	if language not in LANGUAGES:
+		language = "en"
 	for translation in _translations:
 		TranslationServer.remove_translation(translation)
-		if translation.locale == language:
+		if translation.locale == language or translation.locale == "en":
 			TranslationServer.add_translation(translation)
 	TranslationServer.set_locale(language)
 
@@ -131,8 +134,8 @@ func load_data() -> void:
 	# 以前 0 蜀葵 / 1 向日葵 / 2 兰花 / 3 玫瑰，现在只留向日葵和兰花。
 	if int(data.get("flower_kind_v", 1)) < 2:
 		flower_kind = {1: 0, 2: 1}.get(flower_kind, 0)
-	flower_kind = clampi(flower_kind, 0, 1)
-	pot_kind = clampi(pot_kind, 0, 4)
+	flower_kind = clampi(flower_kind, 0, 4)
+	pot_kind = clampi(pot_kind, 0, 7)
 	changed.emit()
 
 

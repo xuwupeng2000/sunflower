@@ -1,117 +1,117 @@
-keys,en,zh_TW,ja,ko,de,fr,it,es,ru
-今天,Today,今天,今日,오늘,Heute,Aujourd'hui,Oggi,Hoy,Сегодня
-今天推迟了 0 次,No snoozes today,今天延後了 0 次,今日はスヌーズなし,오늘은 다시 알림 없음,Heute nicht geschlummert,Aucun report aujourd'hui,Oggi nessun posticipo,Hoy no has pospuesto nada,Сегодня ни разу не отложили
-今天推迟了 %d 次,Snoozes today: %d,今天延後了 %d 次,今日のスヌーズ：%d回,오늘 다시 알림: %d번,Heute geschlummert: %d×,Reports aujourd'hui : %d,Posticipi di oggi: %d,Pospuestas hoy: %d,Отложено сегодня: %d
-%s推迟了 %d 次,Snoozes on %s: %d,%s延後了 %d 次,%sのスヌーズ：%d回,%s 다시 알림: %d번,Geschlummert am %s: %d×,Reports le %s : %d,Posticipi il %s: %d,Pospuestas el %s: %d,Отложено %s: %d
-今天贪睡了 %d 次,Snoozes today: %d,今天貪睡了 %d 次,今日のスヌーズ：%d回,오늘 다시 알림: %d번,Heute geschlummert: %d×,Reports aujourd'hui : %d,Posticipi di oggi: %d,Pospuestas hoy: %d,Отложено сегодня: %d
-浇水,Water,澆水,水やり,물 주기,Gießen,Arroser,Annaffia,Regar,Полить
-施肥,Feed,施肥,肥料をあげる,비료 주기,Düngen,Fertiliser,Concima,Abonar,Подкормить
-浇水不枯萎,Water it so it doesn't wilt,澆水不枯萎,水をあげれば、しおれないよ,물을 주면 시들지 않아요,"Gieß sie, dann welkt sie nicht",Arrose-la pour qu'elle ne fane pas,Annaffialo e non appassirà,Riégala y no se marchitará,Поливай — и не завянет
-施肥会长高,Feed it and it'll grow taller,施肥會長高,肥料をあげると、ぐんぐん伸びるよ,비료를 주면 쑥쑥 자라요,"Dünge sie, dann wächst sie","Donne-lui de l'engrais, elle va grandir",Concimalo e crescerà,Abónala y crecerá,Подкорми — и он подрастёт
-浇浇水，花会重新灿烂,Water it and it'll perk up,澆澆水，花會重新燦爛,水をあげたら、また元気になるよ,물을 주면 다시 활짝 피어나요,Ein bisschen Wasser und sie blüht wieder auf,Un peu d'eau et elle reprend des couleurs,Un po' d'acqua e torna in forma,Un poco de agua y vuelve a lucir,Немного воды — и он снова оживёт
-推迟闹铃或完成任务才能拿到肥料,Snooze an alarm or finish a task to earn plant food,延後鬧鐘或完成任務才能拿到肥料,スヌーズするか、やることを終えると肥料がもらえるよ,알람을 미루거나 할 일을 끝내면 비료를 받아요,"Schlummern oder Aufgabe erledigen, dann Dünger.",Reporte une alarme ou finis une tâche pour l'engrais.,Posticipa una sveglia o finisci un'attività per avere il concime,Pospón una alarma o termina una tarea para ganar abono,Отложи будильник или сделай дело — получишь подкормку
-现在要做,Time for,現在要做,今やること,지금 할 일,Jetzt dran,C'est le moment !,È il momento!,Es el momento,Пора!
-现在要做\n%s,Time for\n%s,現在要做\n%s,今やること\n%s,지금 할 일\n%s,Jetzt dran:\n%s,C'est le moment !\n%s,È il momento!\n%s,¡Es el momento!\n%s,Пора!\n%s
-到时间了,It's time!,到時間了,時間だよ！,시간이 됐어요!,Es ist so weit!,C'est l'heure !,È ora!,¡Es la hora!,Время пришло!
-起床,Wake up,起床,起床,기상,Aufstehen,Réveil,Sveglia,Despertar,Подъём
-去改这个提醒,Edit this reminder,去改這個提醒,このリマインダーを編集,이 알림 수정하기,Erinnerung bearbeiten,Modifier ce rappel,Modifica promemoria,Editar recordatorio,Изменить напоминание
-取消推迟,Cancel snooze,取消延後,スヌーズを取り消す,다시 알림 취소,Schlummern beenden,Annuler le report,Annulla posticipo,Cancelar aplazamiento,Отменить отсрочку
-确定,OK,確定,OK,확인,OK,OK,OK,Vale,ОК
-完成,Done,完成,完了,완료,Fertig,Terminé,Fatto,Listo,Готово
-确认,Confirm,確認,確認,확인,Bestätigen,Confirmer,Conferma,Confirmar,Подтвердить
-请确认,Please confirm,請確認,これでいい？,확인해 주세요,Passt das so?,C'est bon ?,Va bene così?,¿Todo bien?,Всё верно?
-返回编辑,Back to edit,返回編輯,編集に戻る,다시 수정,Zurück,Modifier,Modifica,Volver a editar,Назад к правке
-事情：%s,What: %s,事情：%s,やること：%s,할 일: %s,Was: %s,Quoi : %s,Cosa: %s,Qué: %s,Что: %s
-哪天：%s,Which day: %s,哪天：%s,日にち：%s,날짜: %s,Wann: %s,Quand : %s,Quando: %s,Cuándo: %s,Когда: %s
-几点闹钟：%s,Alarm set for %s,幾點鬧鐘：%s,アラーム：%s,알람: %s,Wecker: %s,Alarme : %s,Sveglia: %s,Alarma: %s,Будильник: %s
-几点会响：%s,Rings at %s,幾點會響：%s,鳴る時刻：%s,울리는 시간: %s,Klingelt: %s,Sonne : %s,Suona: %s,Suena: %s,Зазвонит: %s
-蜀葵,Hollyhock,蜀葵,タチアオイ,접시꽃,Stockrose,Rose trémière,Malvarosa,Malva real,Шток-роза
-向日葵,Sunflower,向日葵,ヒマワリ,해바라기,Sonnenblume,Tournesol,Girasole,Girasol,Подсолнух
-兰花,Orchid,蘭花,ラン,난초,Orchidee,Orchidée,Orchidea,Orquídea,Орхидея
-玫瑰,Rose,玫瑰,バラ,장미,Rose,Rose,Rosa,Rosa,Роза
-陶盆,Clay pot,陶盆,素焼き鉢,토분,Tontopf,Pot en terre,Vaso di coccio,Maceta de barro,Глиняный горшок
-白瓷,White porcelain,白瓷,白磁,백자,Weißes Porzellan,Porcelaine blanche,Porcellana bianca,Porcelana blanca,Белый фарфор
-彩釉盆,Glazed pot,彩釉盆,釉薬の鉢,유약 화분,Glasierter Topf,Pot émaillé,Vaso smaltato,Maceta esmaltada,Глазурованный горшок
-高筒盆,Tall pot,高筒盆,背の高い鉢,긴 화분,Hoher Topf,Pot haut,Vaso alto,Maceta alta,Высокий горшок
-方盆,Square pot,方盆,四角い鉢,사각 화분,Eckiger Topf,Pot carré,Vaso quadrato,Maceta cuadrada,Квадратный горшок
-碗盆,Bowl pot,碗盆,ボウル鉢,볼 화분,Schalentopf,Pot coupe,Vaso a ciotola,Maceta cuenco,Горшок-чаша
-睡觉,Bedtime,睡覺,おやすみ,취침,Schlafenszeit,Coucher,Ora di dormire,A dormir,Отбой
-周一,Mon,週一,月曜,월요일,Mo,lun.,lun,lun,Пн
-周二,Tue,週二,火曜,화요일,Di,mar.,mar,mar,Вт
-周三,Wed,週三,水曜,수요일,Mi,mer.,mer,mié,Ср
-周四,Thu,週四,木曜,목요일,Do,jeu.,gio,jue,Чт
-周五,Fri,週五,金曜,금요일,Fr,ven.,ven,vie,Пт
-周六,Sat,週六,土曜,토요일,Sa,sam.,sab,sáb,Сб
-周日,Sun,週日,日曜,일요일,So,dim.,dom,dom,Вс
-新的提醒,New reminder,新的提醒,新しいリマインダー,새 알림,Neue Erinnerung,Nouveau rappel,Nuovo promemoria,Nuevo recordatorio,Новое напоминание
-🏖️ 这天不提醒,🏖️ Day off,🏖️ 這天不提醒,🏖️ この日はお休み,🏖️ 이날은 쉬기,🏖️ Freier Tag,🏖️ Jour off,🏖️ Giorno libero,🏖️ Día libre,🏖️ Выходной
-🗑️ 删除,🗑️ Delete,🗑️ 刪除,🗑️ 削除,🗑️ 삭제,🗑️ Löschen,🗑️ Supprimer,🗑️ Elimina,🗑️ Eliminar,🗑️ Удалить
-输入提醒名称,Name your reminder,輸入提醒名稱,リマインダーの名前,알림 이름 입력,Wie soll sie heißen?,Nomme ton rappel,Dai un nome al promemoria,Ponle un nombre,Как назовём?
-💪 健身,💪 Gym,💪 健身,💪 筋トレ,💪 운동,💪 Sport,💪 Sport,💪 Palestra,💪 Gimnasio,💪 Спорт
-＋ 增加结束时间,＋ Add an end time,＋ 增加結束時間,＋ 終了時刻を追加,＋ 종료 시간 추가,＋ Endzeit hinzufügen,＋ Ajouter une heure de fin,＋ Aggiungi un orario di fine,＋ Añadir hora de fin,＋ Добавить время окончания
-＋ 添加结束时间,＋ Add an end time,＋ 新增結束時間,＋ 終了時刻を追加,＋ 종료 시간 추가,＋ Endzeit hinzufügen,＋ Ajouter une heure de fin,＋ Aggiungi un orario di fine,＋ Añadir hora de fin,＋ Добавить время окончания
-＋ 添加提醒时间,＋ Add a time,＋ 新增提醒時間,＋ 時刻を追加,＋ 시간 추가,＋ Uhrzeit hinzufügen,＋ Ajouter une heure,＋ Aggiungi orario,＋ Añadir hora,＋ Добавить время
-跳过此提醒一次,Skip this one,跳過此提醒一次,今回だけスキップ,이번만 건너뛰기,Einmal aussetzen,Sauter cette fois,Salta questa volta,Saltar esta vez,Пропустить разок
-恢复此提醒,Restore this reminder,恢復此提醒,やっぱり戻す,다시 켜기,Doch wieder an,Rétablir ce rappel,Rimettilo,Recuperar,Вернуть
-暂停本日提醒,Pause this day's reminders,暫停本日提醒,この曜日の通知を止める,이 요일 알림 일시정지,Erinnerungen an diesem Tag pausieren,Suspendre les rappels de ce jour,Pausa i promemoria di questo giorno,Pausar los recordatorios de este día,Пауза для напоминаний этого дня
-继续本日提醒,Resume this day's reminders,繼續本日提醒,この曜日の通知を再開,이 요일 알림 다시 켜기,Erinnerungen an diesem Tag fortsetzen,Reprendre les rappels de ce jour,Riprendi i promemoria di questo giorno,Reanudar los recordatorios de este día,Вернуть напоминания этого дня
-暂停此提醒,Pause this reminder,暫停此提醒,このリマインダーを一時停止,이 알림 일시정지,Erinnerung pausieren,Mettre en pause,Metti in pausa,Pausar recordatorio,Поставить на паузу
-继续此提醒,Resume this reminder,繼續此提醒,このリマインダーを再開,이 알림 다시 켜기,Erinnerung fortsetzen,Reprendre,Riprendi,Reanudar recordatorio,Снять с паузы
-暂停%s提醒,Pause %s,暫停%s提醒,%sを一時停止,%s 일시정지,%s pausieren,Mettre %s en pause,Metti in pausa %s,Pausar recordatorios: %s,Пауза: %s
-继续%s提醒,Resume %s,繼續%s提醒,%sを再開,%s 다시 켜기,%s fortsetzen,Reprendre %s,Riprendi %s,Reanudar recordatorios: %s,Вернуть: %s
-15 分钟后结束,Ends 15 min later,15 分鐘後結束,15分後に終了,15분 뒤 종료,Endet nach 15 Min.,Fin 15 min après,Finisce dopo 15 min,Termina 15 min después,Конец через 15 мин
-30 分钟后结束,Ends 30 min later,30 分鐘後結束,30分後に終了,30분 뒤 종료,Endet nach 30 Min.,Fin 30 min après,Finisce dopo 30 min,Termina 30 min después,Конец через 30 мин
-1 小时后结束,Ends 1 hr later,1 小時後結束,1時間後に終了,1시간 뒤 종료,Endet nach 1 Std.,Fin 1 h après,Finisce dopo 1 ora,Termina 1 h después,Конец через 1 ч
-没有结束提醒,No end reminder,沒有結束提醒,終了の通知なし,종료 알림 없음,Ohne Ende-Erinnerung,Pas de rappel de fin,Nessun avviso di fine,Sin aviso de fin,Без напоминания о конце
-开始,Start,開始,開始,시작,Start,Début,Inizio,Inicio,Начало
-结束,End,結束,終了,종료,Ende,Fin,Fine,Fin,Конец
-%s结束,%s is over,%s結束,%s おわり,%s 끝,%s ist vorbei,%s : terminé,%s: finito,%s: terminado,%s: всё
-👶 接娃,👶 Pick up kids,👶 接小孩,👶 お迎え,👶 아이 데리러 가기,👶 Kind abholen,👶 Récup des enfants,👶 Prendere i bimbi,👶 Recoger a los niños,👶 Забрать ребёнка
-💊 吃药,💊 Meds,💊 吃藥,💊 お薬,💊 약 먹기,💊 Medikamente,💊 Médocs,💊 Medicine,💊 Medicamentos,💊 Лекарство
-🚌 上班,🚌 Commute,🚌 上班,🚌 出勤,🚌 출근,🚌 Zur Arbeit,🚌 Boulot,🚌 Al lavoro,🚌 Al trabajo,🚌 На работу
-🏫 送娃,🏫 Drop off kids,🏫 送小孩,🏫 送り,🏫 아이 등교,🏫 Kind bringen,🏫 Déposer les enfants,🏫 Portare a scuola,🏫 Llevar al cole,🏫 Отвести в школу
-📚 上课,📚 Class,📚 上課,📚 授業,📚 수업,📚 Unterricht,📚 Cours,📚 Lezione,📚 Clase,📚 Урок
-📅 会议,📅 Meeting,📅 會議,📅 会議,📅 회의,📅 Meeting,📅 Réunion,📅 Riunione,📅 Reunión,📅 Встреча
-🐶 遛狗,🐶 Dog walk,🐶 遛狗,🐶 犬の散歩,🐶 강아지 산책,🐶 Gassi gehen,🐶 Sortir le chien,🐶 Portare fuori il cane,🐶 Pasear al perro,🐶 Выгулять собаку
-🗑️ 倒垃圾,🗑️ Take out the trash,🗑️ 倒垃圾,🗑️ ゴミ出し,🗑️ 쓰레기 버리기,🗑️ Müll raus,🗑️ Sortir les poubelles,🗑️ Buttare la spazzatura,🗑️ Sacar la basura,🗑️ Вынести мусор
-🛒 买菜,🛒 Groceries,🛒 買菜,🛒 買い物,🛒 장보기,🛒 Einkaufen,🛒 Courses,🛒 Spesa,🛒 Compras,🛒 Продукты
-暂不提醒,Off for now,暫不提醒,今はオフ,지금은 꺼짐,Vorerst deaktiviert,En pause pour l'instant,Spento per ora,Apagado por ahora,Пока выключено
-提醒,Reminder,提醒,リマインダー,알림,Erinnerung,Rappel,Promemoria,Recordatorio,Напоминание
-{m}月{d}日,{m}/{d},{m}月{d}日,{m}月{d}日,{m}월 {d}일,{d}.{m}.,{d}/{m},{d}/{m},{d}/{m},{d}.{m}
-{m}/{d},{m}/{d},{m}/{d},{m}/{d},{m}/{d},{d}.{m}.,{d}/{m},{d}/{m},{d}/{m},{d}.{m}
-点 + 添加不同的提醒项目,Tap + to add another reminder,點 + 新增不同的提醒項目,+ をタップして、別のリマインダーを追加,+ 를 눌러 다른 알림을 추가해요,"Tipp auf +, um noch eine Erinnerung anzulegen",Touche + pour ajouter un autre rappel,Tocca + per aggiungere un altro promemoria,Toca + para añadir otro recordatorio,"Нажми +, чтобы добавить ещё одно"
-周一到周日 每一天的时间都是独立的,Every day of the week gets its own time,週一到週日 每一天的時間都是獨立的,月曜から日曜まで、曜日ごとに時刻を決められるよ,월요일부터 일요일까지 요일마다 시간을 따로 정해요,Jeder Wochentag bekommt seine eigene Uhrzeit,Chaque jour de la semaine a sa propre heure,Ogni giorno della settimana ha il suo orario,Cada día de la semana tiene su propia hora,У каждого дня недели — своё время
-点击时间可以修改,Tap a time to change it,點一下時間就能修改,時刻をタップすると変えられるよ,시간을 누르면 바꿀 수 있어요,"Tipp auf eine Uhrzeit, um sie zu ändern",Touche une heure pour la changer,Tocca un orario per cambiarlo,Toca una hora para cambiarla,"Нажми на время, чтобы изменить"
-点 + 添加提醒,Tap + to add a reminder,點 + 新增提醒,+ をタップしてリマインダーを追加,+ 를 눌러 알림을 추가해요,"Tipp auf +, um eine Erinnerung anzulegen",Touche + pour ajouter un rappel,Tocca + per aggiungere un promemoria,Toca + para añadir un recordatorio,"Нажми +, чтобы добавить напоминание"
-周一至周五,Weekdays,週一至週五,平日,평일,Mo–Fr,En semaine,Feriali,Entre semana,Будни
-每天,Every day,每天,毎日,매일,Jeden Tag,Tous les jours,Ogni giorno,Todos los días,Каждый день
-不重复,Doesn't repeat,不重複,くり返さない,반복 안 함,Nicht wiederholen,Pas de répétition,Non ripetere,No repetir,Без повтора
-这个时间用在哪几天？,Which days should get this time?,這個時間用在哪幾天？,この時刻、どの曜日に使う？,이 시간을 어느 요일에 쓸까요?,Für welche Tage gilt diese Uhrzeit?,"Cette heure, pour quels jours ?",Questo orario per quali giorni?,¿Qué días usan esta hora?,В какие дни это время?
-上午,AM,上午,午前,오전,vorm.,AM,AM,a. m.,AM
-%s 到 %s,%s to %s,%s 到 %s,%s〜%s,%s~%s,%s bis %s,%s à %s,%s – %s,%s a %s,%s – %s
-到,to,到,〜,~,bis,à,–,a,–
-下午,PM,下午,午後,오후,nachm.,PM,PM,p. m.,PM
-选一个任务，开始计时,Pick something to start a timer,選一個任務，開始計時,選んだらタイマースタート,하나 골라서 타이머를 시작해요,"Wähl was aus, dann läuft der Timer",Choisis-en un pour lancer le minuteur,Scegline uno per avviare il timer,Elige uno para empezar el temporizador,Выбери — и таймер пошёл
-%s 时间到了,%s · time's up!,%s 時間到了,%s 時間だよ！,%s 시간 다 됐어요!,%s · Zeit ist um!,%s · c'est l'heure !,%s · tempo scaduto!,%s · ¡se acabó el tiempo!,%s · время вышло!
-时间到了,Time's up!,時間到了,時間だよ！,시간 다 됐어요!,Zeit ist um!,C'est l'heure !,Tempo scaduto!,¡Se acabó el tiempo!,Время вышло!
-共 %s · %s 到,%s · done at %s,共 %s · %s 到,%s · %sに終わるよ,%s · %s 종료,%s · fertig um %s,%s · fini à %s,%s · finisce alle %s,%s · termina a las %s,%s · готово в %s
-%d 分钟,%d min,%d 分鐘,%d分,%d분,%d Min.,%d min,%d min,%d min,%d мин
-%d 小时,%d hr,%d 小時,%d時間,%d시간,%d Std.,%d h,%d h,%d h,%d ч
-%d 小时 %d 分钟,%d hr %d min,%d 小時 %d 分鐘,%d時間%d分,%d시간 %d분,%d Std. %d Min.,%d h %d min,%d h %d min,%d h %d min,%d ч %d мин
-删除「%s」？,Delete “%s”?,刪除「%s」？,「%s」を削除する？,‘%s’ 삭제할까요?,„%s“ löschen?,Supprimer « %s » ?,Eliminare “%s”?,¿Eliminar «%s»?,Удалить «%s»?
-⏳ 计时,⏳ Timer,⏳ 計時,⏳ タイマー,⏳ 타이머,⏳ Timer,⏳ Minuteur,⏳ Timer,⏳ Temporizador,⏳ Таймер
-🍝 煮面,🍝 Pasta,🍝 煮麵,🍝 パスタ,🍝 라면,🍝 Nudeln,🍝 Pâtes,🍝 Pasta,🍝 Pasta,🍝 Макароны
-🍅 番茄钟,🍅 Pomodoro,🍅 番茄鐘,🍅 ポモドーロ,🍅 뽀모도로,🍅 Pomodoro,🍅 Pomodoro,🍅 Pomodoro,🍅 Pomodoro,🍅 Помодоро
-☕ 休息,☕ Break,☕ 休息,☕ 休憩,☕ 휴식,☕ Pause,☕ Pause,☕ Pausa,☕ Descanso,☕ Перерыв
-自定计时,Custom timer,自訂計時,カスタムタイマー,직접 만든 타이머,Eigener Timer,Minuteur perso,Timer personalizzato,Temporizador propio,Свой таймер
-写个名字，比如 🧺 洗衣服,"Give it a name, like 🧺 Laundry",寫個名字，比如 🧺 洗衣服,名前をつけてね。例：🧺 洗濯,이름을 지어 주세요. 예: 🧺 빨래,"Gib ihm einen Namen, z. B. 🧺 Wäsche","Donne-lui un nom, genre 🧺 Lessive","Dagli un nome, tipo 🧺 Bucato","Ponle un nombre, como 🧺 Colada","Придумай название, например 🧺 Стирка"
-开始计时,Start timer,開始計時,タイマー開始,타이머 시작,Timer starten,Lancer le minuteur,Avvia timer,Empezar,Запустить
-小时,hr,小時,時間,시간,Std.,h,h,h,ч
-分钟,min,分鐘,分,분,Min.,min,min,min,мин
-取消,Cancel,取消,キャンセル,취소,Abbrechen,Annuler,Annulla,Cancelar,Отмена
-删除,Delete,刪除,削除,삭제,Löschen,Supprimer,Elimina,Eliminar,Удалить
-编辑,Edit,編輯,編集,수정,Bearbeiten,Modifier,Modifica,Editar,Изменить
-详情🔎,Details 🔎,詳情🔎,詳細🔎,자세히🔎,Details 🔎,Détails 🔎,Dettagli 🔎,Detalles 🔎,Подробнее 🔎
+keys,en,zh_TW,ja,ko,de,fr,it,es,ru,zh
+今天,Today,今天,今日,오늘,Heute,Aujourd'hui,Oggi,Hoy,Сегодня,今天
+今天推迟了 0 次,No snoozes today,今天延後了 0 次,今日はスヌーズなし,오늘은 다시 알림 없음,Heute nicht geschlummert,Aucun report aujourd'hui,Oggi nessun posticipo,Hoy no has pospuesto nada,Сегодня ни разу не отложили,今天推迟了 0 次
+今天推迟了 %d 次,Snoozes today: %d,今天延後了 %d 次,今日のスヌーズ：%d回,오늘 다시 알림: %d번,Heute geschlummert: %d×,Reports aujourd'hui : %d,Posticipi di oggi: %d,Pospuestas hoy: %d,Отложено сегодня: %d,今天推迟了 %d 次
+%s推迟了 %d 次,Snoozes on %s: %d,%s延後了 %d 次,%sのスヌーズ：%d回,%s 다시 알림: %d번,Geschlummert am %s: %d×,Reports le %s : %d,Posticipi il %s: %d,Pospuestas el %s: %d,Отложено %s: %d,%s推迟了 %d 次
+今天贪睡了 %d 次,Snoozes today: %d,今天貪睡了 %d 次,今日のスヌーズ：%d回,오늘 다시 알림: %d번,Heute geschlummert: %d×,Reports aujourd'hui : %d,Posticipi di oggi: %d,Pospuestas hoy: %d,Отложено сегодня: %d,今天贪睡了 %d 次
+浇水,Water,澆水,水やり,물 주기,Gießen,Arroser,Annaffia,Regar,Полить,浇水
+施肥,Feed,施肥,肥料をあげる,비료 주기,Düngen,Fertiliser,Concima,Abonar,Подкормить,施肥
+浇水不枯萎,Water it so it doesn't wilt,澆水不枯萎,水をあげれば、しおれないよ,물을 주면 시들지 않아요,"Gieß sie, dann welkt sie nicht",Arrose-la pour qu'elle ne fane pas,Annaffialo e non appassirà,Riégala y no se marchitará,Поливай — и не завянет,浇水不枯萎
+施肥会长高,Feed it and it'll grow taller,施肥會長高,肥料をあげると、ぐんぐん伸びるよ,비료를 주면 쑥쑥 자라요,"Dünge sie, dann wächst sie","Donne-lui de l'engrais, elle va grandir",Concimalo e crescerà,Abónala y crecerá,Подкорми — и он подрастёт,施肥会长高
+浇浇水，花会重新灿烂,Water it and it'll perk up,澆澆水，花會重新燦爛,水をあげたら、また元気になるよ,물을 주면 다시 활짝 피어나요,Ein bisschen Wasser und sie blüht wieder auf,Un peu d'eau et elle reprend des couleurs,Un po' d'acqua e torna in forma,Un poco de agua y vuelve a lucir,Немного воды — и он снова оживёт,浇浇水，花会重新灿烂
+推迟闹铃或完成任务才能拿到肥料,Snooze an alarm or finish a task to earn plant food,延後鬧鐘或完成任務才能拿到肥料,スヌーズするか、やることを終えると肥料がもらえるよ,알람을 미루거나 할 일을 끝내면 비료를 받아요,"Schlummern oder Aufgabe erledigen, dann Dünger.",Reporte une alarme ou finis une tâche pour l'engrais.,Posticipa una sveglia o finisci un'attività per avere il concime,Pospón una alarma o termina una tarea para ganar abono,Отложи будильник или сделай дело — получишь подкормку,推迟闹铃或完成任务才能拿到肥料
+现在要做,Time for,現在要做,今やること,지금 할 일,Jetzt dran,C'est le moment !,È il momento!,Es el momento,Пора!,现在要做
+现在要做\n%s,Time for\n%s,現在要做\n%s,今やること\n%s,지금 할 일\n%s,Jetzt dran:\n%s,C'est le moment !\n%s,È il momento!\n%s,¡Es el momento!\n%s,Пора!\n%s,现在要做\n%s
+到时间了,It's time!,到時間了,時間だよ！,시간이 됐어요!,Es ist so weit!,C'est l'heure !,È ora!,¡Es la hora!,Время пришло!,到时间了
+起床,Wake up,起床,起床,기상,Aufstehen,Réveil,Sveglia,Despertar,Подъём,起床
+去改这个提醒,Edit this reminder,去改這個提醒,このリマインダーを編集,이 알림 수정하기,Erinnerung bearbeiten,Modifier ce rappel,Modifica promemoria,Editar recordatorio,Изменить напоминание,去改这个提醒
+取消推迟,Cancel snooze,取消延後,スヌーズを取り消す,다시 알림 취소,Schlummern beenden,Annuler le report,Annulla posticipo,Cancelar aplazamiento,Отменить отсрочку,取消推迟
+确定,OK,確定,OK,확인,OK,OK,OK,Vale,ОК,确定
+完成,Done,完成,完了,완료,Fertig,Terminé,Fatto,Listo,Готово,完成
+确认,Confirm,確認,確認,확인,Bestätigen,Confirmer,Conferma,Confirmar,Подтвердить,确认
+请确认,Please confirm,請確認,これでいい？,확인해 주세요,Passt das so?,C'est bon ?,Va bene così?,¿Todo bien?,Всё верно?,请确认
+返回编辑,Back to edit,返回編輯,編集に戻る,다시 수정,Zurück,Modifier,Modifica,Volver a editar,Назад к правке,返回编辑
+事情：%s,What: %s,事情：%s,やること：%s,할 일: %s,Was: %s,Quoi : %s,Cosa: %s,Qué: %s,Что: %s,事情：%s
+哪天：%s,Which day: %s,哪天：%s,日にち：%s,날짜: %s,Wann: %s,Quand : %s,Quando: %s,Cuándo: %s,Когда: %s,哪天：%s
+几点闹钟：%s,Alarm set for %s,幾點鬧鐘：%s,アラーム：%s,알람: %s,Wecker: %s,Alarme : %s,Sveglia: %s,Alarma: %s,Будильник: %s,几点闹钟：%s
+几点会响：%s,Rings at %s,幾點會響：%s,鳴る時刻：%s,울리는 시간: %s,Klingelt: %s,Sonne : %s,Suona: %s,Suena: %s,Зазвонит: %s,几点会响：%s
+蜀葵,Hollyhock,蜀葵,タチアオイ,접시꽃,Stockrose,Rose trémière,Malvarosa,Malva real,Шток-роза,蜀葵
+向日葵,Sunflower,向日葵,ヒマワリ,해바라기,Sonnenblume,Tournesol,Girasole,Girasol,Подсолнух,向日葵
+兰花,Orchid,蘭花,ラン,난초,Orchidee,Orchidée,Orchidea,Orquídea,Орхидея,兰花
+玫瑰,Rose,玫瑰,バラ,장미,Rose,Rose,Rosa,Rosa,Роза,玫瑰
+陶盆,Clay pot,陶盆,素焼き鉢,토분,Tontopf,Pot en terre,Vaso di coccio,Maceta de barro,Глиняный горшок,陶盆
+白瓷,White porcelain,白瓷,白磁,백자,Weißes Porzellan,Porcelaine blanche,Porcellana bianca,Porcelana blanca,Белый фарфор,白瓷
+彩釉盆,Glazed pot,彩釉盆,釉薬の鉢,유약 화분,Glasierter Topf,Pot émaillé,Vaso smaltato,Maceta esmaltada,Глазурованный горшок,彩釉盆
+高筒盆,Tall pot,高筒盆,背の高い鉢,긴 화분,Hoher Topf,Pot haut,Vaso alto,Maceta alta,Высокий горшок,高筒盆
+方盆,Square pot,方盆,四角い鉢,사각 화분,Eckiger Topf,Pot carré,Vaso quadrato,Maceta cuadrada,Квадратный горшок,方盆
+碗盆,Bowl pot,碗盆,ボウル鉢,볼 화분,Schalentopf,Pot coupe,Vaso a ciotola,Maceta cuenco,Горшок-чаша,碗盆
+睡觉,Bedtime,睡覺,おやすみ,취침,Schlafenszeit,Coucher,Ora di dormire,A dormir,Отбой,睡觉
+周一,Mon,週一,月曜,월요일,Mo,lun.,lun,lun,Пн,周一
+周二,Tue,週二,火曜,화요일,Di,mar.,mar,mar,Вт,周二
+周三,Wed,週三,水曜,수요일,Mi,mer.,mer,mié,Ср,周三
+周四,Thu,週四,木曜,목요일,Do,jeu.,gio,jue,Чт,周四
+周五,Fri,週五,金曜,금요일,Fr,ven.,ven,vie,Пт,周五
+周六,Sat,週六,土曜,토요일,Sa,sam.,sab,sáb,Сб,周六
+周日,Sun,週日,日曜,일요일,So,dim.,dom,dom,Вс,周日
+新的提醒,New reminder,新的提醒,新しいリマインダー,새 알림,Neue Erinnerung,Nouveau rappel,Nuovo promemoria,Nuevo recordatorio,Новое напоминание,新的提醒
+🏖️ 这天不提醒,🏖️ Day off,🏖️ 這天不提醒,🏖️ この日はお休み,🏖️ 이날은 쉬기,🏖️ Freier Tag,🏖️ Jour off,🏖️ Giorno libero,🏖️ Día libre,🏖️ Выходной,🏖️ 这天不提醒
+🗑️ 删除,🗑️ Delete,🗑️ 刪除,🗑️ 削除,🗑️ 삭제,🗑️ Löschen,🗑️ Supprimer,🗑️ Elimina,🗑️ Eliminar,🗑️ Удалить,🗑️ 删除
+输入提醒名称,Name your reminder,輸入提醒名稱,リマインダーの名前,알림 이름 입력,Wie soll sie heißen?,Nomme ton rappel,Dai un nome al promemoria,Ponle un nombre,Как назовём?,输入提醒名称
+💪 健身,💪 Gym,💪 健身,💪 筋トレ,💪 운동,💪 Sport,💪 Sport,💪 Palestra,💪 Gimnasio,💪 Спорт,💪 健身
+＋ 增加结束时间,＋ Add an end time,＋ 增加結束時間,＋ 終了時刻を追加,＋ 종료 시간 추가,＋ Endzeit hinzufügen,＋ Ajouter une heure de fin,＋ Aggiungi un orario di fine,＋ Añadir hora de fin,＋ Добавить время окончания,＋ 增加结束时间
+＋ 添加结束时间,＋ Add an end time,＋ 新增結束時間,＋ 終了時刻を追加,＋ 종료 시간 추가,＋ Endzeit hinzufügen,＋ Ajouter une heure de fin,＋ Aggiungi un orario di fine,＋ Añadir hora de fin,＋ Добавить время окончания,＋ 添加结束时间
+＋ 添加提醒时间,＋ Add a time,＋ 新增提醒時間,＋ 時刻を追加,＋ 시간 추가,＋ Uhrzeit hinzufügen,＋ Ajouter une heure,＋ Aggiungi orario,＋ Añadir hora,＋ Добавить время,＋ 添加提醒时间
+跳过此提醒一次,Skip this one,跳過此提醒一次,今回だけスキップ,이번만 건너뛰기,Einmal aussetzen,Sauter cette fois,Salta questa volta,Saltar esta vez,Пропустить разок,跳过此提醒一次
+恢复此提醒,Restore this reminder,恢復此提醒,やっぱり戻す,다시 켜기,Doch wieder an,Rétablir ce rappel,Rimettilo,Recuperar,Вернуть,恢复此提醒
+暂停本日提醒,Pause this day's reminders,暫停本日提醒,この曜日の通知を止める,이 요일 알림 일시정지,Erinnerungen an diesem Tag pausieren,Suspendre les rappels de ce jour,Pausa i promemoria di questo giorno,Pausar los recordatorios de este día,Пауза для напоминаний этого дня,暂停本日提醒
+继续本日提醒,Resume this day's reminders,繼續本日提醒,この曜日の通知を再開,이 요일 알림 다시 켜기,Erinnerungen an diesem Tag fortsetzen,Reprendre les rappels de ce jour,Riprendi i promemoria di questo giorno,Reanudar los recordatorios de este día,Вернуть напоминания этого дня,继续本日提醒
+暂停此提醒,Pause this reminder,暫停此提醒,このリマインダーを一時停止,이 알림 일시정지,Erinnerung pausieren,Mettre en pause,Metti in pausa,Pausar recordatorio,Поставить на паузу,暂停此提醒
+继续此提醒,Resume this reminder,繼續此提醒,このリマインダーを再開,이 알림 다시 켜기,Erinnerung fortsetzen,Reprendre,Riprendi,Reanudar recordatorio,Снять с паузы,继续此提醒
+暂停%s提醒,Pause %s,暫停%s提醒,%sを一時停止,%s 일시정지,%s pausieren,Mettre %s en pause,Metti in pausa %s,Pausar recordatorios: %s,Пауза: %s,暂停%s提醒
+继续%s提醒,Resume %s,繼續%s提醒,%sを再開,%s 다시 켜기,%s fortsetzen,Reprendre %s,Riprendi %s,Reanudar recordatorios: %s,Вернуть: %s,继续%s提醒
+15 分钟后结束,Ends 15 min later,15 分鐘後結束,15分後に終了,15분 뒤 종료,Endet nach 15 Min.,Fin 15 min après,Finisce dopo 15 min,Termina 15 min después,Конец через 15 мин,15 分钟后结束
+30 分钟后结束,Ends 30 min later,30 分鐘後結束,30分後に終了,30분 뒤 종료,Endet nach 30 Min.,Fin 30 min après,Finisce dopo 30 min,Termina 30 min después,Конец через 30 мин,30 分钟后结束
+1 小时后结束,Ends 1 hr later,1 小時後結束,1時間後に終了,1시간 뒤 종료,Endet nach 1 Std.,Fin 1 h après,Finisce dopo 1 ora,Termina 1 h después,Конец через 1 ч,1 小时后结束
+没有结束提醒,No end reminder,沒有結束提醒,終了の通知なし,종료 알림 없음,Ohne Ende-Erinnerung,Pas de rappel de fin,Nessun avviso di fine,Sin aviso de fin,Без напоминания о конце,没有结束提醒
+开始,Start,開始,開始,시작,Start,Début,Inizio,Inicio,Начало,开始
+结束,End,結束,終了,종료,Ende,Fin,Fine,Fin,Конец,结束
+%s结束,%s is over,%s結束,%s おわり,%s 끝,%s ist vorbei,%s : terminé,%s: finito,%s: terminado,%s: всё,%s结束
+👶 接娃,👶 Pick up kids,👶 接小孩,👶 お迎え,👶 아이 데리러 가기,👶 Kind abholen,👶 Récup des enfants,👶 Prendere i bimbi,👶 Recoger a los niños,👶 Забрать ребёнка,👶 接娃
+💊 吃药,💊 Meds,💊 吃藥,💊 お薬,💊 약 먹기,💊 Medikamente,💊 Médocs,💊 Medicine,💊 Medicamentos,💊 Лекарство,💊 吃药
+🚌 上班,🚌 Commute,🚌 上班,🚌 出勤,🚌 출근,🚌 Zur Arbeit,🚌 Boulot,🚌 Al lavoro,🚌 Al trabajo,🚌 На работу,🚌 上班
+🏫 送娃,🏫 Drop off kids,🏫 送小孩,🏫 送り,🏫 아이 등교,🏫 Kind bringen,🏫 Déposer les enfants,🏫 Portare a scuola,🏫 Llevar al cole,🏫 Отвести в школу,🏫 送娃
+📚 上课,📚 Class,📚 上課,📚 授業,📚 수업,📚 Unterricht,📚 Cours,📚 Lezione,📚 Clase,📚 Урок,📚 上课
+📅 会议,📅 Meeting,📅 會議,📅 会議,📅 회의,📅 Meeting,📅 Réunion,📅 Riunione,📅 Reunión,📅 Встреча,📅 会议
+🐶 遛狗,🐶 Dog walk,🐶 遛狗,🐶 犬の散歩,🐶 강아지 산책,🐶 Gassi gehen,🐶 Sortir le chien,🐶 Portare fuori il cane,🐶 Pasear al perro,🐶 Выгулять собаку,🐶 遛狗
+🗑️ 倒垃圾,🗑️ Take out the trash,🗑️ 倒垃圾,🗑️ ゴミ出し,🗑️ 쓰레기 버리기,🗑️ Müll raus,🗑️ Sortir les poubelles,🗑️ Buttare la spazzatura,🗑️ Sacar la basura,🗑️ Вынести мусор,🗑️ 倒垃圾
+🛒 买菜,🛒 Groceries,🛒 買菜,🛒 買い物,🛒 장보기,🛒 Einkaufen,🛒 Courses,🛒 Spesa,🛒 Compras,🛒 Продукты,🛒 买菜
+暂不提醒,Off for now,暫不提醒,今はオフ,지금은 꺼짐,Vorerst deaktiviert,En pause pour l'instant,Spento per ora,Apagado por ahora,Пока выключено,暂不提醒
+提醒,Reminder,提醒,リマインダー,알림,Erinnerung,Rappel,Promemoria,Recordatorio,Напоминание,提醒
+{m}月{d}日,{m}/{d},{m}月{d}日,{m}月{d}日,{m}월 {d}일,{d}.{m}.,{d}/{m},{d}/{m},{d}/{m},{d}.{m},{m}月{d}日
+{m}/{d},{m}/{d},{m}/{d},{m}/{d},{m}/{d},{d}.{m}.,{d}/{m},{d}/{m},{d}/{m},{d}.{m},{m}/{d}
+点 + 添加不同的提醒项目,Tap + to add another reminder,點 + 新增不同的提醒項目,+ をタップして、別のリマインダーを追加,+ 를 눌러 다른 알림을 추가해요,"Tipp auf +, um noch eine Erinnerung anzulegen",Touche + pour ajouter un autre rappel,Tocca + per aggiungere un altro promemoria,Toca + para añadir otro recordatorio,"Нажми +, чтобы добавить ещё одно",点 + 添加不同的提醒项目
+周一到周日 每一天的时间都是独立的,Every day of the week gets its own time,週一到週日 每一天的時間都是獨立的,月曜から日曜まで、曜日ごとに時刻を決められるよ,월요일부터 일요일까지 요일마다 시간을 따로 정해요,Jeder Wochentag bekommt seine eigene Uhrzeit,Chaque jour de la semaine a sa propre heure,Ogni giorno della settimana ha il suo orario,Cada día de la semana tiene su propia hora,У каждого дня недели — своё время,周一到周日 每一天的时间都是独立的
+点击时间可以修改,Tap a time to change it,點一下時間就能修改,時刻をタップすると変えられるよ,시간을 누르면 바꿀 수 있어요,"Tipp auf eine Uhrzeit, um sie zu ändern",Touche une heure pour la changer,Tocca un orario per cambiarlo,Toca una hora para cambiarla,"Нажми на время, чтобы изменить",点击时间可以修改
+点 + 添加提醒,Tap + to add a reminder,點 + 新增提醒,+ をタップしてリマインダーを追加,+ 를 눌러 알림을 추가해요,"Tipp auf +, um eine Erinnerung anzulegen",Touche + pour ajouter un rappel,Tocca + per aggiungere un promemoria,Toca + para añadir un recordatorio,"Нажми +, чтобы добавить напоминание",点 + 添加提醒
+周一至周五,Weekdays,週一至週五,平日,평일,Mo–Fr,En semaine,Feriali,Entre semana,Будни,周一至周五
+每天,Every day,每天,毎日,매일,Jeden Tag,Tous les jours,Ogni giorno,Todos los días,Каждый день,每天
+不重复,Doesn't repeat,不重複,くり返さない,반복 안 함,Nicht wiederholen,Pas de répétition,Non ripetere,No repetir,Без повтора,不重复
+这个时间用在哪几天？,Which days should get this time?,這個時間用在哪幾天？,この時刻、どの曜日に使う？,이 시간을 어느 요일에 쓸까요?,Für welche Tage gilt diese Uhrzeit?,"Cette heure, pour quels jours ?",Questo orario per quali giorni?,¿Qué días usan esta hora?,В какие дни это время?,这个时间用在哪几天？
+上午,AM,上午,午前,오전,vorm.,AM,AM,a. m.,AM,上午
+%s 到 %s,%s to %s,%s 到 %s,%s〜%s,%s~%s,%s bis %s,%s à %s,%s – %s,%s a %s,%s – %s,%s 到 %s
+到,to,到,〜,~,bis,à,–,a,–,到
+下午,PM,下午,午後,오후,nachm.,PM,PM,p. m.,PM,下午
+选一个任务，开始计时,Pick something to start a timer,選一個任務，開始計時,選んだらタイマースタート,하나 골라서 타이머를 시작해요,"Wähl was aus, dann läuft der Timer",Choisis-en un pour lancer le minuteur,Scegline uno per avviare il timer,Elige uno para empezar el temporizador,Выбери — и таймер пошёл,选一个任务，开始计时
+%s 时间到了,%s · time's up!,%s 時間到了,%s 時間だよ！,%s 시간 다 됐어요!,%s · Zeit ist um!,%s · c'est l'heure !,%s · tempo scaduto!,%s · ¡se acabó el tiempo!,%s · время вышло!,%s 时间到了
+时间到了,Time's up!,時間到了,時間だよ！,시간 다 됐어요!,Zeit ist um!,C'est l'heure !,Tempo scaduto!,¡Se acabó el tiempo!,Время вышло!,时间到了
+共 %s · %s 到,%s · done at %s,共 %s · %s 到,%s · %sに終わるよ,%s · %s 종료,%s · fertig um %s,%s · fini à %s,%s · finisce alle %s,%s · termina a las %s,%s · готово в %s,共 %s · %s 到
+%d 分钟,%d min,%d 分鐘,%d分,%d분,%d Min.,%d min,%d min,%d min,%d мин,%d 分钟
+%d 小时,%d hr,%d 小時,%d時間,%d시간,%d Std.,%d h,%d h,%d h,%d ч,%d 小时
+%d 小时 %d 分钟,%d hr %d min,%d 小時 %d 分鐘,%d時間%d分,%d시간 %d분,%d Std. %d Min.,%d h %d min,%d h %d min,%d h %d min,%d ч %d мин,%d 小时 %d 分钟
+删除「%s」？,Delete “%s”?,刪除「%s」？,「%s」を削除する？,‘%s’ 삭제할까요?,„%s“ löschen?,Supprimer « %s » ?,Eliminare “%s”?,¿Eliminar «%s»?,Удалить «%s»?,删除「%s」？
+⏳ 计时,⏳ Timer,⏳ 計時,⏳ タイマー,⏳ 타이머,⏳ Timer,⏳ Minuteur,⏳ Timer,⏳ Temporizador,⏳ Таймер,⏳ 计时
+🍝 煮面,🍝 Pasta,🍝 煮麵,🍝 パスタ,🍝 라면,🍝 Nudeln,🍝 Pâtes,🍝 Pasta,🍝 Pasta,🍝 Макароны,🍝 煮面
+🍅 番茄钟,🍅 Pomodoro,🍅 番茄鐘,🍅 ポモドーロ,🍅 뽀모도로,🍅 Pomodoro,🍅 Pomodoro,🍅 Pomodoro,🍅 Pomodoro,🍅 Помодоро,🍅 番茄钟
+☕ 休息,☕ Break,☕ 休息,☕ 休憩,☕ 휴식,☕ Pause,☕ Pause,☕ Pausa,☕ Descanso,☕ Перерыв,☕ 休息
+自定计时,Custom timer,自訂計時,カスタムタイマー,직접 만든 타이머,Eigener Timer,Minuteur perso,Timer personalizzato,Temporizador propio,Свой таймер,自定计时
+写个名字，比如 🧺 洗衣服,"Give it a name, like 🧺 Laundry",寫個名字，比如 🧺 洗衣服,名前をつけてね。例：🧺 洗濯,이름을 지어 주세요. 예: 🧺 빨래,"Gib ihm einen Namen, z. B. 🧺 Wäsche","Donne-lui un nom, genre 🧺 Lessive","Dagli un nome, tipo 🧺 Bucato","Ponle un nombre, como 🧺 Colada","Придумай название, например 🧺 Стирка",写个名字，比如 🧺 洗衣服
+开始计时,Start timer,開始計時,タイマー開始,타이머 시작,Timer starten,Lancer le minuteur,Avvia timer,Empezar,Запустить,开始计时
+小时,hr,小時,時間,시간,Std.,h,h,h,ч,小时
+分钟,min,分鐘,分,분,Min.,min,min,min,мин,分钟
+取消,Cancel,取消,キャンセル,취소,Abbrechen,Annuler,Annulla,Cancelar,Отмена,取消
+删除,Delete,刪除,削除,삭제,Löschen,Supprimer,Elimina,Eliminar,Удалить,删除
+编辑,Edit,編輯,編集,수정,Bearbeiten,Modifier,Modifica,Editar,Изменить,编辑
+详情🔎,Details 🔎,詳情🔎,詳細🔎,자세히🔎,Details 🔎,Détails 🔎,Dettagli 🔎,Detalles 🔎,Подробнее 🔎,详情🔎
 "＋ 自定
 选时长","＋ Custom
 choose a duration","＋ 自訂
@@ -122,10 +122,11 @@ Dauer wählen","＋ Perso
 choisir la durée","＋ Personale
 scegli durata","＋ Propio
 elige duración","＋ Свой
-сколько длится"
-开始「%s」？,Start “%s”?,開始「%s」？,「%s」を始める？,‘%s’ 시작할까요?,„%s“ starten?,Lancer « %s » ?,Avviare “%s”?,¿Empezar «%s»?,Запустить «%s»?
-%s · %s 到,%s · done at %s,%s · %s 到,%s · %sに終わるよ,%s · %s 종료,%s · fertig um %s,%s · fini à %s,%s · finisce alle %s,%s · termina a las %s,%s · готово в %s
-会停掉正在走的「%s」,This'll stop “%s”,會停掉正在跑的「%s」,動いている「%s」は止まるよ,진행 중인 ‘%s’ 타이머가 멈춰요,„%s“ wird dann gestoppt,Ça arrêtera « %s »,Questo fermerà “%s”,Esto parará «%s»,«%s» остановится
+сколько длится","＋ 自定
+选时长"
+开始「%s」？,Start “%s”?,開始「%s」？,「%s」を始める？,‘%s’ 시작할까요?,„%s“ starten?,Lancer « %s » ?,Avviare “%s”?,¿Empezar «%s»?,Запустить «%s»?,开始「%s」？
+%s · %s 到,%s · done at %s,%s · %s 到,%s · %sに終わるよ,%s · %s 종료,%s · fertig um %s,%s · fini à %s,%s · finisce alle %s,%s · termina a las %s,%s · готово в %s,%s · %s 到
+会停掉正在走的「%s」,This'll stop “%s”,會停掉正在跑的「%s」,動いている「%s」は止まるよ,진행 중인 ‘%s’ 타이머가 멈춰요,„%s“ wird dann gestoppt,Ça arrêtera « %s »,Questo fermerà “%s”,Esto parará «%s»,«%s» остановится,会停掉正在走的「%s」
 "点一下就开始计时
 到点只发一条提醒，不会响闹钟","Tap to start a timer
 When it's up you'll get a heads-up, not an alarm","點一下就開始計時
@@ -136,52 +137,60 @@ Am Ende kommt nur eine Mitteilung, kein Wecker","Touche pour lancer un minuteur
 À la fin, juste une notif, pas d'alarme","Tocca per avviare un timer
 Alla fine arriva solo una notifica, niente sveglia","Toca para empezar un temporizador
 Al terminar te llega un aviso, no suena alarma","Нажми — и таймер пошёл
-В конце придёт уведомление, без будильника"
-自己加的计时 长按可以删除,Press and hold your own timers to delete them,自己加的計時 長按可以刪除,自分で追加したタイマーは、長押しで削除できるよ,직접 추가한 타이머는 길게 눌러 삭제해요,Eigene Timer: gedrückt halten zum Löschen,Maintiens tes minuteurs perso pour les supprimer,Tieni premuto sui tuoi timer per eliminarli,Mantén pulsados tus temporizadores para borrarlos,Свои таймеры удаляются долгим нажатием
-点 ＋ 自定 写个名字、选个时长,Tap ＋ Custom to name it and choose a duration,點 ＋ 自訂 寫個名字、選個時長,「＋ 自分で」で名前と長さを決めよう,‘＋ 직접’을 눌러 이름과 길이를 정해요,Tipp auf ＋ Eigener für Name und Dauer,Touche ＋ Perso pour choisir nom et durée,Tocca ＋ Personale per nome e durata,Toca ＋ Propio para ponerle nombre y duración,Нажми ＋ Свой — задай название и длительность
-暂停提醒,Pause,暫停提醒,一時停止,일시정지,Pausieren,Pause,Pausa,Pausar,Пауза
-继续提醒,Resume,繼續提醒,再開,다시 켜기,Fortsetzen,Reprendre,Riprendi,Reanudar,Продолжить
-暂停这天,Pause this day's reminders,暫停這天,この曜日の通知を止める,이 요일 알림 일시정지,Erinnerungen an diesem Tag pausieren,Suspendre les rappels de ce jour,Pausa i promemoria di questo giorno,Pausar los recordatorios de este día,Пауза для напоминаний этого дня
-继续这天,Resume this day's reminders,繼續這天,この曜日の通知を再開,이 요일 알림 다시 켜기,Erinnerungen an diesem Tag fortsetzen,Reprendre les rappels de ce jour,Riprendi i promemoria di questo giorno,Reanudar los recordatorios de este día,Вернуть напоминания этого дня
-暂停,Paused,暫停,一時停止中,일시정지됨,Pausiert,En pause,In pausa,En pausa,На паузе
-暂停中 · 长按星期可以继续,Paused · press and hold the day to turn it back on,暫停中 · 長按星期可以繼續,一時停止中 · 曜日を長押しで再開,일시정지됨 · 요일을 길게 눌러 다시 켜요,Pausiert · Wochentag gedrückt halten zum Fortsetzen,En pause · maintiens le jour pour reprendre,In pausa · tieni premuto il giorno per riprendere,En pausa · mantén pulsado el día para reanudar,"На паузе · зажми день, чтобы вернуть"
-此次提醒已被跳过，本周不会提醒，下周会继续提醒。点击下面的按钮可以恢复,"Skipped! No alarm this week, it'll be back next week. Changed your mind? Tap the button below",這次提醒已跳過，本週不會提醒，下週會繼續提醒。點下面的按鈕可以恢復,今回はスキップしたよ。今週は鳴らなくて、来週からまた鳴るよ。気が変わったら下のボタンで戻せるよ,이번 알림은 건너뛰었어요. 이번 주엔 안 울리고 다음 주부터 다시 울려요. 마음이 바뀌면 아래 버튼을 눌러요,"Ausgesetzt! Diese Woche kein Wecker, nächste Woche geht's weiter. Doch anders überlegt? Tipp unten auf den Button","Sauté ! Pas d'alarme cette semaine, elle revient la semaine prochaine. Changé d'avis ? Touche le bouton ci-dessous","Saltato! Niente sveglia questa settimana, torna la prossima. Ci hai ripensato? Tocca il pulsante qui sotto","¡Saltado! Esta semana no suena, vuelve la próxima. ¿Cambiaste de idea? Toca el botón de abajo","Пропущено! На этой неделе не зазвонит, вернётся на следующей. Передумал? Нажми кнопку ниже"
-整个提醒已暂停 · 长按标签可以继续,This reminder's paused · press and hold the tab to turn it back on,整個提醒已暫停 · 長按標籤可以繼續,このリマインダーは一時停止中 · タブを長押しで再開,이 알림은 일시정지됨 · 탭을 길게 눌러 다시 켜요,Erinnerung pausiert · Tab gedrückt halten zum Fortsetzen,Rappel en pause · maintiens l'onglet pour reprendre,Promemoria in pausa · tieni premuta la scheda per riprendere,Recordatorio en pausa · mantén pulsada la pestaña para reanudar,"Напоминание на паузе · зажми вкладку, чтобы вернуть"
-长按项目，可以暂停或删除,Press and hold a reminder to pause or delete it,長按項目，可以暫停或刪除,長押しで、一時停止や削除ができるよ,항목을 길게 눌러 일시정지하거나 삭제해요,Gedrückt halten zum Pausieren oder Löschen,Maintiens un rappel pour le mettre en pause ou le supprimer,Tieni premuto per mettere in pausa o eliminare,Mantén pulsado para pausar o borrar,"Зажми, чтобы поставить на паузу или удалить"
-长按日期，可以暂停当日提醒,Press and hold a day to pause that day's reminders,長按日期，可以暫停當日提醒,曜日を長押しすると、その曜日の通知を一時停止できるよ,요일을 길게 눌러 그 요일의 알림을 일시정지해요,"Tag gedrückt halten, um die Erinnerungen zu pausieren",Maintiens un jour pour en suspendre les rappels,Tieni premuto un giorno per metterne in pausa i promemoria,Mantén pulsado un día para pausar sus recordatorios,"Зажми день, чтобы поставить напоминания на паузу"
-结束时间要晚于开始时间,End time has to be after the start time,結束時間要晚於開始時間,終了は開始より後にしてね,종료 시간은 시작 시간보다 늦어야 해요,Das Ende muss nach dem Start liegen,La fin doit être après le début,La fine deve venire dopo l'inizio,El fin tiene que ser después del inicio,Конец должен быть позже начала
-睡觉时间要晚于起床时间,Bedtime has to be after wake-up time,睡覺時間要晚於起床時間,寝る時間は起きる時間より後にしてね,취침 시간은 기상 시간보다 늦어야 해요,Schlafenszeit muss nach dem Aufstehen liegen,Le coucher doit être après le réveil,L'ora di dormire deve venire dopo la sveglia,La hora de dormir tiene que ser después de despertar,Отбой должен быть позже подъёма
-取消计时,Cancel timer,取消計時,タイマーを取り消す,타이머 취소,Timer abbrechen,Annuler le minuteur,Annulla timer,Cancelar temporizador,Отменить таймер
-行程,Agenda,行程,予定,일정,Termine,Agenda,Agenda,Agenda,Планы
-本周,This week,本週,今週,이번 주,Diese Woche,Cette semaine,Questa settimana,Esta semana,Эта неделя
-下周,Next week,下週,来週,다음 주,Nächste Woche,Semaine prochaine,Prossima settimana,Próxima semana,Следующая неделя
-下下周,The week after,下下週,再来週,다다음 주,Übernächste Woche,Dans deux semaines,Tra due settimane,Dentro de dos semanas,Через две недели
-更远,Later,更遠,もっと先,그 이후,Später,Plus tard,Più avanti,Más adelante,Позже
-自选日期,Pick a date,自選日期,日付を選ぶ,날짜 고르기,Datum wählen,Choisir une date,Scegli una data,Elegir fecha,Выбрать дату
-已完成,Done,已完成,完了,완료,Erledigt,Terminé,Fatto,Hecho,Сделано
-已完成🐳,Done 🐳,已完成🐳,完了🐳,완료🐳,Erledigt 🐳,Terminé 🐳,Fatto 🐳,Hecho 🐳,Сделано 🐳
-哪一天？,Which day?,哪一天？,どの日？,어느 날?,Welcher Tag?,Quel jour ?,Che giorno?,¿Qué día?,Какой день?
-+ 添加,+ Add,+ 新增,+ 追加,+ 추가,+ Neu,+ Ajouter,+ Aggiungi,+ Añadir,+ Добавить
-撤销,Undo,撤銷,元に戻す,되돌리기,Rückgängig,Annuler,Annulla,Deshacer,Отменить
-白茫茫大雪真干净,Nothing but clean snow.,白茫茫大雪真乾淨,一面の雪景色。なんにもないね,"하얀 눈밭뿐, 깨끗하네요","Nur frischer Schnee, sonst nichts.",Rien que de la neige toute propre.,"Solo neve candida, nient'altro.","Solo nieve limpia, nada más.",Только чистый снег — и ничего больше.
-没有行程,Nothing planned,沒有行程,予定なし,일정 없음,Nichts geplant,Rien de prévu,Niente in programma,Nada previsto,Планов нет
-此周无提醒,Nothing this week,此週無提醒,今週はなし,이번 주엔 없음,Diese Woche nichts,Rien cette semaine,Niente questa settimana,Nada esta semana,На этой неделе пусто
-下%s %s,Next %s · %s,下%s %s,来週の%s %s,다음 주 %s %s,"Nächster %s, %s",%s prochain · %s,%s prossimo · %s,Próximo %s · %s,След. %s %s
-下下%s %s,%s the week after · %s,下下%s %s,再来週の%s %s,다다음 주 %s %s,"Übernächster %s, %s",%s dans deux semaines · %s,%s tra due settimane · %s,%s dentro de dos semanas · %s,%s через две недели · %s
-{y}年{m}月{d}日 {w},{y}-{m}-{d} {w},{y}年{m}月{d}日 {w},{y}年{m}月{d}日（{w}）,{y}년 {m}월 {d}일 ({w}),"{w}, {d}.{m}.{y}",{w} {d}/{m}/{y},{w} {d}/{m}/{y},{w} {d}/{m}/{y},"{w}, {d}.{m}.{y}"
-你的「固定每周提醒」不会在此处显示的哦,Your fixed weekly reminders won't show up here.,你的「固定每週提醒」不會在此處顯示的哦,「毎週のリマインダー」はここには出ないよ,‘매주 반복 알림’은 여기에 안 나와요,Deine wöchentlichen Erinnerungen tauchen hier nicht auf.,Tes rappels hebdo n'apparaissent pas ici.,I tuoi promemoria settimanali non compaiono qui.,Tus recordatorios semanales no aparecen aquí.,Еженедельные напоминания здесь не показываются.
-正点,On time,準時,ちょうど,제시간,Pünktlich,Pile à l'heure,Puntuale,A la hora,Ровно
-自选,Custom,自選,自分で選ぶ,직접,Eigene,Perso,Personalizzato,Elegir,Своё
-提前几分钟,How many minutes early?,提前幾分鐘,何分前？,몇 분 전에?,Wie viele Minuten vorher?,Combien de minutes avant ?,Quanti minuti prima?,¿Cuántos minutos antes?,За сколько минут?
-提前多久,How early?,提前多久,どれくらい前？,얼마나 미리?,Wie früh?,Combien de temps avant ?,Quanto prima?,¿Cuánto antes?,Насколько заранее?
-按到达时间设，路上要多久就提前多久,"Set the arrival time, then how early to leave",按到達時間設，路上要多久就提前多久,着く時間を決めて、移動にかかる分だけ早めよう,"도착 시간을 정하고, 가는 데 걸리는 만큼 미리 울려요",Stell die Ankunftszeit ein und wie früh du losmusst,"Règle l'heure d'arrivée, puis indique la durée du trajet pour recevoir le rappel à l'heure du départ.","Imposta l'ora di arrivo, poi quanto prima partire",Pon la hora de llegada y cuánto antes tienes que salir,Укажи время прибытия и за сколько выходить
-提前 %s，%s 响,%s early · rings %s,提前 %s，%s 響,%s前 · %sに鳴る,%s 전 · %s에 울림,%s vorher · klingelt %s,%s avant · sonne à %s,%s prima · suona alle %s,%s antes · suena a las %s,За %s · зазвонит в %s
-%s 到,Arrive %s,%s 到,%sに到着,%s 도착,Ankunft %s,Arrivée %s,Arrivo %s,Llegada %s,Прибытие %s
-%s 响,Rings %s,%s 響,%sに鳴る,%s에 울림,Klingelt %s,Sonne à %s,Suona alle %s,Suena a las %s,Звонок в %s
-开始 %s · 结束 %s,Start %s · End %s,開始 %s · 結束 %s,開始 %s · 終了 %s,시작 %s · 종료 %s,Start %s · Ende %s,Début %s · Fin %s,Inizio %s · Fine %s,Inicio %s · Fin %s,Начало %s · Конец %s
-蓝色的是在闹钟页面设的，每个星期都响。黄色的只响一次。,Blue ones are set on the alarm page and ring every week. Yellow ones ring just once.,藍色的是在鬧鐘頁面設的，每個星期都響。黃色的只響一次。,青いのはアラーム画面で設定したもので、毎週鳴るよ。黄色いのは一回だけ。,파란색은 알람 화면에서 만든 거라 매주 울려요. 노란색은 한 번만 울려요.,"Blaue stellst du auf der Wecker-Seite ein, die klingeln jede Woche. Gelbe klingeln nur einmal.",Les bleus se règlent dans les alarmes et sonnent chaque semaine. Les jaunes ne sonnent qu'une fois.,Quelli blu si impostano nella pagina delle sveglie e suonano ogni settimana. Quelli gialli suonano una volta sola.,Los azules se ponen en la página de alarmas y suenan cada semana. Los amarillos suenan solo una vez.,Синие задаются на странице будильников и звонят каждую неделю. Жёлтые — только один раз.
-长按蓝色的，点「详情」，就能去闹钟页面改它。,"Press and hold a blue one, then tap Details to change it on the alarm page.",長按藍色的，點「詳情」，就能去鬧鐘頁面改它。,青いのを長押しして「詳細」をタップすると、アラーム画面で変えられるよ。,파란색을 길게 누르고 ‘자세히’를 누르면 알람 화면에서 바꿀 수 있어요.,"Halt eine blaue gedrückt und tipp auf „Details“, um sie auf der Wecker-Seite zu ändern.","Maintiens un bleu, puis touche « Détails » pour le changer dans les alarmes.",Tieni premuto uno blu e tocca “Dettagli” per cambiarlo nella pagina delle sveglie.,Mantén pulsado uno azul y toca «Detalles» para cambiarlo en la página de alarmas.,"Зажми синее и нажми «Подробнее», чтобы изменить его на странице будильников."
-想加一个只响一次的，点下面的加号。,Want one that rings just once? Tap the plus button below.,想加一個只響一次的，點下面的加號。,一回だけ鳴らしたいなら、下の＋をタップしてね。,한 번만 울리게 하려면 아래 + 를 눌러요.,Nur einmal klingeln lassen? Tipp unten auf das Plus.,Un rappel qui sonne une seule fois ? Touche le + en bas.,Ne vuoi uno che suoni una volta sola? Tocca il + qui sotto.,¿Quieres uno que suene solo una vez? Toca el + de abajo.,Нужно разовое? Нажми плюс внизу.
-隐藏每周日常提醒,Hide weekly reminders,隱藏每週日常提醒,毎週のリマインダーを隠す,매주 알림 숨기기,Wöchentliche ausblenden,Masquer les rappels hebdo,Nascondi i settimanali,Ocultar los semanales,Скрыть еженедельные
-显示每周日常提醒,Show weekly reminders,顯示每週日常提醒,毎週のリマインダーを表示,매주 알림 보기,Wöchentliche einblenden,Afficher les rappels hebdo,Mostra i settimanali,Mostrar los semanales,Показать еженедельные
-长按黄色的，可以改一改，也可以删掉。,"Press and hold a yellow one. You can change it, or delete it.",長按黃色的，可以改一改，也可以刪掉。,黄色いのは長押しで、変更も削除もできるよ。,노란색을 길게 누르면 바꾸거나 지울 수 있어요.,"Halt eine gelbe gedrückt, um sie zu ändern oder zu löschen.",Maintiens un jaune pour le modifier ou le supprimer.,Tieni premuto uno giallo per modificarlo o eliminarlo.,Mantén pulsado uno amarillo para cambiarlo o borrarlo.,Зажми жёлтое — можно изменить или удалить.
+В конце придёт уведомление, без будильника","点一下就开始计时
+到点只发一条提醒，不会响闹钟"
+自己加的计时 长按可以删除,Press and hold your own timers to delete them,自己加的計時 長按可以刪除,自分で追加したタイマーは、長押しで削除できるよ,직접 추가한 타이머는 길게 눌러 삭제해요,Eigene Timer: gedrückt halten zum Löschen,Maintiens tes minuteurs perso pour les supprimer,Tieni premuto sui tuoi timer per eliminarli,Mantén pulsados tus temporizadores para borrarlos,Свои таймеры удаляются долгим нажатием,自己加的计时 长按可以删除
+点 ＋ 自定 写个名字、选个时长,Tap ＋ Custom to name it and choose a duration,點 ＋ 自訂 寫個名字、選個時長,「＋ 自分で」で名前と長さを決めよう,‘＋ 직접’을 눌러 이름과 길이를 정해요,Tipp auf ＋ Eigener für Name und Dauer,Touche ＋ Perso pour choisir nom et durée,Tocca ＋ Personale per nome e durata,Toca ＋ Propio para ponerle nombre y duración,Нажми ＋ Свой — задай название и длительность,点 ＋ 自定 写个名字、选个时长
+暂停提醒,Pause,暫停提醒,一時停止,일시정지,Pausieren,Pause,Pausa,Pausar,Пауза,暂停提醒
+继续提醒,Resume,繼續提醒,再開,다시 켜기,Fortsetzen,Reprendre,Riprendi,Reanudar,Продолжить,继续提醒
+暂停这天,Pause this day's reminders,暫停這天,この曜日の通知を止める,이 요일 알림 일시정지,Erinnerungen an diesem Tag pausieren,Suspendre les rappels de ce jour,Pausa i promemoria di questo giorno,Pausar los recordatorios de este día,Пауза для напоминаний этого дня,暂停这天
+继续这天,Resume this day's reminders,繼續這天,この曜日の通知を再開,이 요일 알림 다시 켜기,Erinnerungen an diesem Tag fortsetzen,Reprendre les rappels de ce jour,Riprendi i promemoria di questo giorno,Reanudar los recordatorios de este día,Вернуть напоминания этого дня,继续这天
+暂停,Paused,暫停,一時停止中,일시정지됨,Pausiert,En pause,In pausa,En pausa,На паузе,暂停
+暂停中 · 长按星期可以继续,Paused · press and hold the day to turn it back on,暫停中 · 長按星期可以繼續,一時停止中 · 曜日を長押しで再開,일시정지됨 · 요일을 길게 눌러 다시 켜요,Pausiert · Wochentag gedrückt halten zum Fortsetzen,En pause · maintiens le jour pour reprendre,In pausa · tieni premuto il giorno per riprendere,En pausa · mantén pulsado el día para reanudar,"На паузе · зажми день, чтобы вернуть",暂停中 · 长按星期可以继续
+此次提醒已被跳过，本周不会提醒，下周会继续提醒。点击下面的按钮可以恢复,"Skipped! No alarm this week, it'll be back next week. Changed your mind? Tap the button below",這次提醒已跳過，本週不會提醒，下週會繼續提醒。點下面的按鈕可以恢復,今回はスキップしたよ。今週は鳴らなくて、来週からまた鳴るよ。気が変わったら下のボタンで戻せるよ,이번 알림은 건너뛰었어요. 이번 주엔 안 울리고 다음 주부터 다시 울려요. 마음이 바뀌면 아래 버튼을 눌러요,"Ausgesetzt! Diese Woche kein Wecker, nächste Woche geht's weiter. Doch anders überlegt? Tipp unten auf den Button","Sauté ! Pas d'alarme cette semaine, elle revient la semaine prochaine. Changé d'avis ? Touche le bouton ci-dessous","Saltato! Niente sveglia questa settimana, torna la prossima. Ci hai ripensato? Tocca il pulsante qui sotto","¡Saltado! Esta semana no suena, vuelve la próxima. ¿Cambiaste de idea? Toca el botón de abajo","Пропущено! На этой неделе не зазвонит, вернётся на следующей. Передумал? Нажми кнопку ниже",此次提醒已被跳过，本周不会提醒，下周会继续提醒。点击下面的按钮可以恢复
+整个提醒已暂停 · 长按标签可以继续,This reminder's paused · press and hold the tab to turn it back on,整個提醒已暫停 · 長按標籤可以繼續,このリマインダーは一時停止中 · タブを長押しで再開,이 알림은 일시정지됨 · 탭을 길게 눌러 다시 켜요,Erinnerung pausiert · Tab gedrückt halten zum Fortsetzen,Rappel en pause · maintiens l'onglet pour reprendre,Promemoria in pausa · tieni premuta la scheda per riprendere,Recordatorio en pausa · mantén pulsada la pestaña para reanudar,"Напоминание на паузе · зажми вкладку, чтобы вернуть",整个提醒已暂停 · 长按标签可以继续
+长按项目，可以暂停或删除,Press and hold a reminder to pause or delete it,長按項目，可以暫停或刪除,長押しで、一時停止や削除ができるよ,항목을 길게 눌러 일시정지하거나 삭제해요,Gedrückt halten zum Pausieren oder Löschen,Maintiens un rappel pour le mettre en pause ou le supprimer,Tieni premuto per mettere in pausa o eliminare,Mantén pulsado para pausar o borrar,"Зажми, чтобы поставить на паузу или удалить",长按项目，可以暂停或删除
+长按日期，可以暂停当日提醒,Press and hold a day to pause that day's reminders,長按日期，可以暫停當日提醒,曜日を長押しすると、その曜日の通知を一時停止できるよ,요일을 길게 눌러 그 요일의 알림을 일시정지해요,"Tag gedrückt halten, um die Erinnerungen zu pausieren",Maintiens un jour pour en suspendre les rappels,Tieni premuto un giorno per metterne in pausa i promemoria,Mantén pulsado un día para pausar sus recordatorios,"Зажми день, чтобы поставить напоминания на паузу",长按日期，可以暂停当日提醒
+结束时间要晚于开始时间,End time has to be after the start time,結束時間要晚於開始時間,終了は開始より後にしてね,종료 시간은 시작 시간보다 늦어야 해요,Das Ende muss nach dem Start liegen,La fin doit être après le début,La fine deve venire dopo l'inizio,El fin tiene que ser después del inicio,Конец должен быть позже начала,结束时间要晚于开始时间
+睡觉时间要晚于起床时间,Bedtime has to be after wake-up time,睡覺時間要晚於起床時間,寝る時間は起きる時間より後にしてね,취침 시간은 기상 시간보다 늦어야 해요,Schlafenszeit muss nach dem Aufstehen liegen,Le coucher doit être après le réveil,L'ora di dormire deve venire dopo la sveglia,La hora de dormir tiene que ser después de despertar,Отбой должен быть позже подъёма,睡觉时间要晚于起床时间
+取消计时,Cancel timer,取消計時,タイマーを取り消す,타이머 취소,Timer abbrechen,Annuler le minuteur,Annulla timer,Cancelar temporizador,Отменить таймер,取消计时
+行程,Agenda,行程,予定,일정,Termine,Agenda,Agenda,Agenda,Планы,行程
+本周,This week,本週,今週,이번 주,Diese Woche,Cette semaine,Questa settimana,Esta semana,Эта неделя,本周
+下周,Next week,下週,来週,다음 주,Nächste Woche,Semaine prochaine,Prossima settimana,Próxima semana,Следующая неделя,下周
+下下周,The week after,下下週,再来週,다다음 주,Übernächste Woche,Dans deux semaines,Tra due settimane,Dentro de dos semanas,Через две недели,下下周
+更远,Later,更遠,もっと先,그 이후,Später,Plus tard,Più avanti,Más adelante,Позже,更远
+自选日期,Pick a date,自選日期,日付を選ぶ,날짜 고르기,Datum wählen,Choisir une date,Scegli una data,Elegir fecha,Выбрать дату,自选日期
+已完成,Done,已完成,完了,완료,Erledigt,Terminé,Fatto,Hecho,Сделано,已完成
+已完成🐳,Done 🐳,已完成🐳,完了🐳,완료🐳,Erledigt 🐳,Terminé 🐳,Fatto 🐳,Hecho 🐳,Сделано 🐳,已完成🐳
+哪一天？,Which day?,哪一天？,どの日？,어느 날?,Welcher Tag?,Quel jour ?,Che giorno?,¿Qué día?,Какой день?,哪一天？
++ 添加,+ Add,+ 新增,+ 追加,+ 추가,+ Neu,+ Ajouter,+ Aggiungi,+ Añadir,+ Добавить,+ 添加
+撤销,Undo,撤銷,元に戻す,되돌리기,Rückgängig,Annuler,Annulla,Deshacer,Отменить,撤销
+白茫茫大雪真干净,Nothing but clean snow.,白茫茫大雪真乾淨,一面の雪景色。なんにもないね,"하얀 눈밭뿐, 깨끗하네요","Nur frischer Schnee, sonst nichts.",Rien que de la neige toute propre.,"Solo neve candida, nient'altro.","Solo nieve limpia, nada más.",Только чистый снег — и ничего больше.,白茫茫大雪真干净
+没有行程,Nothing planned,沒有行程,予定なし,일정 없음,Nichts geplant,Rien de prévu,Niente in programma,Nada previsto,Планов нет,没有行程
+此周无提醒,Nothing this week,此週無提醒,今週はなし,이번 주엔 없음,Diese Woche nichts,Rien cette semaine,Niente questa settimana,Nada esta semana,На этой неделе пусто,此周无提醒
+下%s %s,Next %s · %s,下%s %s,来週の%s %s,다음 주 %s %s,"Nächster %s, %s",%s prochain · %s,%s prossimo · %s,Próximo %s · %s,След. %s %s,下%s %s
+下下%s %s,%s the week after · %s,下下%s %s,再来週の%s %s,다다음 주 %s %s,"Übernächster %s, %s",%s dans deux semaines · %s,%s tra due settimane · %s,%s dentro de dos semanas · %s,%s через две недели · %s,下下%s %s
+{y}年{m}月{d}日 {w},{y}-{m}-{d} {w},{y}年{m}月{d}日 {w},{y}年{m}月{d}日（{w}）,{y}년 {m}월 {d}일 ({w}),"{w}, {d}.{m}.{y}",{w} {d}/{m}/{y},{w} {d}/{m}/{y},{w} {d}/{m}/{y},"{w}, {d}.{m}.{y}",{y}年{m}月{d}日 {w}
+你的「固定每周提醒」不会在此处显示的哦,Your fixed weekly reminders won't show up here.,你的「固定每週提醒」不會在此處顯示的哦,「毎週のリマインダー」はここには出ないよ,‘매주 반복 알림’은 여기에 안 나와요,Deine wöchentlichen Erinnerungen tauchen hier nicht auf.,Tes rappels hebdo n'apparaissent pas ici.,I tuoi promemoria settimanali non compaiono qui.,Tus recordatorios semanales no aparecen aquí.,Еженедельные напоминания здесь не показываются.,你的「固定每周提醒」不会在此处显示的哦
+正点,On time,準時,ちょうど,제시간,Pünktlich,Pile à l'heure,Puntuale,A la hora,Ровно,正点
+自选,Custom,自選,自分で選ぶ,직접,Eigene,Perso,Personalizzato,Elegir,Своё,自选
+提前几分钟,How many minutes early?,提前幾分鐘,何分前？,몇 분 전에?,Wie viele Minuten vorher?,Combien de minutes avant ?,Quanti minuti prima?,¿Cuántos minutos antes?,За сколько минут?,提前几分钟
+提前多久,How early?,提前多久,どれくらい前？,얼마나 미리?,Wie früh?,Combien de temps avant ?,Quanto prima?,¿Cuánto antes?,Насколько заранее?,提前多久
+按到达时间设，路上要多久就提前多久,"Set the arrival time, then how early to leave",按到達時間設，路上要多久就提前多久,着く時間を決めて、移動にかかる分だけ早めよう,"도착 시간을 정하고, 가는 데 걸리는 만큼 미리 울려요",Stell die Ankunftszeit ein und wie früh du losmusst,"Règle l'heure d'arrivée, puis indique la durée du trajet pour recevoir le rappel à l'heure du départ.","Imposta l'ora di arrivo, poi quanto prima partire",Pon la hora de llegada y cuánto antes tienes que salir,Укажи время прибытия и за сколько выходить,按到达时间设，路上要多久就提前多久
+提前 %s，%s 响,%s early · rings %s,提前 %s，%s 響,%s前 · %sに鳴る,%s 전 · %s에 울림,%s vorher · klingelt %s,%s avant · sonne à %s,%s prima · suona alle %s,%s antes · suena a las %s,За %s · зазвонит в %s,提前 %s，%s 响
+%s 到,Arrive %s,%s 到,%sに到着,%s 도착,Ankunft %s,Arrivée %s,Arrivo %s,Llegada %s,Прибытие %s,%s 到
+%s 响,Rings %s,%s 響,%sに鳴る,%s에 울림,Klingelt %s,Sonne à %s,Suona alle %s,Suena a las %s,Звонок в %s,%s 响
+开始 %s · 结束 %s,Start %s · End %s,開始 %s · 結束 %s,開始 %s · 終了 %s,시작 %s · 종료 %s,Start %s · Ende %s,Début %s · Fin %s,Inizio %s · Fine %s,Inicio %s · Fin %s,Начало %s · Конец %s,开始 %s · 结束 %s
+蓝色的是在闹钟页面设的，每个星期都响。黄色的只响一次。,Blue ones are set on the alarm page and ring every week. Yellow ones ring just once.,藍色的是在鬧鐘頁面設的，每個星期都響。黃色的只響一次。,青いのはアラーム画面で設定したもので、毎週鳴るよ。黄色いのは一回だけ。,파란색은 알람 화면에서 만든 거라 매주 울려요. 노란색은 한 번만 울려요.,"Blaue stellst du auf der Wecker-Seite ein, die klingeln jede Woche. Gelbe klingeln nur einmal.",Les bleus se règlent dans les alarmes et sonnent chaque semaine. Les jaunes ne sonnent qu'une fois.,Quelli blu si impostano nella pagina delle sveglie e suonano ogni settimana. Quelli gialli suonano una volta sola.,Los azules se ponen en la página de alarmas y suenan cada semana. Los amarillos suenan solo una vez.,Синие задаются на странице будильников и звонят каждую неделю. Жёлтые — только один раз.,蓝色的是在闹钟页面设的，每个星期都响。黄色的只响一次。
+长按蓝色的，点「详情」，就能去闹钟页面改它。,"Press and hold a blue one, then tap Details to change it on the alarm page.",長按藍色的，點「詳情」，就能去鬧鐘頁面改它。,青いのを長押しして「詳細」をタップすると、アラーム画面で変えられるよ。,파란색을 길게 누르고 ‘자세히’를 누르면 알람 화면에서 바꿀 수 있어요.,"Halt eine blaue gedrückt und tipp auf „Details“, um sie auf der Wecker-Seite zu ändern.","Maintiens un bleu, puis touche « Détails » pour le changer dans les alarmes.",Tieni premuto uno blu e tocca “Dettagli” per cambiarlo nella pagina delle sveglie.,Mantén pulsado uno azul y toca «Detalles» para cambiarlo en la página de alarmas.,"Зажми синее и нажми «Подробнее», чтобы изменить его на странице будильников.",长按蓝色的，点「详情」，就能去闹钟页面改它。
+想加一个只响一次的，点下面的加号。,Want one that rings just once? Tap the plus button below.,想加一個只響一次的，點下面的加號。,一回だけ鳴らしたいなら、下の＋をタップしてね。,한 번만 울리게 하려면 아래 + 를 눌러요.,Nur einmal klingeln lassen? Tipp unten auf das Plus.,Un rappel qui sonne une seule fois ? Touche le + en bas.,Ne vuoi uno che suoni una volta sola? Tocca il + qui sotto.,¿Quieres uno que suene solo una vez? Toca el + de abajo.,Нужно разовое? Нажми плюс внизу.,想加一个只响一次的，点下面的加号。
+隐藏每周日常提醒,Hide weekly reminders,隱藏每週日常提醒,毎週のリマインダーを隠す,매주 알림 숨기기,Wöchentliche ausblenden,Masquer les rappels hebdo,Nascondi i settimanali,Ocultar los semanales,Скрыть еженедельные,隐藏每周日常提醒
+显示每周日常提醒,Show weekly reminders,顯示每週日常提醒,毎週のリマインダーを表示,매주 알림 보기,Wöchentliche einblenden,Afficher les rappels hebdo,Mostra i settimanali,Mostrar los semanales,Показать еженедельные,显示每周日常提醒
+长按黄色的，可以改一改，也可以删掉。,"Press and hold a yellow one. You can change it, or delete it.",長按黃色的，可以改一改，也可以刪掉。,黄色いのは長押しで、変更も削除もできるよ。,노란색을 길게 누르면 바꾸거나 지울 수 있어요.,"Halt eine gelbe gedrückt, um sie zu ändern oder zu löschen.",Maintiens un jaune pour le modifier ou le supprimer.,Tieni premuto uno giallo per modificarlo o eliminarlo.,Mantén pulsado uno amarillo para cambiarlo o borrarlo.,Зажми жёлтое — можно изменить или удалить.,长按黄色的，可以改一改，也可以删掉。
+蝴蝶兰,Moth orchid,蝴蝶蘭,コチョウラン,호접란,Phalaenopsis,Phalaenopsis,Phalaenopsis,Phalaenopsis,Фаленопсис,蝴蝶兰
+君子兰,Clivia,君子蘭,クンシラン,군자란,Klivie,Clivia,Clivia,Clivia,Кливия,君子兰
+仙客来,Cyclamen,仙客來,シクラメン,시클라멘,Alpenveilchen,Cyclamen,Ciclamino,Ciclamen,Цикламен,仙客来
+长寿花,Kalanchoe,長壽花,カランコエ,칼랑코에,Kalanchoe,Kalanchoé,Kalanchoe,Kalanchoe,Каланхоэ,长寿花
+三花猫,Calico cat,三花貓,三毛猫,삼색 고양이,Dreifarbige Katze,Chat tricolore,Gatto tricolore,Gato tricolor,Трёхцветная кошка,三花猫
+兔子,Rabbit,兔子,ウサギ,토끼,Kaninchen,Lapin,Coniglio,Conejo,Кролик,兔子
+刺猬小屋,Hedgehog cottage,刺蝟小屋,ハリネズミの家,고슴도치 집,Igelhäuschen,Maison du hérisson,Casetta del riccio,Casita del erizo,Домик ёжика,刺猬小屋

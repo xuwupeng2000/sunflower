@@ -7,12 +7,15 @@ static var _woke := false
 
 
 static func snap(host: Node, story: String, caption: String) -> void:
-	if host == null:
+	if not is_instance_valid(host):
 		return
 	_wake()
 	await host.get_tree().process_frame
 	await host.get_tree().process_frame
-	await RenderingServer.frame_post_draw
+	# Occluded background windows may never emit frame_post_draw; force this review frame.
+	if not is_instance_valid(host):
+		return
+	RenderingServer.force_draw(false)
 	var image := host.get_viewport().get_texture().get_image()
 	if image == null or image.get_width() == 0:
 		return

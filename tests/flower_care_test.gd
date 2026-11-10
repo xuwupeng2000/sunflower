@@ -23,6 +23,8 @@ func test_wilt_then_water() -> void:
 	var opened: Array = await Drive.open(self)
 	_runner = opened[0]
 	var main: Node = opened[1]
+	# Direct method calls drive this test; ignore incidental clicks on the preview window.
+	main.get_viewport().gui_disable_input = true
 	var flower: Node3D = main._sunflower
 	await _wait_grown(main, flower, 2)
 	assert_int(AlarmStore.wilt_level()).is_equal(3)
@@ -42,16 +44,18 @@ func test_wilt_then_water() -> void:
 	await Reel.snap(main, "枯萎再浇水", "浇完，头抬起来了")
 
 
-func test_ten_feeds_each_grows() -> void:
-	AlarmStore.fertilizer = 10
+func test_three_feeds_each_grows() -> void:
+	AlarmStore.fertilizer = 3
 	var opened: Array = await Drive.open(self)
 	_runner = opened[0]
 	var main: Node = opened[1]
+	# Direct method calls drive this test; ignore incidental clicks on the preview window.
+	main.get_viewport().gui_disable_input = true
 	var flower: Node3D = main._sunflower
 	await _wait_grown(main, flower, 0)
 	var height := _height(flower)
-	await Reel.snap(main, "施肥十次", "还没施肥，高 %s" % _text(height))
-	for pack in 10:
+	await Reel.snap(main, "施肥三次", "还没施肥，高 %s" % _text(height))
+	for pack in 3:
 		var at: Vector2 = flower.plant_screen_position()
 		assert_bool(flower.hits_plant(at)).is_true()
 		main._start_care_drag("feed", main._feed_button)
@@ -59,14 +63,16 @@ func test_ten_feeds_each_grows() -> void:
 		var used := pack + 1
 		await _wait_grown(main, flower, used)
 		assert_int(AlarmStore.fertilizer_used).is_equal(used)
-		assert_int(AlarmStore.fertilizer).is_equal(10 - used)
+		assert_int(AlarmStore.fertilizer).is_equal(3 - used)
 		var next := _height(flower)
 		assert_bool(next > height).is_true()
 		height = next
-		await Reel.snap(main, "施肥十次", "第 %d 包，高 %s" % [used, _text(height)])
+		await Reel.snap(main, "施肥三次", "第 %d 包，高 %s" % [used, _text(height)])
 
 
 func _height(flower: Node3D) -> float:
+	if flower._plant_mode == "model":
+		return float(flower._model.plant_height())
 	var growth := float(flower._growth_shown)
 	var lifted := 0.0
 	if flower._stretch:

@@ -62,8 +62,59 @@ func test_missing_keys_still_open() -> void:
 	assert_str(str(AlarmStore.once_named("sample-once").get("name", ""))).is_not_empty()
 
 
+func test_clivia_selection_survives_reload() -> void:
+	_write({"flower_kind": 2, "flower_kind_v": 2, "pot_kind": 1})
+	AlarmStore.load_data()
+	assert_int(AlarmStore.flower_kind).is_equal(2)
+	AlarmStore.save_data()
+	AlarmStore.load_data()
+	assert_int(AlarmStore.flower_kind).is_equal(2)
+	assert_int(AlarmStore.pot_kind).is_equal(1)
+
+
+func test_cat_pot_selection_survives_reload() -> void:
+	_write({"flower_kind": 1, "flower_kind_v": 2, "pot_kind": 5})
+	AlarmStore.load_data()
+	assert_int(AlarmStore.pot_kind).is_equal(5)
+	AlarmStore.save_data()
+	AlarmStore.load_data()
+	assert_int(AlarmStore.flower_kind).is_equal(1)
+	assert_int(AlarmStore.pot_kind).is_equal(5)
+
+
+func test_cyclamen_selection_survives_reload() -> void:
+	_write({"flower_kind": 3, "flower_kind_v": 2, "pot_kind": 5})
+	AlarmStore.load_data()
+	assert_int(AlarmStore.flower_kind).is_equal(3)
+	AlarmStore.save_data()
+	AlarmStore.load_data()
+	assert_int(AlarmStore.flower_kind).is_equal(3)
+	assert_int(AlarmStore.pot_kind).is_equal(5)
+
+
 func _write(data: Dictionary) -> void:
 	var file := FileAccess.open("user://sunflower_alarms.json", FileAccess.WRITE)
 	assert_object(file).is_not_null()
 	file.store_string(JSON.stringify(data))
 	file.close()
+
+
+func test_kalanchoe_selection_survives_reload() -> void:
+	_write({"flower_kind":4,"flower_kind_v":2,"pot_kind":5})
+	AlarmStore.load_data()
+	assert_int(AlarmStore.flower_kind).is_equal(4)
+	AlarmStore.save_data()
+	AlarmStore.load_data()
+	assert_int(AlarmStore.flower_kind).is_equal(4)
+	assert_int(AlarmStore.pot_kind).is_equal(5)
+
+
+func test_new_planter_selection_survives_reload() -> void:
+	for pot in [6,7]:
+		_write({"flower_kind":4,"flower_kind_v":2,"pot_kind":pot})
+		AlarmStore.load_data()
+		assert_int(AlarmStore.pot_kind).is_equal(pot)
+		AlarmStore.save_data()
+		AlarmStore.load_data()
+		assert_int(AlarmStore.pot_kind).is_equal(pot)
+		assert_int(AlarmStore.flower_kind).is_equal(4)

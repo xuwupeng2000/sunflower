@@ -12,6 +12,7 @@ config_version=5
 
 config/name="Sunflower Alarm"
 config/description="向日葵闹钟"
+config/version="1.5"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 boot_splash/bg_color=Color(0.741176, 0.847059, 0.929412, 1)
@@ -51,8 +52,8 @@ theme/custom_font="res://theme/font_ios.tres"
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://locale/ui.en.translation", "res://locale/ui.zh_TW.translation", "res://locale/ui.ja.translation", "res://locale/ui.ko.translation", "res://locale/ui.de.translation", "res://locale/ui.fr.translation", "res://locale/ui.it.translation", "res://locale/ui.es.translation", "res://locale/ui.ru.translation")
-locale/fallback="zh"
+locale/translations=PackedStringArray("res://locale/ui.zh.translation", "res://locale/ui.en.translation", "res://locale/ui.zh_TW.translation", "res://locale/ui.ja.translation", "res://locale/ui.ko.translation", "res://locale/ui.de.translation", "res://locale/ui.fr.translation", "res://locale/ui.it.translation", "res://locale/ui.es.translation", "res://locale/ui.ru.translation")
+locale/fallback="en"
 
 [ios]
 

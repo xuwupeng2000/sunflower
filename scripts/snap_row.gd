@@ -41,6 +41,16 @@ func set_index(current: int) -> void:
 
 func set_labels(next_labels: PackedStringArray, current: int) -> void:
 	labels = next_labels
+	# Scene labels are styling templates, not a fixed limit on available models.
+	if get_child_count() > 0:
+		var template := get_child(0) as Label
+		if template:
+			while get_child_count() < next_labels.size():
+				var label := template.duplicate() as Label
+				label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				add_child(label)
+			while get_child_count() > next_labels.size():
+				get_child(get_child_count() - 1).free()
 	for item_index in mini(get_child_count(), next_labels.size()):
 		var label := get_child(item_index) as Label
 		if label:
@@ -111,6 +121,14 @@ func _place() -> void:
 		var x := center_x + (float(item_index - index) * card + _drag) - card * 0.42
 		child.position = Vector2(x, size.y * 0.04)
 		child.size = Vector2(card * 0.84, size.y * 0.92)
+		if child is Label:
+			var label := child as Label
+			if not label.has_meta("base_font_size"):
+				label.set_meta("base_font_size",label.get_theme_font_size("font_size"))
+			var base := int(label.get_meta("base_font_size"))
+			var width := label.get_theme_font("font").get_string_size(label.text,HORIZONTAL_ALIGNMENT_LEFT,-1,base).x
+			var fitted := mini(base,maxi(12,int(float(base)*(card*0.84-8.0)/maxf(width,1.0))))
+			label.add_theme_font_size_override("font_size",fitted)
 		var distance := absf(x + card * 0.42 - center_x) / card
 		child.modulate.a = clampf(1.0 - distance * 0.35, 0.4, 1.0)
 	queue_redraw()

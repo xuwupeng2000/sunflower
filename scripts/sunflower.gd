@@ -21,9 +21,10 @@ const ORCHID_BRANCHES := [
 const FLOWER_KINDS := [
 	{
 		"name": "向日葵",
-		"mode": "rig",
-		"scene": "res://scenes/sunflower_plant.tscn",
-		"height": 1.9,
+		"pot_ratio": 0.62,
+		"mode": "model",
+		"scene": "res://assets/tripo/sunflower-new.glb",
+		"height": 1.6,
 		"dry_materials": [
 			"res://assets/sunflower/petal.tres",
 			"res://assets/sunflower/disk.tres",
@@ -32,11 +33,38 @@ const FLOWER_KINDS := [
 		],
 	},
 	{
-		"name": "兰花",
-		"mode": "rig",
-		"scene": "res://scenes/orchid_plant.tscn",
-		"height": 1.9,
-		"dry_materials": [],  # 兰花枯萎只低头，不变色
+		"name": "蝴蝶兰",
+		"pot_ratio": 0.66,
+		"mode": "model",
+		"scene": "res://assets/tripo/phalaenopsis-new.glb",
+		"height": 1.3,
+		"dry_materials": [],
+	},
+	{
+		"name": "君子兰",
+		"pot_ratio": 0.66,
+		"mode": "model",
+		"scene": "res://assets/tripo/clivia.glb",
+		"height": 1.3,
+		"dry_materials": [],
+	},
+	{
+		"name": "仙客来",
+		"pot_ratio": 0.8,
+		"mode": "model",
+		"scene": "res://assets/tripo/cyclamen.glb",
+		"height": 1.1,
+		"frame_scale": 1.2,
+		"dry_materials": [],
+	},
+	{
+		"name": "长寿花",
+		"pot_ratio": 0.8,
+		"mode": "model",
+		"scene": "res://assets/tripo/kalanchoe.glb",
+		"height": 1.1,
+		"frame_scale": 1.55,
+		"dry_materials": [],
 	},
 	# 蜀葵（stack 模式）和玫瑰（scenes/rose_plant.tscn）先不上架。
 ]
@@ -65,6 +93,27 @@ const POT_KINDS := [
 		"name": "方盆",
 		"pot": "res://assets/pots/square.glb",
 		"pot_materials": ["res://assets/pots/white.tres", "res://assets/pots/soil.tres"],
+	},
+	{
+		"name": "三花猫",
+		"pot": "res://assets/tripo/cat-pot-planted.glb",
+		"pot_materials": [],
+		"planting_height": 0.71,
+	},
+	{
+		"name": "兔子",
+		"pot": "res://assets/tripo/rabbit-pot.glb",
+		"pot_materials": [],
+		"planting_height": 0.74,
+		"size_scale": 1.1,
+		"planting_offset_z": -0.07,
+	},
+	{
+		"name": "刺猬小屋",
+		"pot": "res://assets/tripo/hedgehog-pot.glb",
+		"pot_materials": [],
+		"planting_height": 0.80,
+		"size_scale": 1.2,
 	},
 ]
 
@@ -120,6 +169,7 @@ var _drag_moved := false
 var _press_pos := Vector2.ZERO
 var _press_msec := 0
 var _plant_rest := Transform3D()
+var _surface_effects: Node3D
 var _shake: Tween
 var _pinch_points := {}
 var _pinch_span := 0.0
@@ -142,6 +192,7 @@ const WILT_PARAM := &"parameters/枯萎程度/blend_position"
 var _pose: AnimationTree
 var _stretch: SkeletonModifier3D
 var _rig_height := 1.9
+var _model
 var _dry_materials: Array[Material] = []
 var _growth_shown := 0.0
 var _bend := 0.0
@@ -181,6 +232,11 @@ func _ready() -> void:
 	_plant_rest = _plant.transform
 	_load_plant_meshes()
 	_present(_growth_extra)
+	if not Engine.is_editor_hint():
+		_surface_effects = load("res://scripts/plant_surface_effects.gd").new()
+		_surface_effects.display = self
+		add_child(_surface_effects)
+
 
 
 func _halt() -> void:
@@ -191,7 +247,11 @@ func _halt() -> void:
 
 
 func _present(extra: int) -> void:
-	if _plant_mode == "rig":
+	if _plant_mode == "model":
+		_mount_model()
+		_model.set_growth(float(maxi(extra, 0)))
+		_growth_shown = float(maxi(extra, 0))
+	elif _plant_mode == "rig":
 		_mount_rig()
 		_set_growth(float(maxi(extra, 0)))
 		_pose_rig(false)
@@ -208,7 +268,9 @@ func play_count(count: int) -> void:
 	_halt()
 	var token := _token
 	_growth_extra = maxi(count, 0)
-	if _plant_mode == "rig":
+	if _plant_mode == "model":
+		await _grow_model(token)
+	elif _plant_mode == "rig":
 		await _grow_rig(token)
 	elif _plant_mode == "spike":
 		await _grow_orchid(token)
@@ -282,6 +344,48 @@ func _grow_stack(token: int) -> void:
 			return
 
 
+func _mount_model() -> void:
+	for child in _plant.get_children():
+		child.free()
+	_pose = null
+	_stretch = null
+	_head = null
+	_model = load("res://scripts/tripo_plant.gd").new()
+	_plant.add_child(_model)
+	var asset := str(FLOWER_KINDS[flower_index]["scene"]).get_file().get_basename()
+	_model.configure(asset)
+	_model.height_changed.connect(_model_height_changed)
+	_model.set_wilt(float(_wilt_level), _bend, false)
+	_frame_height(_rig_height, _rig_height)
+
+
+func _model_height_changed(height: float) -> void:
+	_frame_height(height, _rig_height)
+
+
+func _grow_model(token: int) -> void:
+	if _model == null or not is_instance_valid(_model):
+		_mount_model()
+	var start := _growth_shown
+	var goal := float(_growth_extra)
+	if is_equal_approx(start, goal):
+		_model.set_growth(goal)
+		return
+	if goal > start and _grow_player and _grow_player.stream:
+		_grow_player.play()
+	var tween := _begin_motion()
+	tween.tween_method(_set_model_growth, start, goal, 0.65 * clampf(absf(goal - start), 1.0, 3.0)).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await tween.finished
+	if token == _token:
+		_spark_at(_plant.global_position + Vector3(0, _framed_bloom * 0.9, 0))
+
+
+func _set_model_growth(value: float) -> void:
+	_growth_shown = value
+	if _model and is_instance_valid(_model):
+		_model.set_growth(value)
+
+
 func _mount_rig() -> void:
 	for child in _plant.get_children():
 		child.free()
@@ -340,6 +444,8 @@ func set_bend(snoozes: int) -> void:
 	_bend = clampf(float(snoozes) / RIG_BEND_FULL, 0.0, 1.0)
 	if _plant_mode == "rig":
 		_pose_rig(true)
+	elif _plant_mode == "model" and is_instance_valid(_model):
+		_model.set_wilt(float(_wilt_level), _bend, true)
 
 
 func _pose_rig(animate: bool) -> void:
@@ -454,7 +560,7 @@ func _load_plant_meshes() -> void:
 		_apply_materials(_pot, _pot_materials)
 	_set_dry(0.0)
 	_dry_materials = _materials_from(flower.get("dry_materials", []))
-	if _plant_mode == "rig":
+	if _plant_mode == "rig" or _plant_mode == "model":
 		_rig_height = float(flower.get("height", 1.9))
 		_side_bloom_on = 0
 		_node_bloom = false
@@ -535,6 +641,8 @@ func _apply_materials(piece: MeshInstance3D, materials: Array[Material]) -> void
 	if piece == null or piece.mesh == null:
 		return
 	piece.material_override = null
+	for surface in piece.mesh.get_surface_count():
+		piece.set_surface_override_material(surface, null)
 	if materials.is_empty():
 		return
 	if materials.size() == 1 or piece.mesh.get_surface_count() <= 1:
@@ -629,6 +737,10 @@ func hits_plant(screen: Vector2) -> bool:
 
 
 func _try_shake(screen: Vector2) -> void:
+	if is_instance_valid(_surface_effects):
+		if _surface_effects.tap_at(screen):
+			plant_tapped.emit(screen)
+		return
 	if hits_plant(screen):
 		_shake_plant()
 		plant_tapped.emit(screen)
@@ -666,6 +778,11 @@ func apply_wilt(level: int, animate: bool = false) -> void:
 	_wilt_level = clampi(level, 0, WILT_DRY.size() - 1)
 	var wilted := _wilt_level > 0
 	_wilted = wilted
+	if _plant_mode == "model":
+		_plant.basis = _plant_rest.basis
+		if is_instance_valid(_model):
+			_model.set_wilt(float(_wilt_level), _bend, animate)
+		return
 	if _plant_mode == "rig":
 		_plant.basis = _plant_rest.basis
 		_pose_rig(animate)
@@ -686,6 +803,10 @@ func _apply_wilt_pose() -> void:
 		return
 	# 只复位旋转；高度由 _frame_height 定在盆口，整个 transform 复位会把花压回盆里。
 	_plant.basis = _plant_rest.basis
+	if _plant_mode == "model":
+		if is_instance_valid(_model):
+			_model.set_wilt(float(_wilt_level), _bend, false)
+		return
 	if _plant_mode == "rig":
 		return
 	if _wilted:
@@ -718,6 +839,13 @@ func water() -> void:
 
 # screen 是壶嘴在屏幕上的位置，水从花那一层深度落下。
 func pour_at(screen: Vector2) -> void:
+	if is_instance_valid(_surface_effects):
+		if not _surface_effects._pouring:
+			_wet_ground()
+		_surface_effects.pour_at(screen)
+		if _pour:
+			_pour.emitting = false
+		return
 	if _camera == null or _pour == null:
 		return
 	var forward := -_camera.global_transform.basis.z
@@ -733,6 +861,11 @@ func pour_at(screen: Vector2) -> void:
 
 
 func stop_pour() -> void:
+	if is_instance_valid(_surface_effects):
+		var was_pouring: bool = _surface_effects._pouring
+		_surface_effects.stop_pour()
+		if was_pouring:
+			_dry_ground()
 	if _pour == null or not _pour.emitting:
 		return
 	_pour.emitting = false
@@ -1150,11 +1283,14 @@ func _frame_height(bloom: float, base_bloom: float) -> void:
 	var pot_height := 0.8
 	if _pot and _pot.mesh:
 		pot_height = maxf(_pot.mesh.get_aabb().size.y, 0.01)
-	var target_pot := base_bloom / 2.0
+	var target_pot := base_bloom * float(FLOWER_KINDS[flower_index].get("pot_ratio", 0.62))
+	target_pot *= float(POT_KINDS[pot_index].get("size_scale", 1.0))
 	var pot_scale := target_pot / pot_height
 	_pot.scale = Vector3(pot_scale, pot_scale, pot_scale)
-	_plant.position.y = target_pot
-	var head_top := target_pot + bloom
+	var planting_height := target_pot * float(POT_KINDS[pot_index].get("planting_height", 1.0))
+	_plant.position.y = planting_height
+	_plant.position.z = target_pot * float(POT_KINDS[pot_index].get("planting_offset_z", 0.0))
+	var head_top := planting_height + bloom
 	var fov := deg_to_rad(_camera.fov if _camera.fov > 0.0 else 75.0)
 	var half := tan(fov * 0.5)
 	var ndc_bottom := 0.10 * 2.0 - 1.0
@@ -1164,6 +1300,7 @@ func _frame_height(bloom: float, base_bloom: float) -> void:
 	var fit := view_h / maxf(half, 0.01)
 	var closest := float(ZOOM_LEVELS[ZOOM_LEVELS.size() - 1])
 	var distance := fit * float(ZOOM_LEVELS[_zoom_level]) / closest
+	distance *= float(FLOWER_KINDS[flower_index].get("frame_scale", 1.0))
 	_camera.position = Vector3(distance * 0.28, look_y, distance)
 	_camera.look_at(Vector3(0, look_y, 0))
 	if _rain_cloud:
