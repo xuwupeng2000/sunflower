@@ -13,7 +13,7 @@ If you plan your life by the day of the week, Little Little Flower Alarm is for 
 - **Weekly alarms:** set different reminder times for Monday through Sunday. Skip the next occurrence or pause a weekday when plans change.
 - **Schedule:** see weekly routines and one-time reminders together, organized into this week, next week, and the weeks ahead. Set an arrival time and a reminder to leave.
 - **Timer:** save named countdowns for workouts, tea, cooking, or a break. Reuse your favorite durations without setting them up again.
-- **A flower to grow with you:** earn fertilizer by snoozing alarms, creating reminders, and starting timers. Drag it onto your sunflower or orchid to help it grow, and give it a little water each day.
+- **A flower to grow with you:** earn fertilizer by snoozing alarms, creating reminders, and starting timers. Choose a sunflower, moth orchid, clivia, cyclamen, or kalanchoe and a planter of your own. Water it, tap it to see it sway, and use fertilizer to grow your sunflower taller.
 
 Built for iPhone with iOS 26 system alarms, Lock Screen and Dynamic Island controls. Timers use notifications and Live Activities.
 
