@@ -1,0 +1,3 @@
+Built-in image_gen concept, not yet an implemented game state.
+Style references: sunflower-3d-illustration.png, phalaenopsis-3d-illustration-full-bloom.png, clivia-3d-illustration.png.
+Prompt: Three juvenile plants in equal columns on white, soft matte 3D botanical illustration, no flowers or pots. Left: sunflower seedling, short stem, two oval cotyledons and one pair of serrated true leaves. Middle: young Phalaenopsis with compact basal crown and a few fleshy broad oblong blunt-tipped leaves, no spike. Right: young Clivia with three strap-shaped leaves in a two-ranked upright fan, no scape. Full small plants visible, no text, labels or roots. Proposed starting-stage concepts only.

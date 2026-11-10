@@ -1,0 +1,4 @@
+Tool: built-in image_gen (generation followed by edit).
+
+Final design prompt:
+Two independent cartoon plants side by side on pure white for Tripo image-to-3D: golden sunflower and pink lavender Phalaenopsis orchid. Soft matte 3D rendered into 2D illustration, rounded thick petals and clear volume. Full plants visible with clean cut stem bottoms, no roots or pots, no text or faces. Each plant has a long exposed straight cylindrical green middle stem of nearly constant diameter, at least 40 percent of plant height, suitable for extending upward as the plant grows tall. Broad leaves cluster near the bottom. Sunflower has one flower head at top; orchid has three blooms in a compact upper branching cluster. Keep the extensible middle sections free of leaves and branches. Preserve complete connected silhouettes and a large white gap between the plants for separate cropping.

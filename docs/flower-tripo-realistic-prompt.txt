@@ -1,0 +1,5 @@
+Tool: built-in image_gen; style-transfer edit of sunflower-orchid-extendable-stems.png.
+
+Photorealistic botanical studio photograph of an independent sunflower and pink Phalaenopsis orchid side by side on pure white, for Tripo image-to-3D reference. Full plants visible with wide separation. Keep long, mostly straight exposed middle stems suitable for later extension, flowers at the top and leaves near the bottom. Realistic sunflower petals with delicate veins and translucency, densely packed small disk florets, slightly fuzzy stalk, serrated heart-shaped leaves. Three realistic pink lavender orchid blooms with recognizable sepals, petals and magenta labellum; waxy broad basal leaves and slender green spike. Natural asymmetry, subtle color variation and soft neutral studio lighting. No cartoon, clay or plastic appearance; no pots, roots, dirt, stakes, ties, text or watermark.
+
+2026-11-09: User requested this realistic version as a style experiment; the previously recorded cartoon 3D-to-2D preference is not replaced without a subsequent choice.

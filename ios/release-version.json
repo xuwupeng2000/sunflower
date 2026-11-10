@@ -1,0 +1,18 @@
+{
+  "version": "1.5",
+  "build": "1",
+  "exclude_resources": [
+    "scenes/previews/*",
+    "scripts/tripo_preview.gd",
+    "scripts/sunflower_seedling_preview.gd",
+    "shaders/sunflower_maturity.gdshader",
+    "assets/tripo/animated/*-kit/*",
+    "assets/tripo/animated/sunflower-maturity*",
+    "assets/tripo/sunflower-seedling*",
+    "assets/tripo/sunflower.glb*",
+    "assets/tripo/sunflower_tripo*",
+    "assets/tripo/orchid*",
+    "assets/tripo/cat-pot.glb*",
+    "assets/tripo/cat-pot_tripo*"
+  ]
+}

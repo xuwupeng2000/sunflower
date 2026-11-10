@@ -1,0 +1,6 @@
+Tool: built-in image_gen; sunflower-3d-illustration.png used as soft matte 3D illustration style reference.
+These are plant candidates for Japan/Korea indoor-flower audiences, not verified national favourite rankings.
+
+Cyclamen persicum: complete compact flowering plant on white, silver-marbled heart-shaped dark leaves on basal petioles, around ten pink/blush flowers on separate reddish-green stalks, five swept-back petals and downward darker mouth, a few curled buds. No pot, roots, soil, text or labels; natural modeled anatomy, soft lighting, no outlines or low-poly facets. Tripo reference.
+
+Kalanchoe blossfeldiana: complete compact rounded flowering succulent on white, thick opposite ovate scalloped green leaves and short branched stems, five to seven clusters of coral/pink flowers, small four-petalled blooms with yellow centres and some buds. No pot, roots, soil, text or labels; same natural soft matte 3D illustration rendering. Tripo reference.

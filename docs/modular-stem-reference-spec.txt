@@ -1,0 +1,9 @@
+Purpose: three interchangeable stem reference images for user to generate models with Tripo.
+Tool: built-in image_gen. A generated from sunflower-3d-illustration.png as material reference; B/C edits use A as strict interface reference.
+
+Common prompt: one isolated upright solid herbaceous stem segment on white, soft 3D botanical illustration, muted yellow-olive matte epidermis, restrained natural fibers and longitudinal texture. Clean planar perpendicular top and bottom solid circular cuts of equal diameter. Upper/lower 20 percent are identical straight connector zones with identical color and cross-section, no collars, taper, leaves, buds or branches. No text or diagrams. Keep exact height/diameter/camera across variants.
+A: plain natural internode.
+B: restrained central growth-node swelling (about 10 percent), flush small leaf scar, no protrusion; endpoints unchanged.
+C: shallow longitudinal ribs through middle 60 percent fading out before connector zones; endpoints unchanged.
+
+These are visual references, not dimensionally constrained models. After generation, normalize top/bottom ring vertex counts, radius, axis, plane and UV seam color in Blender before using as stackable sections. Keep origin at bottom center and a shared segment height. Do not promise image-to-3D outputs will automatically fit existing plant meshes.

@@ -1,0 +1,6 @@
+2026-11-10. Tool: built-in image_gen, six independent compositing edits.
+Inputs per image: approved sunflower-orchid-faceted-cel.png plus the corresponding planter reference 01–06.
+
+Common prompt: Two full potted plants side by side on pure white, sunflower left and three-bloom pink orchid right, using identical copies of the referenced planter. Preserve exact approved planter design, colors, motifs and accessories, and natural faceted botanical anatomy. Match mature polygonal 3D-to-2D style and three-band cel lighting. Scale exposed plant height around 2.2 times planting bowl height excluding stand, sunflower head about 0.75 bowl diameter; allow orchid basal leaves clearance above rim. Fill cavity with dark brown faceted soil slightly below rim; root stem centrally, front rim occludes stem base, no floating or wall intersections. Match camera and upper-left lighting. Full plants and pot feet/base in frame with ample margins, equal pot scale, generous gap. No labels, extra stems or background objects.
+
+These are generated visual pairing previews, not measured 3D assembly checks.

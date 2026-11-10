@@ -3,6 +3,7 @@
 
 import argparse
 import filecmp
+import json
 import plistlib
 import re
 import shutil
@@ -43,6 +44,19 @@ def install_settings(app: Path, project: Path) -> None:
         "\t\tB10000000000000000000002 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* Settings.bundle */; };\n/* End PBXBuildFile section */",
     )
     project.write_text(text)
+
+
+def sync_release_version() -> None:
+    release = json.loads((ROOT / "ios/release-version.json").read_text())
+    path = ROOT / "export_presets.cfg"
+    text = path.read_text()
+    for key, value in (("short_version", release["version"]), ("version", release["build"])):
+        text, count = re.subn(rf'^application/{key}="[^\"]*"', f'application/{key}="{value}"', text, flags=re.M)
+        if count != 1:
+            raise ValueError(f"Expected one application/{key} in export_presets.cfg")
+    exclusions = ["addons/gdUnit4/*", "tests/*", *release.get("exclude_resources", [])]
+    text = re.sub(r'^exclude_filter="[^\"]*"', 'exclude_filter="' + ",".join(exclusions) + '"', text, flags=re.M)
+    path.write_text(text)
 
 
 def preset_value(key: str, fallback: str) -> str:
@@ -94,6 +108,8 @@ def post_export(xcode: Path = XCODE) -> None:
 
     project = xcode / "project.pbxproj"
     text = project.read_text().replace("DEVELOPMENT_TEAM = 0000000000;", f"DEVELOPMENT_TEAM = {TEAM};")
+    # Archive with automatic development signing; App Store export re-signs for distribution.
+    text = text.replace('CODE_SIGN_IDENTITY = "Apple Distribution";', 'CODE_SIGN_IDENTITY = "Apple Development";')
     # The widget must ship the same version and build number as the app.
     text = re.sub(r"MARKETING_VERSION = [^;]*;", f"MARKETING_VERSION = {preset_value('short_version', '1.0')};", text)
     text = re.sub(r"CURRENT_PROJECT_VERSION = [^;]*;", f"CURRENT_PROJECT_VERSION = {preset_value('version', '1')};", text)
@@ -138,6 +154,7 @@ def main() -> None:
     parser.add_argument("--release", action="store_true", help="export for App Store upload")
     parser.add_argument("xcode", nargs="?", default=str(XCODE))
     args = parser.parse_args()
+    sync_release_version()
     xcode = Path(args.xcode)
     if args.post_only:
         post_export(xcode)
@@ -147,24 +164,27 @@ def main() -> None:
     if SAVE.exists():
         shutil.copy(SAVE, snapshot)
     xcode.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run(
-        [
-            str(GODOT),
-            "--headless",
-            "--path",
-            str(ROOT),
-            "--export-release" if args.release else "--export-debug",
-            "iOS",
-            str(xcode),
-        ],
-        check=True,
-    )
-    post_export(xcode)
-    if snapshot.exists():
-        if not SAVE.exists() or not filecmp.cmp(SAVE, snapshot, shallow=False):
-            shutil.copy(snapshot, SAVE)
-            print("alarm save restored")
-        snapshot.unlink()
+    try:
+        subprocess.run(
+            [
+                str(GODOT),
+                "--headless",
+                "--path",
+                str(ROOT),
+                "--export-release" if args.release else "--export-debug",
+                "iOS",
+                str(xcode),
+            ],
+            check=True,
+        )
+        post_export(xcode)
+    finally:
+        if snapshot.exists():
+            if not SAVE.exists() or not filecmp.cmp(SAVE, snapshot, shallow=False):
+                shutil.copy(snapshot, SAVE)
+                print("alarm save restored")
+            snapshot.unlink()
+
 
 
 if __name__ == "__main__":
