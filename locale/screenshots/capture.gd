@@ -45,7 +45,8 @@ func run() -> void:
 	viewport.msaa_3d = Viewport.MSAA_4X
 	root.add_child(viewport)
 	var args := OS.get_cmdline_user_args()
-	var flower_only := "--flower-only" in args
+	var all_flowers := "--all-flowers" in args
+	var flower_only := "--flower-only" in args or all_flowers
 	var locales: Array[String] = []
 	for value in args:
 		if not value.begins_with("--"):
@@ -88,6 +89,17 @@ func run() -> void:
 		quiet(main)
 		await frames(180)
 		await shot(locale, "01-flower")
+		if all_flowers:
+			var kinds := ["07-moth-orchid", "08-clivia", "09-cyclamen", "10-kalanchoe"]
+			for kind in range(1, 5):
+				main.queue_free()
+				await frames(5)
+				store.flower_kind = kind
+				main = load("res://scenes/main.tscn").instantiate()
+				viewport.add_child(main)
+				quiet(main)
+				await frames(180)
+				await shot(locale, kinds[kind - 1])
 		if flower_only:
 			main.queue_free()
 			await frames(5)

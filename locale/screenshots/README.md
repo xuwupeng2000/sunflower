@@ -2,10 +2,11 @@
 
 - `1.5/<语言>/01-flower.png`：向日葵与刺猬小屋花盆的真实界面截图。
 - `1.5/upload/<语言>/06-flower.png`：1206×2622 RGB PNG；其余五张沿用 1.3。
-- `1.5/manifest.json`：十种语言、共 60 张上传文件的尺寸和 SHA-256。
+- `1.5/upload/<语言>/07-moth-orchid.png` 至 `10-kalanchoe.png`：蝴蝶兰、君子兰、仙客来和长寿花的真实界面。
+- `1.5/manifest.json`：十种语言、共 100 张上传文件的尺寸和 SHA-256。
 - `1.5/status.md`：构建与提交状态。
 
-生成养花原图：`python3 locale/screenshots/generate.py --flower-only`。
+生成向日葵原图：`python3 locale/screenshots/generate.py --flower-only`；生成全部五种花：`python3 locale/screenshots/generate.py --all-flowers`。
 
 # 1.3 商店截图
 
